@@ -1,0 +1,3399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogPortoption</class>
+ <widget class="QDialog" name="DialogPortoption">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>379</width>
+    <height>521</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edit Port Options</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QVBoxLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Port Num</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portNumEdit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>41</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>41</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Port Type</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="portTypeBox">
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>140</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>n\a</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>APRS Internet Server</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>KISS TNC</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AGW CORE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FLEX CORE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>X-NET CORE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AXIP</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Port Name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portNameEdit"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="_2">
+         <item>
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>Port Call</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portCallEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="_3">
+         <item>
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>Port Latitude</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portLatEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="_4">
+         <item>
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Port Longitude</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portLngEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="_7">
+         <item>
+          <widget class="QLabel" name="label_25">
+           <property name="text">
+            <string>Port Symbol</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="portSymbolEdit">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string extracomment="/!">Police Stn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/00.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\!">Emergency</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/00.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/&quot;">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/01.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\&quot;">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/01.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/#">Digi</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/02.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\#">No. Digi</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/02.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/$">Phone</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/03.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\$">Bank</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/03.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/%">DX Cluster</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/04.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\%">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/04.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/&amp;">HF Gateway</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/05.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\&amp;">No. Diam'd</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/05.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/'">Plane sm</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/06.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\'">Crash site</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/06.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/(">Cloudy</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/07.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\(">Cloudy</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/07.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/)">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/08.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\)">MEO</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/08.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/*">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/09.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\*">Snow</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/09.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/+">Red Cross</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/0A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\+">Church</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/0A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/,">Boy Scout</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/0B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\,">Girl Scout</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/0B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/-">Home</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/0C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\-">Home (HF)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/0C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/.">X</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/0D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\.">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/0D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="//">Dot</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/0E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\/">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/0E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/0">Circle (0)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/0F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\0">No. Circle</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/0F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/1">Circle (1)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/10.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\1">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/10.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/2">Circle (2)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/11.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\2">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/11.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/3">Circle (3)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/12.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\3">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/12.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/4">Circle (4)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/13.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\4">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/13.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/5">Circle (5)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/14.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\5">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/14.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/6">Circle (6)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/15.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\6">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/15.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/7">Circle (7)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/16.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\7">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/16.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/8">Circle (8)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/17.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\8">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/17.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/9">Circle (9)</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/18.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\9">Petrol Stn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/18.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/:">Fire</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/19.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\:">Hail</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/19.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/;">Campground</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/1A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\;">Park</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/1A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/&lt;">Motorcycle</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/1B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\&lt;">Advisory</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/1B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/=">Rail Eng.</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/1C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\=">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/1C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/&gt;">Car</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/1D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\&gt;">No. Car</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/1D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/?">File svr</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/1E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\?">Info Kiosk</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/1E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/@">HC Future</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/1F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\@">Hurricane</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/1F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/A">Aid Stn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/20.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\A">No. Box</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/20.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/B">BBS</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/21.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\B">Snow blwng</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/21.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/C">Canoe</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/22.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\C">Coast G'rd</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/22.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/D">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/23.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\D">Drizzle</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/23.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/E">Eyeball</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/24.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\E">Smoke</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/24.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/F">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/25.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\F">Fr'ze Rain</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/25.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/G">Grid Squ.</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/26.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\G">Snow Shwr</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/26.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/H">Hotel</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/27.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\H">Haze</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/27.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/I">Tcp/ip</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/28.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\I">Rain Shwr</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/28.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/J">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/29.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\J">Lightning</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/29.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/K">School</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/2A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\K">Kenwood</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/2A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/L">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/2B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\L">Lighthouse</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/2B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/M">MacAPRS</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/2C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\M">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/2C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/N">NTS Stn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/2D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\N">Nav Buoy</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/2D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/O">Balloon</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/2E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\O">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/2E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/P">Police</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/2F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\P">Parking</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/2F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/Q">TBD</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/30.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\Q">Quake</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/30.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/R">Rec Veh'le</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/31.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\R">Restaurant</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/31.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/S">Shuttle</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/32.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\S">Sat/Pacsat</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/32.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/T">SSTV</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/33.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\T">T'storm</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/33.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/U">Bus</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/34.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\U">Sunny</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/34.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/V">ATV</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/35.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\V">VORTAC</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/35.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/W">WX Service</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/36.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\W">No. WXS</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/36.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/X">Helo</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/37.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\X">Pharmacy</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/37.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/Y">Yacht</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/38.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\Y">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/38.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/Z">WinAPRS</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/39.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\Z">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/39.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/[">Jogger</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/3A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\[">Wall Cloud</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/3A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/\">Triangle</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/3B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\\">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/3B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/]">PBBS</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/3C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\]">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/3C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/^">Plane lrge</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/3D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\^">No. Plane</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/3D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/_">WX Station</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/3E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\_">No. WX Stn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/3E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/`">Dish Ant.</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/3F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\`">Rain</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/3F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/a">Ambulance</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/40.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\a">RSGB,ARRL</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/40.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/b">Bike</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/41.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\b">Dust blwng</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/41.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/c">ICP</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/42.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\c">No. CivDef</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/42.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/d">Garage</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/43.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\d">DX Spot</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/43.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/e">Horse</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/44.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\e">Sleet</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/44.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/f">Fire Truck</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/45.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\f">Funnel Cld</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/45.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/g">Glider</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/46.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\g">Gale</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/46.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/h">Hospital</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/47.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\h">HAM store</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/47.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/i">IOTA</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/48.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\i">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/48.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/j">Jeep</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/49.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\j">WorkZone</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/49.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/k">Truck</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/4A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\k">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/4A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/l">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/4B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\l">Area Locns</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/4B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/m">Repeater</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/4C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\m">Milepost</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/4C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/n">Node</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/4D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\n">No. Triang</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/4D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/o">EOC</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/4E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\o">Circle sm</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/4E.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/p">Rover</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/4F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\p">Part Cloud</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/4F.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/q">Grid squ.</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/50.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\q">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/50.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/r">Antenna</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/51.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\r">Restrooms</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/51.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/s">Power Boat</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/52.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\s">No. Boat</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/52.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/t">Truck Stop</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/53.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\t">Tornado</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/53.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/u">Truck 18wh</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/54.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\u">No. Truck</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/54.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/v">Van</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/55.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\v">No. Van</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/55.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/w">Water Stn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/56.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\w">Flooding</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/56.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/x">XAPRS</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/57.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\x">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/57.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/y">Yagi</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/58.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\y">Sky Warn</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/58.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/z">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/59.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\z">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/59.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/{">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/5A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\{">Fog</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/5A.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/|">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/5B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\|">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/5B.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/}">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/5C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\}">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/5C.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="/~">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/primary/5D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string extracomment="\~">No Symbol</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <activeon>:/images/alternate/5D.bmp</activeon>
+             </iconset>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="_5">
+       <item>
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>Port Unproto Address</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="portUnprotoEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="_6">
+         <item>
+          <widget class="QLabel" name="label_24">
+           <property name="text">
+            <string>Port Beacon Text</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portBeaconTextEdit">
+           <property name="maxLength">
+            <number>43</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="_8">
+         <item>
+          <widget class="QLabel" name="label_26">
+           <property name="text">
+            <string>Port Bck Interval (sec)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="portBeaconIntervalEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <layout class="QHBoxLayout">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Select 'Port Type' and setup parameters</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>339</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="minimumSize">
+            <size>
+             <width>77</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>77</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Host Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="hostNameEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="minimumSize">
+            <size>
+             <width>77</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>77</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>2-st Host name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="hostName2Edit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="minimumSize">
+            <size>
+             <width>77</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>77</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>3-st Host name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="hostName3Edit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>User:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="userEdit"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Password:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="passEdit"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>Filter:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="APRSFilter"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>141</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_3">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>COM Name:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="COMPortNumBox">
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+             <item>
+              <property name="text">
+               <string>COM1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM8</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM9</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM11</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM12</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM13</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM14</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM15</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>COM16</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>COM Port Speed:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="COMPortSpeedBox">
+             <property name="currentIndex">
+              <number>11</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>75</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>110</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>134</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>150</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>300</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>600</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>1200</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>1800</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>2400</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>4800</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>7200</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>9600</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>14400</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>19200</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>38400</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>57600</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>115200</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_27">
+         <property name="text">
+          <string>Port option: 8 data bits, 1 stop bit, no parity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_28">
+             <property name="text">
+              <string>TNC into KISS mode:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_29">
+               <property name="text">
+                <string>1:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="KISSComm1Edit">
+               <property name="text">
+                <string>^M</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_30">
+               <property name="text">
+                <string>2:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="KISSComm2Edit">
+               <property name="text">
+                <string>KISS ON</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="label_31">
+               <property name="text">
+                <string>3:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="KISSComm3Edit">
+               <property name="text">
+                <string>RESTART</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="QLabel" name="label_32">
+               <property name="text">
+                <string>4:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="KISSComm4Edit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_33">
+             <property name="text">
+              <string>Exit TNC from KISS mode:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="KISSCommEXITEdit">
+             <property name="text">
+              <string>192,255,192</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="label_39">
+             <property name="text">
+              <string>Parameters:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <item>
+              <widget class="QLabel" name="label_34">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Tx Delay (x10 msec)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="TXDelayEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>40</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QLabel" name="label_35">
+               <property name="text">
+                <string>Tx Tail (x10 msec)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="TXTailEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>4</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_11">
+             <item>
+              <widget class="QLabel" name="label_36">
+               <property name="text">
+                <string>Slot Time (x10 msec)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="SlotTimeEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>10</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
+             <item>
+              <widget class="QLabel" name="label_37">
+               <property name="text">
+                <string>Persist</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="PersistEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>64</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="FullDuplexCheckBox">
+             <property name="text">
+              <string>Full Duplex</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QLabel" name="label_38">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Easy Setup</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="EasySetupComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>TNC2</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PK</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>D700</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Kan</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>TF</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_4">
+      <layout class="QVBoxLayout">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>AGW Host:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="AGWHostEdit">
+             <property name="text">
+              <string>127.0.0.1</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>AGW Port:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="AGWPortBox">
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_5">
+      <layout class="QHBoxLayout">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Not support</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_6">
+      <layout class="QHBoxLayout">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Not support</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_7">
+      <layout class="QVBoxLayout">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_16">
+           <property name="minimumSize">
+            <size>
+             <width>67</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>AXIP RX Port:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="AXIPRXPortBox">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>65535</number>
+           </property>
+           <property name="value">
+            <number>93</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_17">
+           <property name="minimumSize">
+            <size>
+             <width>67</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>AXIP TX Host:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="AXIPTXHostEdit">
+           <property name="text">
+            <string>127.0.0.1</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="label_18">
+           <property name="minimumSize">
+            <size>
+             <width>67</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>AXIP TX Port:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="AXIPTXPortBox">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>65535</number>
+           </property>
+           <property name="value">
+            <number>93</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>211</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveButton">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="closeButton">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>portTypeBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>215</x>
+     <y>230</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stackedWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>portTypeBox</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>132</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
