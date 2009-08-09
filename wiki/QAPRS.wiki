@@ -1,5 +1,3 @@
-*summary One-sentence summary of this page.
-
 = Проект QAPRS =
 
 
@@ -8,7 +6,7 @@
 
 APRS - Automatic Position(или Packet) Reporting System - это специальный вариант пакетной радиосвязи, протокол которого был зарегистрирован в 1992 году Бобом Брунинга (WB4APR).
 
-AGW - пакетное ядро SV2AGW
+[http://www.sv2agw.com/ AGW] - пакетное ядро SV2AGW
 
 AXIP - Стандарт передачи пакетов AX.25 по сети TCP/IP.
 
