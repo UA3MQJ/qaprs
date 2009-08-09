@@ -1,0 +1,111 @@
+<h3>Разработка структуры данных</h3>
+  
+<p align="justify">&nbsp;&nbsp;&nbsp;
+  При разработке ядра все порты будут наследниками одного класса и иметь одинаковый набор методов класса, такие как отправка пакета, получение пакета и т. д. При конкретной реализации определенного порта, эти методы реализуются для работы с конкретным аппаратным или программным устройством. Ядро, взаимодействуя с портом, получает и отправляет данные в едином формате. Это позволяет работать с разными типами портов одним способом.</p>
+
+<h4>Внутреннее представление APRS пакета в QAPRS ядре.</h4> 
+<p align="justify">&nbsp;&nbsp;&nbsp;  
+В связи с тем, что при передаче APRS пакетов с использованием разных транспортных протоколов используются разные форматы адресов передатчика, приемника, пути доставки, было принято решение разработать универсальный внутренний формат APRS пакета.
+</p>
+<p align="justify">&nbsp;&nbsp;&nbsp;  
+   Каждый пакет внутри ядра QAPRS представляется тремя строками: <i>To</i>, <i>From</i>, <i>MsgText</i>. 
+<p align="justify">&nbsp;&nbsp;&nbsp; 
+  Строка <i>To</i> - содержит адрес получателя. Согласно официальной документации [<a href="APRS101.PDF">2</a>], это один из общепринятых APRS адресов, на который отправляются все пакеты. Временно ядро QAPRS отправляет все пакеты на тот же адрес, что и UI-View - APU25N, в дальнейшем этот адрес будет приведен в соответсвие с документацией [<a href="APRS101.PDF">2</a>].
+</p>
+<p align="justify">&nbsp;&nbsp;&nbsp; 
+  Строка <i>From</i> - содержит адрес отправителя. Если не указывается, через какие ретрансляторы отправлять пакет, то он отправляется "напрямую" и содержит только один адрес - адрес отправителя. Если же указан список ретрансляторов (например у маяка поле Unproto может иметь список ретрансляторов - "WIDE1-1,WIDE2-2"), то они дописываются к позывному отправителя после знака ">" через запятую. 
+</p>
+
+<p align="justify">&nbsp;&nbsp;&nbsp; 
+  Строка <i>MsgText</i> - содержит текст APRS пакета.
+</p>
+ <p align="justify">&nbsp;&nbsp;&nbsp; 
+  Все позывные, используемые при работе, должны соответствовать протоколу AX.25 [<a href="AX25.2.2.pdf">3</a>], а именно: иметь длину не больше шести знаков, состоять только из английских букв и цифр, иметь SID от 0 до 15. Если у станции не указан SID, то считается, что он равен нулю. Во внутреннем QAPRS стандарте позывные записываются необходимым количеством знаков (например позывной UA3MM не требуется дополнять пробелами до шести символов), если необходимо указать SID, то он записывается после позывного через "-". Если пакет был ретранслирован - дописывается "*". Реализация передачи данных по различным типам портов сама производит формирование пакетов для среды передачи в нужном формате. </p>
+
+<p align="justify">&nbsp;&nbsp;&nbsp; 
+ Например маяк, выдаваемый станцией UA3MQJ формирует следующий пакет:<br><br>
+ <table border="1" cellspacing="0" cellpadding="0">
+   <tr>
+     <th>To</th><th>From</th><th>MsgText</th>
+   </tr>
+   <tr>
+     <td>APU25N</td><td>UA3MQJ>WIDE1-1,WIDE2-2</td><td>=5801.83N\03851.13E-QAPRS 5ea@rambler.ru {QAPRS}</td>
+   </tr>   
+ </table><br><br>
+ 
+ <p align="justify">&nbsp;&nbsp;&nbsp; 
+	Внутри ядра эти пакеты хранятся в таблице packets, где к этим данным добавляется номер пакета, дата, номер порта, признак получен или отправлен, а поле From разбивается на чистый адрес отправителя и поле Via - список ретрансляторов.
+ </p>
+
+<br>
+ <table border="1" cellspacing="0" cellpadding="0">
+   <tr>
+     <th>K</th><th>DATA</th><th>TIME</th><th>Port</th><th>TRX</th><th>PTo</th><th>PFrom</th><th>PVia</th><th>Message</th>
+   </tr>
+   <tr>
+    <td>381</td><td>12.05.2009</td><td>14:44:26</td><td>(0) AXIP</td><td>TX</td><td>APU25N</td><td>UA3MQJ</td><td>&nbsp;</td><td>:UA3MAD   :Path - UA3MAD>APU25N</td>
+   </tr>  
+   <tr>
+    <td>380</td><td>12.05.2009</td><td>14:44:25</td><td>(0) AXIP</td><td>RX</td><td>APU25N</td><td>UA3MAD</td><td>WIDE1-1,WIDE2-2</td><td>:UA3MQJ   :?APRST</td>
+   </tr>   
+ </table><br>
+
+ <p align="justify">&nbsp;&nbsp;&nbsp; 
+  Пакеты, которые по формату являются сообщениями (начинаются с ":") обрабатываются ядром и помещаются в таблицу сообщений.
+ </p>
+
+Формат пакета сообщения [<a href="APRS101.PDF">2</a>]. Поле Message ID присутствует только у тех сообщений, для которых требуется подтверждение приема:<br>
+ <table border="1" cellspacing="0" cellpadding="0">
+   <tr>
+     <th>:</th><th>Addressee</th><th>:</th><th>Message Text<br>(max 67 chars)</th><th>Message ID</th><th>Message No<br>xxxxx</th>
+     </tr>
+     <td>1</td><td align="center">9</td><td>1</td><td align="center">0-67</td><td align="center">1</td><td align="center">5</td>
+     </tr>
+     </tr>
+     <td colspan="6">Examples:<br>
+       <table>
+         <tr>
+           <td><code>:WU2Z     :Testing</code></td>
+           <td> Сообщение для WU2Z, содержащее текст “Testing”,<br>
+		не требующее подтверждения приема.<br>
+		(Важно: поле адреса должно быть пополнено пробелами до 9-т символов).<br>&nbsp;</td>
+         </tr>
+         <tr>
+           <td><code>:WU2Z     :Testing{003</code></td>
+           <td>Сообщение с номером 3, с необходимостью подтверждения<br>&nbsp;</td>
+         </tr>
+         <tr>
+           <td><code>:EMAIL    :msproul@ap.org Test email</code></td>
+           <td> Сообщение на электронную почту (Note: This is an example <br>
+		of how such a message could be constructed.<br>
+		APRS itself does not support e-mail delivery)</td>
+         </tr>
+       </table>
+      </td>
+     </tr>
+ </table>
+
+ <p align="justify">&nbsp;&nbsp;&nbsp; 
+  После разбора ядром, сообщение помещается в таблицу сообщений:
+
+
+ <table border="1" cellspacing="0" cellpadding="0">
+   <tr>
+     <th>K</th><th>DATA</th><th>TIME</th><th>Port</th><th>TRX</th><th>PFrom</th><th>MTo</th><th>Message</th><th>MSGID</th>
+   </tr>
+   <tr>
+    <td>388</td><td>13.05.2009</td><td>11:11:13</td><td>(0) AXIP</td><td>RX</td><td>UA3MQJ</td><td>UA3MAD</td><td>Hello!</td><td>31</td>
+   </tr>  
+   <tr>
+    <td>379</td><td>12.05.2009</td><td>14:44:40</td><td>(0) AXIP</td><td>TX</td><td>UA3MAD</td><td>UA3MQJ</td><td>Path - UA3MQJ>APU25N</td><td>&nbsp;</td>
+   </tr>  
+   <tr>
+    <td>379</td><td>12.05.2009</td><td>14:44:40</td><td>(0) AXIP</td><td>RX</td><td>UA3MQJ</td><td>UA3MAD</td><td>?APRST</td><td>&nbsp;</td>
+   </tr>  
+  </table><br>
+ </p>
+
+
+
+
+  
