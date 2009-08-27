@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/">
-   <file>images/ico.jpg</file>
+   <file>images/ico.png</file>
    <file>images/port.jpg</file>
    <file>images/portinet.jpg</file>
    <file>images/portagw.jpg</file>

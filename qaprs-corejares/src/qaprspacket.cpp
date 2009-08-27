@@ -104,7 +104,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
     //add PID byte
     this->append(240); // 11110000 - протокол 3-го уровня не используется
     //add text of message
-    this->append(MsgText);
+    this->append( MsgText );
     //add enter
     this->append( 13 );
 

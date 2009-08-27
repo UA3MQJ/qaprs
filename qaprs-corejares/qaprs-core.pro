@@ -17,8 +17,14 @@ DEPENDPATH += . \
 INCLUDEPATH += . \
     include
 FORMS = ui/mainwindow.ui \
-    ui/portoption.ui
+    ui/portoption.ui \
+    ui/packets.ui \
+    ui/messages.ui \
+    ui/stations.ui
 HEADERS = include/mainwindowimpl.h \
+    include/packetswindow.h \
+    include/messageswindow.h \
+    include/stationswindow.h \
     include/portoption.h \
     include/qaprsports.h \
     include/qaprscore.h \
@@ -26,6 +32,9 @@ HEADERS = include/mainwindowimpl.h \
     include/customsqlmodels.h\
     include/aprs.h
 SOURCES = src/mainwindowimpl.cpp \
+    src/packetswindow.cpp \
+    src/messageswindow.cpp \
+    src/stationswindow.cpp \
     src/main.cpp \
     src/portoption.cpp \
     src/qaprsports.cpp \
@@ -34,3 +43,5 @@ SOURCES = src/mainwindowimpl.cpp \
     src/customsqlmodels.cpp \
     src/aprs.cpp
 RESOURCES = qaprs-core.qrc
+TRANSLATIONS = qaprs-core_ru.ts \
+               qaprs-core_en.ts

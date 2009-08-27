@@ -2,16 +2,13 @@
 #include <QDebug>
 #include "include/qaprsports.h"
 
-
-
 QAPRSPort::QAPRSPort( QObject *parent ) { }
-
+QAPRSPort::~QAPRSPort() { }
 void QAPRSPort::openPort() { }
 void QAPRSPort::closePort() { }
 void QAPRSPort::updatePort() { }
 void QAPRSPort::sendPacket( QString To, QString From, QString MsgText ) {}
 void QAPRSPort::setParam( QString ParamName, QString ParamValue ) {}
-
 
 //AXIP PORT
 QAPRSAXIPPORT::QAPRSAXIPPORT( QObject *parent ) {
@@ -21,6 +18,21 @@ QAPRSAXIPPORT::QAPRSAXIPPORT( QObject *parent ) {
     udpSocket   = new QUdpSocket(this);
     beacontimer = new QTimer(this);
     TXAddress   = new QHostAddress();
+
+};
+
+QAPRSAXIPPORT::~QAPRSAXIPPORT( ) {
+
+    beacontimer->disconnect();
+    udpSocket->disconnect();
+
+    delete udpSocket;
+    delete beacontimer;
+    delete TXAddress;
+
+    udpSocket   = NULL;
+    beacontimer = NULL;
+    TXAddress   = NULL;
 
 };
 
@@ -60,7 +72,8 @@ void QAPRSAXIPPORT::openPort() {
     connect( beacontimer,SIGNAL( timeout() ),
              this,      SLOT( onTimer() ) );
 
-    udpSocket->bind( RXPort );
+    udpSocket->bind( QHostAddress::LocalHost, RXPort );
+
     if (BeaconInterval > 0) beacontimer->start( BeaconInterval ); else beacontimer->stop();
 
 }
@@ -95,21 +108,21 @@ void QAPRSAXIPPORT::updatePort() {
 
 void QAPRSAXIPPORT::readPendingDatagrams() {
 
-    QHostAddress *address;
-    quint16 port;
     QByteArray datagram;
     QString DataIn;
 
-    address = new QHostAddress::QHostAddress ();
-    //read udp datagram
-    while ( udpSocket->hasPendingDatagrams() ) {
-        datagram.resize( udpSocket->pendingDatagramSize() );
-        udpSocket->readDatagram( datagram.data(), datagram.size(), address, &port );
-    };
+    QHostAddress sender;
+    quint16 senderPort;
+
+    datagram.resize(udpSocket->pendingDatagramSize());
+    udpSocket->readDatagram(datagram.data(), datagram.size(),
+                            &sender, &senderPort);
 
     DataIn = datagram.data();
     //log->insertHtml( "(" + QString::number( PortNum ) + ")" + PortType + "::<font color='#008800'>RX Packet</font><br>");
     //log->insertHtml( datagram +"<br>");
+
+    //qDebug() << datagram.toHex();
 
     int i;
     QString DestCall( "" );
@@ -161,6 +174,13 @@ void QAPRSAXIPPORT::readPendingDatagrams() {
 
     emit RXPacket( PortNum, DestCall, SrcCall, MsgText );
 
+
+    SrcCall.clear();
+    MsgText.clear();
+    DestCall.clear();
+    DataIn.clear();
+    datagram.clear();
+
 }
 
 void QAPRSAXIPPORT::onTimer() {
@@ -178,6 +198,7 @@ void QAPRSAXIPPORT::onTimer() {
         Beacon.append( Symbol[1]+BeaconText+" {QAPRS}" );
 
         this->sendPacket( "APU25N", Call + ">" + UnprotoAddress, Beacon );
+
     }
 /*
     QString Ping;
@@ -192,6 +213,8 @@ void QAPRSAXIPPORT::onTimer() {
     this->sendPacket( "APU25N", Call + ">WIDE3-1" , Ping );
 */
 
+
+
 }
 
 void QAPRSAXIPPORT::sendPacket( QString To, QString From, QString MsgText ){
@@ -204,6 +227,8 @@ void QAPRSAXIPPORT::sendPacket( QString To, QString From, QString MsgText ){
     udpSocket->writeDatagram( Packet, *TXAddress, TXPort );
 
     //log->verticalScrollBar()->setSliderPosition( log->verticalScrollBar()->maximum() );
+
+    Packet.clear();
 
     emit TXPacket( PortNum, To, From, MsgText );
 
@@ -224,6 +249,23 @@ QAPRSINTERNETPORT::QAPRSINTERNETPORT( QObject *parent ) {
 
 }
 
+QAPRSINTERNETPORT::~QAPRSINTERNETPORT( ) {
+
+    tcpClient   = new QTcpSocket(this);
+    beacontimer = new QTimer(this);
+    reconnecttimer = new QTimer(this);
+
+    tcpClient->close();
+    tcpClient->disconnect();
+    delete tcpClient;
+    beacontimer->stop();
+    beacontimer->disconnect();
+    delete beacontimer;
+    reconnecttimer->stop();
+    reconnecttimer->disconnect();
+    delete reconnecttimer;
+
+}
 
 void QAPRSINTERNETPORT::setParam( QString ParamName, QString ParamValue ) {
 
@@ -248,11 +290,7 @@ void QAPRSINTERNETPORT::setParam( QString ParamName, QString ParamValue ) {
     if ( ParamName=="PUser")           ProxyUser = ParamValue;
     if ( ParamName=="PPass")           ProxyPass = ParamValue;
 
-    //ProxyName = "arvisscomp";
-
-
 }
-
 
 void QAPRSINTERNETPORT::openPort() {
 
@@ -329,6 +367,8 @@ void QAPRSINTERNETPORT::openPort() {
 
     if (BeaconInterval > 0) beacontimer->start( BeaconInterval ); else beacontimer->stop();
 
+    ConnectionString.clear();
+
 }
 
 void QAPRSINTERNETPORT::closePort() {
@@ -336,6 +376,7 @@ void QAPRSINTERNETPORT::closePort() {
     active = false;
     tcpClient->abort();
     beacontimer->stop();
+    reconnecttimer->stop();
 
     tcpClient->disconnect();
     beacontimer->disconnect();
@@ -390,6 +431,9 @@ void QAPRSINTERNETPORT::tcpClientread() {
     //log->insertHtml( "(" + QString::number( PortNum ) + ")" + PortType + "::<font color='#008800'>RX Packet '" + msg.toHex() + "'</font><br>");
 
     QString mesg;
+    QString MsgText("");
+    QString SrcCall("");
+    QString DestCall("");
 
     while (msg.length()>0) {
 
@@ -403,7 +447,7 @@ void QAPRSINTERNETPORT::tcpClientread() {
 
         if (mesg.data()[0]!='#') {
 
-            QString DestCall("");
+
             DestCall = mesg.mid( mesg.indexOf(">") + 1, mesg.indexOf(",") - mesg.indexOf(">") - 1 );
 
             //log->insertHtml( "DestCall='" );
@@ -411,7 +455,7 @@ void QAPRSINTERNETPORT::tcpClientread() {
             //log->insertHtml( "'<br>" );
             //emit ToLog("("+QString::number(PortNum)+")"+PortType+":: destcall="+DestCall+" <br>");
 
-            QString SrcCall("");
+
             SrcCall = mesg.left( mesg.indexOf(">") ) + mesg.mid( mesg.indexOf(","), mesg.indexOf(":") - mesg.indexOf(",") );
             if (SrcCall.indexOf( ',' )!=-1) SrcCall[ SrcCall.indexOf( ',' ) ]='>';
             //log->insertHtml( "SrcCall='" );
@@ -419,7 +463,7 @@ void QAPRSINTERNETPORT::tcpClientread() {
             //log->insertHtml( "'<br>" );
             //emit ToLog("("+QString::number(PortNum)+")"+PortType+":: SrcCall="+SrcCall+" <br>");
 
-            QString MsgText("");
+
             MsgText = mesg.mid( mesg.indexOf(":") + 1, mesg.length() - mesg.indexOf(":") - 3 );
             //log->insertHtml( "MsgText='" );
             //log->insertPlainText(MsgText);
@@ -441,6 +485,12 @@ void QAPRSINTERNETPORT::tcpClientread() {
         msg = msg.mid( msg.indexOf(10) + 1 );
 
     };
+
+    msg.clear();
+    mesg.clear();
+    DestCall.clear();
+    SrcCall.clear();
+    MsgText.clear();
 
 };
 
@@ -497,6 +547,8 @@ void QAPRSINTERNETPORT::sendPacket( QString To, QString From, QString MsgText ){
 
     emit TXPacket( PortNum, To , From, MsgText );
 
+    Packet.clear();
+
 }
 
 // AGW Port
@@ -510,7 +562,19 @@ QAPRSAGWPORT::QAPRSAGWPORT( QObject *parent ) {
     beacontimer = new QTimer(this);
     reconnecttimer = new QTimer(this);
 
-    needReconnectForUpdate = FALSE;
+}
+
+QAPRSAGWPORT::~QAPRSAGWPORT( ) {
+
+    tcpClient->close();
+    tcpClient->disconnect();
+    delete tcpClient;
+    beacontimer->stop();
+    beacontimer->disconnect();
+    delete beacontimer;
+    reconnecttimer->stop();
+    reconnecttimer->disconnect();
+    delete reconnecttimer;
 
 }
 
@@ -524,10 +588,7 @@ void QAPRSAGWPORT::setParam( QString ParamName, QString ParamValue ) {
     if ( ParamName=="Latitude")        Latitude = ParamValue;
     if ( ParamName=="Longitude")       Longitude = ParamValue;
     if ( ParamName=="Symbol")          Symbol = ParamValue;
-    if ( ParamName=="Host")            {
-        agwHost = ParamValue;
-        needReconnectForUpdate = TRUE;
-    }
+    if ( ParamName=="Host")            agwHost = ParamValue;
     if ( ParamName=="AGWPort")         agwPort = ParamValue.toInt();
 
 }
@@ -573,7 +634,8 @@ void QAPRSAGWPORT::closePort() {
 
     active = false;
     beacontimer->stop();
-    tcpClient->abort();
+    reconnecttimer->stop();
+    tcpClient->close();
 
     tcpClient->disconnect();
     beacontimer->disconnect();
@@ -590,8 +652,6 @@ void QAPRSAGWPORT::updatePort() {
     this->openPort();
 
     emit ToLog("("+QString::number(PortNum)+")"+PortType+"::updatePort<br>");
-
-    needReconnectForUpdate = FALSE;
 
 }
 
@@ -886,6 +946,17 @@ QAPRSKISSPORT::QAPRSKISSPORT( QObject *parent ) {
     beacontimer  = new QTimer(this);
     ComReadtimer = new QTimer(this);
     //CRThread    = new ComReadThread(this);
+
+};
+
+QAPRSKISSPORT::~QAPRSKISSPORT( ) {
+
+    beacontimer->stop();
+    beacontimer->disconnect();
+    delete beacontimer;
+    ComReadtimer->stop();
+    ComReadtimer->disconnect();
+    delete ComReadtimer;
 
 };
 

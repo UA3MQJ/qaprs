@@ -1,4 +1,6 @@
 #include <QSqlQuery>
+#include <QSqlDriver>
+#include <QSqlError>
 #include <QSqlRecord>
 #include <QScrollBar>
 #include <QDate>
@@ -26,6 +28,8 @@ QAPRSCore::QAPRSCore( QObject *parent )
     tcpServer = new QTcpServer(this);
 
     tcpServerConnection = new QTcpSocket(this);
+
+    coreActive = FALSE;
 
 }
 
@@ -85,7 +89,7 @@ void QAPRSCore::tcpServerDisconnect () {
     ToLog( "QAPRSCore::AGW user disconnect<br>" );
 
     tcpServerConnection->close();
-    //tcpServerConnection->disconnect();
+    tcpServerConnection->disconnect();
     //tcpServerConnection->deleteLater();
     if ( AGWEmulatorActive == TRUE )
         tcpServer->listen(QHostAddress::QHostAddress("127.0.0.1"), AGWEmulatorPort);
@@ -257,6 +261,11 @@ void QAPRSCore::tcpServerRead () {
 
     //log->verticalScrollBar()->setSliderPosition( log->verticalScrollBar()->maximum() );
 
+    datagram.clear();
+    mesg.clear();
+    reply.clear();
+
+
 }
 
 /////////////////////
@@ -292,7 +301,8 @@ void QAPRSCore::createPorts() {
          if (Port[port_num]!=NULL) {
              Port[port_num]->closePort();
              Port[port_num]->disconnect();
-             Port[port_num]->deleteLater();
+             //Port[port_num]->deleteLater();
+             delete Port[port_num];
              Port[port_num]=NULL;
          }
          Port[port_num] = this->createPort( query.value( query.record().indexOf("port_type_note") ).toString() );
@@ -349,7 +359,8 @@ void QAPRSCore::closePorts() {
         if (Port[i]!=NULL) {
             Port[i]->closePort();
             Port[i]->disconnect();
-            Port[i]->deleteLater();
+            //Port[i]->deleteLater();
+            delete Port[i];
             Port[i]=NULL;
         }
     }
@@ -435,7 +446,7 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
         query.bindValue(":p4", MID );
         query.exec();
 
-/*
+
         if (MTo==Port[PortNum]->Call) {
             //if message to my
 
@@ -456,11 +467,12 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
                 Port[PortNum]->sendPacket( "APU25N", Port[PortNum]->Call, Ping );
 
             }
-        } */
+        }
 
         emit TRXMessage();
 
     }
+
 
     //log->insertHtml( "(" + QString::number( PortNum ) + ")" + Port[PortNum]->PortType + "::Test messsssssssssggggg <br>");
     //MsgText.append("!!!");
@@ -586,25 +598,25 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
             query.bindValue(":p7", From );
             query.exec();
 
+            CompPos.clear();
+
         }
 
+        emit UpdateStationList();
 
     }
 
-    emit UpdateStationList();
+
+
 
     emit TRXPacket();
 
+    Packet.clear();
 
+    //qDebug()<<"rx";
 }
 
 void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText) {
-
-    //log->insertHtml( "(" + QString::number( PortNum ) + ")" + Port[PortNum]->PortType + "::<font color='#880000'>TX Packet</font> "
-    // "To: " + To + " "
-    // "From: " + From + " "
-    // "MsgText: '" + MsgText + "'<br>" );
-    //log->verticalScrollBar()->setSliderPosition( log->verticalScrollBar()->maximum() );
 
     QSqlQuery query;
 
@@ -612,6 +624,7 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
     query.exec();
     query.first();
     int next_K = query.value( 0 ).toInt();
+    //int next_K;
 
     QString Via;
 
@@ -622,9 +635,9 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
         Via = "";
     }
 
-    query.exec( "insert into packets ( K, DT, port_num, trx, PTo, PFrom, PVia, Message ) "
-                "values( :p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8  )" );
-    query.bindValue(":p1", next_K);
+    query.prepare( "insert into packets ( K, DT, port_num, trx, PTo, PFrom, PVia, Message ) "
+                   "values( :p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8  );" );
+    query.bindValue(":p1", next_K );
     query.bindValue(":p2", QDate::currentDate().toString( "yyyy-MM-dd " )+ QTime::currentTime().toString( "hh:mm:ss.zzz" ) );
     query.bindValue(":p3", PortNum);
     query.bindValue(":p4", "TX");
@@ -632,7 +645,8 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
     query.bindValue(":p6", From);
     query.bindValue(":p7", Via);
     query.bindValue(":p8", MsgText);
-    query.exec();
+    query.exec( );
+
 
     //save packet to log
     outPacketLog
@@ -647,7 +661,6 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
     << "\"" << Via << "\";"
     << "\"" << MsgText << "\""
     << endl;
-
 
 
     //message
@@ -720,7 +733,8 @@ void QAPRSCore::updatePort( int pnum ) {
         if ( Port[port_num]->PortType != query.value( query.record().indexOf("port_type_note") ).toString() ) {
             Port[port_num]->closePort();
             Port[port_num]->disconnect();
-            Port[port_num]->deleteLater();
+            //Port[port_num]->deleteLater();
+            delete Port[port_num];
             Port[port_num] = NULL;
             Port[port_num] = this->createPort( query.value( query.record().indexOf("port_type_note") ).toString() );
             portCreated = TRUE;
@@ -789,7 +803,8 @@ void QAPRSCore::deletePort( int pnum ) {
 
         Port[pnum]->closePort();
         Port[pnum]->disconnect();
-        Port[pnum]->deleteLater();
+        //Port[pnum]->deleteLater();
+        delete Port[pnum];
         Port[pnum] = NULL;
 
         this->sendAGWPortInfo();

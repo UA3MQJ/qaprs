@@ -177,10 +177,12 @@
 
              } else {
 
-                 qreal lenn = (calc_distance_law_of_cosines( lat2real( this->APRSCore->Lat ), long2real( this->APRSCore->Lng ),
-                                                             lat2real( this->record(index.row()).value("Lat").toString() ),
+
+                qreal lenn = (calc_distance_law_of_cosines( lat2real( this->APRSCore->Lat ), long2real( this->APRSCore->Lng ),
+                                                            lat2real( this->record(index.row()).value("Lat").toString() ),
                                                              long2real( this->record(index.row()).value("Lng").toString() ) ));
-                 value = lenn / 1000;
+                value = lenn / 1000;
+
              }
 
              return  value;
@@ -195,10 +197,11 @@
                  value = "?";
 
              } else {
-                 qreal gradd = (calc_angle( lat2real( this->APRSCore->Lat ), long2real( this->APRSCore->Lng ),
+                 qreal gradd = (calc_angle( lat2real( APRSCore->Lat ), long2real( APRSCore->Lng ),
                                        lat2real( this->record(index.row()).value("Lat").toString() ),
                                        long2real( this->record(index.row()).value("Lng").toString() ) ));
                  value = gradd;
+
              }
 
              return  value;

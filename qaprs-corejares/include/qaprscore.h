@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QFile>
@@ -26,6 +27,7 @@ public:
     void      AGWEmulatorStart();
     int       AGWEmulatorPort;
     void      sendAGWPortInfo();
+    bool      coreActive;
     //station parameters
     QString   Lat, Lng;
     //agw simulator
@@ -38,6 +40,8 @@ public:
     QTextStream outLog;
     QFile       filePacketLog;
     QTextStream outPacketLog;
+
+    QSqlQuery queryInsert1;
 
 signals:
         void TRXPacket();

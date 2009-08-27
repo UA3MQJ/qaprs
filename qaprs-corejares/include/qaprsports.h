@@ -29,6 +29,7 @@ class QAPRSPort: public QObject
     Q_OBJECT
     public:
        QAPRSPort( QObject *parent = 0 );
+       ~QAPRSPort();
 
 
     virtual void    openPort();
@@ -75,6 +76,7 @@ class QAPRSAXIPPORT: public QAPRSPort  {
     Q_OBJECT
     public:
         QAPRSAXIPPORT( QObject * parent = 0 );
+        ~QAPRSAXIPPORT( );
 
     void    openPort();
     void    closePort();
@@ -111,6 +113,7 @@ class QAPRSINTERNETPORT: public QAPRSPort  {
     Q_OBJECT
     public:
         QAPRSINTERNETPORT( QObject * parent = 0 );
+        ~QAPRSINTERNETPORT( );
 
     void    openPort();
     void    closePort();
@@ -162,6 +165,7 @@ class QAPRSAGWPORT: public QAPRSPort  {
     Q_OBJECT
     public:
         QAPRSAGWPORT( QObject * parent = 0 );
+        ~QAPRSAGWPORT( );
 
     void    openPort();
     void    closePort();
@@ -185,7 +189,6 @@ class QAPRSAGWPORT: public QAPRSPort  {
     int     agwStatus; //0-connect to agw; //1-normal work
     QString agwHost;   //
     int     agwPort;   //
-    bool    needReconnectForUpdate;
 
 private slots:
     void tcpClientconnected () ;
@@ -220,7 +223,7 @@ class QAPRSKISSPORT: public QAPRSPort  {
     Q_OBJECT
     public:
         QAPRSKISSPORT( QObject * parent = 0 );
-
+        ~QAPRSKISSPORT( );
     void    openPort();
     void    closePort();
     void    updatePort();

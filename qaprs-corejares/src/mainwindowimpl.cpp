@@ -7,14 +7,14 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
 
     setupUi( this );
     qApp->setStyle( "plastique" );
+
     QApplication::setPalette( QApplication::style()->standardPalette() );
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon( QIcon(":/images/ico.jpg") );
-    trayIcon->show();
-    setWindowIcon( QIcon(":/images/ico.jpg") );
+    //setWindowIcon( QIcon(":/images/ico.jpg") );
 
     loadOptionsFromFile();
+
+    //qDebug() << tr("Start");
 
     connect( newBaseButton,     SIGNAL( clicked() ),
              this,              SLOT( newBaseButtonClick() ) );
@@ -68,24 +68,97 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
     APRSCore = new QAPRSCore(this);
     APRSCore->log = logEdit;
     APRSCore->db = db;
+
 //    APRSCore->AGWEmulatorStart();
 
-    stationsModel.APRSCore = APRSCore;
     portsModel.APRSCore = APRSCore;
 
-    connect( APRSCore,   SIGNAL( TRXPacket() ),
-             this,       SLOT( TRXPacket() ) );
+    PacketsWindow.APRSCore = APRSCore;
+    PacketsWindow.db = db;
+    MessagesWindow.APRSCore = APRSCore;
+    MessagesWindow.db = db;
+    StationsWindow.APRSCore = APRSCore;
+    StationsWindow.db = db;
+    StationsWindow.stationsModel.APRSCore = APRSCore;
 
-    connect( APRSCore,   SIGNAL( UpdateStationList() ),
-             this,       SLOT( UpdateStationList() ) );
+    connect(PacketsWindow.APRSCore,   SIGNAL( TRXPacket() ),
+            &PacketsWindow,           SLOT( TRXPacket() ) );
 
-    connect( APRSCore,   SIGNAL( TRXMessage() ),
-             this,       SLOT( UpdateMessageList() ) );
+    connect(MessagesWindow.APRSCore,   SIGNAL( TRXMessage() ),
+            &MessagesWindow,           SLOT( UpdateMessageList() ) );
+
+    connect( StationsWindow.APRSCore ,   SIGNAL( UpdateStationList() ),
+             &StationsWindow,           SLOT( UpdateStationList() ) );
 
     connect( APRSCore,   SIGNAL( PortChangeState(int) ),
              this,       SLOT( UpdatePortsState(int) ) );
 
 
+
+    createActions();
+    createTrayIcon();
+
+
+}
+
+MainWindowImpl::~MainWindowImpl( ) {
+
+    delete APRSCore;
+
+}
+
+void MainWindowImpl::closeEvent(QCloseEvent *event) {
+
+    qDebug()<<"Close event";
+    hide();
+    event->ignore();
+
+}
+
+void MainWindowImpl::hideEvent ( QHideEvent * event ) {
+
+   // hide();
+
+}
+
+void MainWindowImpl::createActions() {
+
+    showGenOptionAction = new QAction(tr("&Options"), this);
+    connect(showGenOptionAction, SIGNAL(triggered()), this, SLOT(showNormal()));
+
+    quitAction = new QAction(tr("&Quit"), this);
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    showPacketsAction = new QAction(tr("&Packets"), this);
+    connect(showPacketsAction, SIGNAL(triggered()), this, SLOT(showPackets()));
+
+    showMessagesAction = new QAction(tr("&Messages"), this);
+    connect(showMessagesAction, SIGNAL(triggered()), this, SLOT(showMessages()));
+
+    showStationsAction = new QAction(tr("&Stations"), this);
+    connect(showStationsAction, SIGNAL(triggered()), this, SLOT(showStations()));
+
+}
+
+void MainWindowImpl::createTrayIcon() {
+
+ //   trayIcon = new QSystemTrayIcon(this);
+ //   trayIcon->setIcon( QIcon(":/images/ico.jpg") );
+ //   trayIcon->show();
+
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(showPacketsAction);
+    trayIconMenu->addAction(showMessagesAction);
+    trayIconMenu->addAction(showStationsAction);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(showGenOptionAction);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon( QIcon(":/images/ico.png") );
+    trayIcon->show();
 }
 
 
@@ -256,28 +329,6 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "insert into port_param_values (port_num, par_code, par_value) "
                 "values(5,3,'60000') " );
 */
-
-    //packets table
-    query.exec( "drop table packets" );
-    query.exec( "create table packets (K int, "
-                "DT datetime, port_num int, trx varchar(10), PTo varchar(20),"
-                "PFrom varchar(20), PVia varchar(50), Message varchar(250) ) " );
-
-    //messages table
-    query.exec( "drop table messages" );
-    query.exec( "create table messages (packet_K int, MTo varchar(10),Message varchar(250), Mess_ID varchar(6) )" );
-    //demo data
-    //query.exec( "insert into  messages (packet_K, MTo, Message, Mess_ID ) values(0, 'UA3MM', 'Test message', '001') " );
-
-    //station list table
-    query.exec( "drop table stations" );
-    //query.exec( "create table stations (call varchar(10), sym varchar(2), lat varchar(9), lng varchar(10), grid varchar(7), Via varchar(50), length float, deg float, LH DateTime, StComment varchar(100) )" );
-    //length and deg for station no need for save. this parameters must be calculated
-    query.exec( "create table stations (call varchar(10), sym varchar(2), lat varchar(9), lng varchar(10), grid varchar(7), Via varchar(50), LH DateTime, StComment varchar(100) )" );
-
-    //demo data
-    //query.exec( "insert into stations (call, sym, lat, lng, grid, length, deg, LH, Via ) "
-    //            "values('UA3MAD', '/-', '58.01.84N', '038.51.13E', 'KO98KA', 0, 0, '2009-01-01 08:00:00', 'APU25N,RR3MD')" );
 
     //symbol table
     query.exec( "drop table symbols" );
@@ -474,6 +525,29 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "insert into symbols ( sym, comment ) values( '/}',	'No Symbol' );" );
     query.exec( "insert into symbols ( sym, comment ) values( '/~',	'No Symbol' );" );
 
+    //packets table
+    query.exec( "drop table packets" );
+    query.exec( "create table packets (K integer primary key, "
+                "DT datetime, port_num int, trx char(10), PTo char(20),"
+                "PFrom char(20), PVia char(50), Message char(80) ) " );
+
+    //messages table
+    query.exec( "drop table messages" );
+    query.exec( "create table messages (packet_K int, MTo varchar(10),Message varchar(250), Mess_ID varchar(6) )" );
+    //demo data
+    //query.exec( "insert into  messages (packet_K, MTo, Message, Mess_ID ) values(0, 'UA3MM', 'Test message', '001') " );
+
+    //station list table
+    query.exec( "drop table stations" );
+    //query.exec( "create table stations (call varchar(10), sym varchar(2), lat varchar(9), lng varchar(10), grid varchar(7), Via varchar(50), length float, deg float, LH DateTime, StComment varchar(100) )" );
+    //length and deg for station no need for save. this parameters must be calculated
+    query.exec( "create table stations (call varchar(10), sym varchar(2), lat varchar(9), lng varchar(10), grid varchar(7), Via varchar(50), LH DateTime, StComment varchar(100) )" );
+
+    //demo data
+    //query.exec( "insert into stations (call, sym, lat, lng, grid, length, deg, LH, Via ) "
+    //            "values('UA3MAD', '/-', '58.01.84N', '038.51.13E', 'KO98KA', 0, 0, '2009-01-01 08:00:00', 'APU25N,RR3MD')" );
+
+
     this->disconnectButtonClick();
 
     QApplication::restoreOverrideCursor();
@@ -490,97 +564,36 @@ void MainWindowImpl::requeryPorts() {
 
     saveIndex = portsTableView->currentIndex().row();
 
-    portsTableView->setModel( NULL );
-    portsModel.setQuery( portsQuery );
-    //portsModel.setHeaderData(5, Qt::Horizontal, "ColName" );
-    portsTableView->setModel( &portsModel );
-
-    if ( saveIndex == -1 ) saveIndex = 0;
-    portsTableView->selectRow( saveIndex );
-
-    portsTableView->setColumnWidth(  0,  25 );
-    portsTableView->setColumnWidth(  1,  40 );
-    portsTableView->setColumnWidth(  2,  70 );
-    portsTableView->setColumnWidth(  3, 100 );
-    portsTableView->setColumnWidth(  4,  60 );
-    portsTableView->setColumnWidth(  8,  60 );
-    portsTableView->setColumnWidth(  9,  67 );
-    portsTableView->setColumnWidth( 10,  40 );
-    portsTableView->setColumnWidth( 11,  40 );
-
-    portsTableView->hideColumn( 1 ); //hide PTID
-
-}
-
-void MainWindowImpl::requeryPackets() {
-
-    if ( this->tabWidget->currentIndex() == 2 ) {
-        //if packetlist tab is active, then requery list
+    if ( this->tabWidget->currentIndex() == 1 ) {
         //!!!
+        isrequeringPorts = TRUE;
 
-        packetTableView->setModel( NULL );
-        packetsModel.setQuery( packetsQuery );
-        packetTableView->setModel( &packetsModel );
+        portsTableView->setModel( NULL );
+        portsModel.setQuery( portsQuery );
+        //portsModel.setHeaderData(5, Qt::Horizontal, "ColName" );
+        portsTableView->setModel( &portsModel );
 
-        packetTableView->selectRow( 0 );
+        if ( saveIndex == -1 ) saveIndex = 0;
+        portsTableView->selectRow( saveIndex );
 
-        packetTableView->setColumnWidth(  0,  50 );
-        packetTableView->setColumnWidth(  1,  70 );
-        packetTableView->setColumnWidth(  2,  55 );
-        packetTableView->setColumnWidth(  3,  50 );
-        packetTableView->setColumnWidth(  4,  60 );
-        packetTableView->setColumnWidth(  5,  30 );
-        packetTableView->setColumnWidth(  6,  70 );
-        packetTableView->setColumnWidth(  7,  70 );
-        packetTableView->setColumnWidth(  8,  170 );
-        packetTableView->setColumnWidth(  9,  300 );
-    };
+        portsTableView->setColumnWidth(  0,  25 );
+        portsTableView->setColumnWidth(  1,  40 );
+        portsTableView->setColumnWidth(  2,  70 );
+        portsTableView->setColumnWidth(  3, 100 );
+        portsTableView->setColumnWidth(  4,  60 );
+        portsTableView->setColumnWidth(  8,  60 );
+        portsTableView->setColumnWidth(  9,  67 );
+        portsTableView->setColumnWidth( 10,  40 );
+        portsTableView->setColumnWidth( 11,  40 );
 
-}
+        portsTableView->hideColumn( 1 ); //hide PTID
 
-void MainWindowImpl::requeryMessages() {
+        isrequeringPorts = FALSE;
 
-    messageTableView->setModel( NULL );
-    messagesModel.setQuery( messagesQuery );
-    messageTableView->setModel( &messagesModel );
-    
-    messageTableView->selectRow( 0 );
-    
-    messageTableView->setColumnWidth(  0,  50 );
-    messageTableView->setColumnWidth(  1,  70 );
-    messageTableView->setColumnWidth(  2,  55 );
-    messageTableView->setColumnWidth(  3,  50 );
-    messageTableView->setColumnWidth(  4,  60 );
-    messageTableView->setColumnWidth(  5,  30 );
-    messageTableView->setColumnWidth(  6,  70 );
-    messageTableView->setColumnWidth(  7,  70 );
-    messageTableView->setColumnWidth(  8, 230 );
-    messageTableView->setColumnWidth(  9,  50 );
+    }
 
 }
 
-void MainWindowImpl::requeryStations() {
-
-    stationsTableView->setModel( NULL );
-    stationsModel.setQuery( stationsQuery );
-    stationsTableView->setModel( &stationsModel );
-
-    stationsTableView->selectRow( 0 );
-
-    stationsTableView->setColumnWidth(  0,  70 );
-    stationsTableView->setColumnWidth(  1,  40 );
-    stationsTableView->setColumnWidth(  2,  70 );
-    stationsTableView->setColumnWidth(  3,  60 );
-    stationsTableView->setColumnWidth(  4,  67 );
-    stationsTableView->setColumnWidth(  5,  55 );
-    stationsTableView->setColumnWidth(  6,  110 );
-    stationsTableView->setColumnWidth(  7,  110 );
-    stationsTableView->setColumnWidth(  8,  55 );
-    stationsTableView->setColumnWidth(  9,  55 );
-    stationsTableView->setColumnWidth( 10,  110 );
-    stationsTableView->setColumnWidth( 11,  55 );
-
-}
 
 void MainWindowImpl::connectButtonClick() {
 
@@ -607,6 +620,12 @@ void MainWindowImpl::connectButtonClick() {
     db->setDatabaseName( DBName );
     db->open();
 
+    APRSCore->coreActive = TRUE;
+
+
+    PacketsWindow.requeryPackets();
+    MessagesWindow.requeryMessages();
+    StationsWindow.requeryStations();
 
     portsQuery = "select ports.port_num as PN, ports.port_type_id as PTID, port_types.port_type_note as PType, "
                  "ports.port_note as PNote, ports.port_call as PCall, "
@@ -619,34 +638,8 @@ void MainWindowImpl::connectButtonClick() {
 
     requeryPorts();
 
-
-    packetsQuery = "select p1.K, substr(p1.DT,9,2)||\".\"||substr(p1.DT,6,2)||\".\"||substr(p1.DT,1,4) as DATA, substr(p1.DT,12,8) as TIME, "
-                   "\"(\"||p1.port_num||\") \"||(p3.port_type_not) as Port, p2.port_note as PNote, p1.TRX as TRX, p1.PTo, p1.PFrom, p1.PVia, p1.Message "
-                   "from packets p1 left join ports p2 on p1.port_num = p2.port_num "
-                   "left join port_types p3 on p3.port_type_id = p2.port_type_id "
-                   "order by K desc";
-
-    requeryPackets();
-
-
-    messagesQuery = "select p1.packet_K as K, substr(p2.DT,9,2)||\".\"||substr(p2.DT,6,2)||\".\"||substr(p2.DT,1,4) as DATA, substr(p2.DT,12,8) as TIME, "
-                    "\"(\"||p2.port_num||\") \"||(p4.port_type_not) as Port, p3.port_note as PNote, p2.TRX as TRX, p2.PFrom, p1.MTo, p1.Message, p1.Mess_ID as MSGID "
-                    "from messages p1 left join packets p2 on p1.packet_K=p2.K "
-                    "left join ports p3 on p3.port_num=p2.port_num "
-                    "left join port_types p4 on p4.port_type_id = p3.port_type_id "
-                    "order by p1.packet_K desc ";
-
-    requeryMessages();
-
-
-    stationsQuery = "select t1.Call, t1.Sym, t2.Comment, t1.Lat, t1.Lng, t1.Grid, t1.Via, t1.StComment, null as Length, null as Deg, t1.LH, NULL as MinAgo "
-                    "from stations t1 left join symbols t2 on t1.sym=t2.sym";
-
-    requeryStations();
-
     this->upAllPorts();
     if ( AGWcheckBox->isChecked() ) APRSCore->AGWEmulatorStart();
-
 
 }
 
@@ -677,15 +670,14 @@ void MainWindowImpl::disconnectButtonClick() {
 
 
     portsTableView->setModel( NULL );
-    packetTableView->setModel( NULL );
-    messageTableView->setModel( NULL );
-    stationsTableView->setModel( NULL );
 
     //down all ports
     logEdit->insertHtml( "QAPRSCore::All port(s) is down<br>" );
     if (APRSCore->AGWEmulatorActive == TRUE)
         APRSCore->AGWEmulatorStop();
     APRSCore->closePorts();
+
+    APRSCore->coreActive = FALSE;
 
 }
 
@@ -1074,31 +1066,6 @@ void MainWindowImpl::downPort() {
 
 }
 
-void MainWindowImpl::TRXPacket() {
-
-    if (!(fromzePacketList->isChecked())) requeryPackets();
-
-    requeryPorts();
-    requeryStations();
-    requeryPorts();
-
-    //messagesModel.setQuery( messagesQuery );
-    //messageTableView->selectRow( 0 );
-
-}
-
-void MainWindowImpl::UpdateStationList() {
-
-    requeryStations();
-
-}
-
-void MainWindowImpl::UpdateMessageList() {
-
-    requeryMessages();
-
-}
-
 void MainWindowImpl::savePortButtonClick( int pnum ) {
 
     //qDebug()<<"Port save "<<pnum;
@@ -1109,16 +1076,13 @@ void MainWindowImpl::savePortButtonClick( int pnum ) {
 
 void MainWindowImpl::UpdatePortsState( int pnum ) {
 
-    requeryPorts();
+    if (isrequeringPorts==FALSE) requeryPorts();
 
 }
 
 void MainWindowImpl::changeTab( int index ) {
 
     this->requeryPorts();
-    this->requeryPackets();
-    this->requeryMessages();
-    this->requeryStations();
 
 }
 
@@ -1136,6 +1100,33 @@ void MainWindowImpl::AGWOnOff( ) {
     }
 
 }
+
+
+void MainWindowImpl::showPackets() {
+
+    qDebug() << "Show Packets";
+
+    PacketsWindow.show();
+
+}
+
+void MainWindowImpl::showMessages() {
+
+    qDebug() << "Show Messages";
+
+    MessagesWindow.show();
+
+}
+
+void MainWindowImpl::showStations() {
+
+    qDebug() << "Show Stations";
+
+    StationsWindow.show();
+
+}
+
+
 
 
 
