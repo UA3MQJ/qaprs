@@ -8,7 +8,7 @@ From usual packed radio APRS differs in two principle positions. Firsly, it is a
 
 Where is a moving object (airplane, boat, ballon, auto, motorcycle, runner, dog)? Where is radioshop, departure city? What’s weather like in various places of the country, city? Where is a hurricane? Where is DX? To answer the questions and on many others, APRS transfers in automatic a mode data about a place of the position of an object and value of its physical parameters. The information can be transferred by several ways. It can be transferred by amateur radio, both on HF, and on VHF, CB, a sea range, a cellular telephone, the modem and allocated connection about the Internet. 
 
-The aim of this project is self-improvement in the field of programming reports of packet networks, fastening of skills of development crossplatform products on the basis of c++ and QT. The project is developed as functional analogue of software product UI-View. 
+The aim of this project is self-improvement in the field of programming reports of packet networks, fastening of skills of development crossplatform products on the basis of c++ and QT4. The project is developed as functional analogue of software product UI-View. 
 
 The work of APRS system can also be provided without application of the additional equipment, such as packet modems or TNC controllers. As the modem the sound card can be used. It allows any HAM working on digital mode, to test work and with network APRS without additional financial investments. It is also possible to enter network APRS without having any send-receive equipment using an Internet APRS server, but it’s only a part of opportunities of the system. It is more interesting for HAMs to use a radio amateur bands as transport for APRS. 
 
