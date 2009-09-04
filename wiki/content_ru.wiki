@@ -2,4 +2,4 @@
 
 == Содержание ==
 
-[http://qaprs.googlecode.com/цшлш/terms_ru.wiki Список используемых терминов и сокращений]
+[http://qaprs.googlecode.com/wiki/terms_ru.wiki Список используемых терминов и сокращений]
