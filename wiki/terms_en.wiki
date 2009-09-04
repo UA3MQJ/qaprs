@@ -7,9 +7,7 @@ APRS - Automatic Position (or Packet) Reporting System is a special variant of a
 
 AXIP - Internet Protocol Encapsulation of AX.25 Frames (see [http://qaprs.googlecode.com/files/rfc1226.txt RFC1226]).
 
-Internet APRS Server - сервера в сети интернет, через которые возможен обмен сообщениями, прием и передача пакетов APRS, на них происходит накопление данных. Как правило все мировые APRS сервера объединены между собой и сообщение, полученное от IGATE на один из серверов, попадает на все остальные сервера.
-
-a server in a network the Internet through which the exchange of messages is possible, reception and transfer of APRS packets, on them occurs accumulation of the data. As a rule all world APRS a server are united among themselves and the message received from IGATE on one of servers, gets on all the others of a server.
+Internet APRS Server - a server in a network the Internet through which the exchange of messages is possible, reception and transfer of APRS packets, on them occurs accumulation of the data. As a rule all world APRS a server are united among themselves and the message received from IGATE on one of servers, gets on all the others of a server.
 
 CALL - callsign of HAM radiostation
 
