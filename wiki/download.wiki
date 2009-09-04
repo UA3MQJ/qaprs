@@ -1,10 +1,10 @@
-= Download Page =
+п»ї= Download Page =
 
-[http://qaprs.googlecode.com/files/QAPRS-CoreJares003.rar QAPRS - Core (ver. Jares) Rel 3. Need DLL!!! (без DLL)]
+[http://qaprs.googlecode.com/files/QAPRS-CoreJares003.rar QAPRS - Core (ver. Jares) Rel 3. Need DLL!!! (Р±РµР· DLL)]
 
 [http://qaprs.googlecode.com/files/dll.rar DLL files]
 
-[http://qaprs.googlecode.com/files/qaprs-core_ru3.rar Русификация интерфейса] фыва
+[http://qaprs.googlecode.com/files/qaprs-core_ru3.rar Р СѓСЃРёС„РёРєР°С†РёСЏ РёРЅС‚РµСЂС„РµР№СЃР°]
 
 
 
