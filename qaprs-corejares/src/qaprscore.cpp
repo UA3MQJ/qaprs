@@ -36,7 +36,7 @@ QAPRSCore::QAPRSCore( QObject *parent )
 //AGW CORE SIMULATOR
 void QAPRSCore::tcpServerNewConnection () {
 
-    ToLog( "QAPRSCore::Incoming connection to the AGW Core simulator<br>" );
+    ToLog( tr("QAPRSCore::Incoming connection to the AGW Core simulator<br>") );
 
     tcpServerConnection = tcpServer->nextPendingConnection();
 
@@ -86,7 +86,7 @@ void QAPRSCore::AGWEmulatorStop( ){
 
 void QAPRSCore::tcpServerDisconnect () {
 
-    ToLog( "QAPRSCore::AGW user disconnect<br>" );
+    ToLog( tr("QAPRSCore::AGW user disconnect<br>") );
 
     tcpServerConnection->close();
     tcpServerConnection->disconnect();
@@ -129,7 +129,7 @@ void QAPRSCore::tcpServerRead () {
 
         if (uchar(datagram[4])=='G') {
             //посылаем информацию о портах
-            ToLog( "QAPRSCore::AGW send port info<br>" );
+            ToLog( tr("QAPRSCore::AGW send port info<br>") );
 
             reply = QByteArray::fromHex("000000004700000000204f6e20434f4d333a00415869503b006261757500000000000000");
 
@@ -154,7 +154,7 @@ void QAPRSCore::tcpServerRead () {
         else
 
         if (uchar(datagram[4])=='k') {
-            ToLog( "QAPRSCore::AGW Activate reception of Frames in raw format<br>" );
+            ToLog( tr("QAPRSCore::AGW Activate reception of Frames in raw format<br>") );
 
             monitoringPackets = true;
             datagram = datagram.mid( 36 );
@@ -251,8 +251,8 @@ void QAPRSCore::tcpServerRead () {
         else
 
         {
-            ToLog( "QAPRSCore::unknown length='" + QString::number( datagram.length() ) + "'\n" );
-            ToLog( "QAPRSCore::unknown raw = '" + datagram.toHex() + "'\n" );
+            ToLog( tr("QAPRSCore::unknown length='") + QString::number( datagram.length() ) + "'\n" );
+            ToLog( tr("QAPRSCore::unknown raw = '") + datagram.toHex() + "'\n" );
 
             datagram = datagram.mid( 36 );
         }
@@ -277,6 +277,8 @@ QAPRSPort *QAPRSCore::createPort( QString PortType ) {
     if ( PortType=="APRS Internet Server Connection" ) newPort = new QAPRSINTERNETPORT(this);
     if ( PortType=="AGW CORE" ) newPort = new QAPRSAGWPORT(this);
     if ( PortType=="KISS TNC" ) newPort = new QAPRSKISSPORT(this);
+    if ( PortType=="FL Digi" ) newPort = new QAPRSFLDIGIPORT(this);
+
 
     //newPort->log = this->log; //!!!! if no need post to log direct from port
                                 //     use signal ToLog : emit ToLog( QString );
@@ -289,7 +291,7 @@ void QAPRSCore::createPorts() {
     QSqlQuery query("select p2.port_type_note, p1.* "
                     "from ports p1 left join port_types p2 "
                     "on p1.port_type_id=p2.port_type_id "
-                    "where p1.port_type_id in (0,1,2,5) "
+                    "where p1.port_type_id in (0,1,2,5,6) "
                     "order by p1.port_num");
     agwPN = 1;
     while (query.next()) {
@@ -613,7 +615,7 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
 
     Packet.clear();
 
-    //qDebug()<<"rx";
+    qDebug()<<"core rx";
 }
 
 void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText) {
@@ -692,6 +694,7 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
     }
 
     emit TRXPacket();
+    qDebug()<<"core tx";
 }
 
 void QAPRSCore::ToLog (QString Text) {
@@ -713,7 +716,7 @@ void QAPRSCore::updatePort( int pnum ) {
     query.prepare( "select p2.port_type_note, p1.* "
                    "from ports p1 left join port_types p2 "
                    "on p1.port_type_id=p2.port_type_id "
-                   "where p1.port_type_id in (0,1,2,5) "
+                   "where p1.port_type_id in (0,1,2,5,6) "
                    "and p1.port_num=( :p1 )");
 
     query.bindValue(":p1", pnum );

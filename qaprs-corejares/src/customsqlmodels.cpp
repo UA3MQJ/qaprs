@@ -54,6 +54,8 @@
                      picName.append( ":images/portagw.jpg" );
              if ( this->record(index.row()).value("PTID").toString() == "5" )
                      picName.append( ":images/portaxip.jpg" );
+             if ( this->record(index.row()).value("PTID").toString() == "6" )
+                     picName.append( ":images/portfldigi.jpg" );
 
              return QIcon( picName );
          }

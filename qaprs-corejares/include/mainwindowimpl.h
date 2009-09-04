@@ -31,7 +31,7 @@ Q_OBJECT
 public:
 	MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
         ~MainWindowImpl( );
-	QSqlDatabase *db;
+        QSqlDatabase *db;
         //QSqlQueryModel portsModel;
         PortsSqlModel portsModel;
 

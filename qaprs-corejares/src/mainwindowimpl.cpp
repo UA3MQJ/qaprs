@@ -10,7 +10,7 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
 
     QApplication::setPalette( QApplication::style()->standardPalette() );
 
-    //setWindowIcon( QIcon(":/images/ico.jpg") );
+    //setWindowIcon( QIcon(":/images/ico.png") );
 
     loadOptionsFromFile();
 
@@ -125,18 +125,23 @@ void MainWindowImpl::createActions() {
 
     showGenOptionAction = new QAction(tr("&Options"), this);
     connect(showGenOptionAction, SIGNAL(triggered()), this, SLOT(showNormal()));
+    showGenOptionAction->setIcon( QIcon(":/images/config.png") );
 
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    quitAction->setIcon( QIcon(":/images/exit.png") );
 
     showPacketsAction = new QAction(tr("&Packets"), this);
     connect(showPacketsAction, SIGNAL(triggered()), this, SLOT(showPackets()));
+    showPacketsAction->setIcon( QIcon(":/images/packet.png") );
 
     showMessagesAction = new QAction(tr("&Messages"), this);
     connect(showMessagesAction, SIGNAL(triggered()), this, SLOT(showMessages()));
+    showMessagesAction->setIcon( QIcon(":/images/postoffk.png") );
 
     showStationsAction = new QAction(tr("&Stations"), this);
     connect(showStationsAction, SIGNAL(triggered()), this, SLOT(showStations()));
+    showStationsAction->setIcon( QIcon(":/images/stlist.png") );
 
 }
 
@@ -166,8 +171,8 @@ void MainWindowImpl::newBaseButtonClick() {
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
-    APRSCore->ToLog( "QAPRSCore::Recreate system database<br>" );
-    APRSCore->ToLog( "QAPRSCore::Create test ports<br>" );
+    APRSCore->ToLog( tr("QAPRSCore::Recreate system database<br>") );
+    //APRSCore->ToLog( tr("QAPRSCore::Create test ports<br>") );
 
     if (connectButton->isEnabled()) {
         DBName = baseNameEdit->text(); 
@@ -193,6 +198,8 @@ void MainWindowImpl::newBaseButtonClick() {
                 "values(4,'[X]-NET CORE(!)', 'XNET')" );
     query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
                 "values(5,'AXIP', 'AXIP')" );
+    query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                "values(6,'FL Digi', 'FLDIGI')" );
     query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
                 "values(-1,'n\\a', 'n\\a')" );
 
@@ -260,6 +267,11 @@ void MainWindowImpl::newBaseButtonClick() {
                 "values(1,2,'Host')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(2,2,'AGWPort')" );
+    //FLDIGI param names
+    query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
+                "values(1,6,'Host')" );
+    query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
+                "values(2,6,'Port')" );
     //KISS param names
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(1,1,'COM')" );
@@ -553,7 +565,7 @@ void MainWindowImpl::newBaseButtonClick() {
     QApplication::restoreOverrideCursor();
 
     QMessageBox msgBox;
-    msgBox.setText("The system database created.");
+    msgBox.setText( tr("The system database created.") );
     msgBox.exec();
 
 }
@@ -597,7 +609,7 @@ void MainWindowImpl::requeryPorts() {
 
 void MainWindowImpl::connectButtonClick() {
 
-    APRSCore->ToLog( "QAPRSCore::Connecting to system database<br>" );
+    APRSCore->ToLog( tr("QAPRSCore::Connecting to system database<br>") );
 
     APRSCore->Lat = latEdit->text();
     APRSCore->Lng = lngEdit->text();
@@ -622,7 +634,6 @@ void MainWindowImpl::connectButtonClick() {
 
     APRSCore->coreActive = TRUE;
 
-
     PacketsWindow.requeryPackets();
     MessagesWindow.requeryMessages();
     StationsWindow.requeryStations();
@@ -646,7 +657,7 @@ void MainWindowImpl::connectButtonClick() {
 void MainWindowImpl::upAllPorts() {
 
     //up ports
-    APRSCore->ToLog( "QAPRSCore::Try to up of " + QString::number( portsModel.rowCount() ) + " port(s)<br>" );
+    APRSCore->ToLog( tr("QAPRSCore::Try to up of ") + QString::number( portsModel.rowCount() ) + tr(" port(s)<br>") );
     APRSCore->createPorts();
     //upPortsButton    ->setEnabled( FALSE );
     //downPortsButton  ->setEnabled( TRUE );
@@ -656,7 +667,7 @@ void MainWindowImpl::upAllPorts() {
 
 void MainWindowImpl::disconnectButtonClick() {
 
-    APRSCore->ToLog( "QAPRSCore::Disconnectiong from system database<br>" );
+    APRSCore->ToLog( tr("QAPRSCore::Disconnectiong from system database<br>") );
     disconnectButton ->setEnabled( FALSE );
     connectButton    ->setEnabled( TRUE );
     deletePortButton ->setEnabled( FALSE );
@@ -671,20 +682,26 @@ void MainWindowImpl::disconnectButtonClick() {
 
     portsTableView->setModel( NULL );
 
+    PacketsWindow.requeryPackets();
+    MessagesWindow.requeryMessages();
+    StationsWindow.requeryStations();
+
     //down all ports
-    logEdit->insertHtml( "QAPRSCore::All port(s) is down<br>" );
+    logEdit->insertHtml( tr("QAPRSCore::All port(s) is down<br>") );
     if (APRSCore->AGWEmulatorActive == TRUE)
         APRSCore->AGWEmulatorStop();
     APRSCore->closePorts();
 
     APRSCore->coreActive = FALSE;
 
+
+
 }
 
 void MainWindowImpl::downAllPorts() {
 
     //down ports
-    APRSCore->ToLog( "QAPRSCore::All port(s) is down<br>" );
+    APRSCore->ToLog( tr("QAPRSCore::All port(s) is down<br>") );
     APRSCore->closePorts();
     //upPortsButton    ->setEnabled( TRUE );
     //downPortsButton  ->setEnabled( FALSE );
@@ -1041,6 +1058,17 @@ void MainWindowImpl::editPortButtonClick() {
 			break;
 		  };
 	    };
+
+            if ( Index==6 ) { //FLDIGI
+                  switch ( query.value( 1 ).toInt() ) {
+              case 1 :
+                        win.FLDIGIHostEdit->setText( query.value( 2 ).toString() );
+                        break;
+              case 2 :
+                        win.FLDIGIPortBox ->setValue( query.value( 2 ).toInt() );
+                        break;
+                  };
+            };
 
     };
 

@@ -112,6 +112,13 @@ void PortoptionDialog::saveButtonClick() {
                         query.exec( "insert into port_param_values (port_num, par_code, par_value) "
                                     "values("+portNumEdit->text()+",3,'"+AXIPTXPortBox->text()+"')");
                         break;
+        case 6 : //FLDIGI
+                        query.exec( "delete from port_param_values where port_num="+portNumEdit->text() );
+                        query.exec( "insert into port_param_values (port_num, par_code, par_value) "
+                                    "values("+portNumEdit->text()+",1,'"+FLDIGIHostEdit->text()+"')");
+                        query.exec( "insert into port_param_values (port_num, par_code, par_value) "
+                                    "values("+portNumEdit->text()+",2,'"+FLDIGIPortBox->text()+"')");
+                        break;
     };
 
     if (portBeaconIntervalEdit->text()=="") portBeaconIntervalEdit->setText("-1");

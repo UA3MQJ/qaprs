@@ -276,3 +276,46 @@ private slots:
     void onComRead(QString, QString, QString);
 
 };
+
+//FL Digi
+class QAPRSFLDIGIPORT: public QAPRSPort  {
+    Q_OBJECT
+    public:
+        QAPRSFLDIGIPORT( QObject * parent = 0 );
+        ~QAPRSFLDIGIPORT( );
+
+    void    openPort();
+    void    closePort();
+    void    updatePort();
+    void    setParam( QString ParamName, QString ParamValue );
+    void    sendPacket( QString To, QString From, QString MsgText );
+    bool    isActive();
+    void    setReadOnly(bool RO);
+    bool    isReadOnly();
+    void    setCall(QString Text);
+    void    setLatitude(QString Text);
+    void    setLongitude(QString Text);
+    void    setUnprotoAddress(QString Text);
+    void    setBeaconComment(QString Text);
+    void    setSymbol(QString Text);
+    void    setBeaconInterval(int iv);
+    //================================
+    QTimer     *beacontimer;
+    QTimer     *reconnecttimer;
+    int        srvnum;
+    QTcpSocket *tcpClient;
+    QString    FLDIGIHost;
+    QString    FLDIGIPort;
+    QByteArray datain;
+
+
+    int nm;
+
+private slots:
+    void tcpClientconnected () ;
+    void tcpClientdisconnected ();
+    void tcpClienterror (QAbstractSocket::SocketError socketError);
+    void tcpClientread();
+    void onTimer();
+    void onReconnectTimer();
+};
