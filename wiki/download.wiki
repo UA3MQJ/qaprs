@@ -4,7 +4,7 @@
 
 [http://qaprs.googlecode.com/files/dll.rar DLL files]
 
-[http://qaprs.googlecode.com/files/qaprs-core_ru3.rar Русификация интерфейса]
+[http://qaprs.googlecode.com/files/qaprs-core_ru3.rar Русификация интерфейса] фыва
 
 
 
