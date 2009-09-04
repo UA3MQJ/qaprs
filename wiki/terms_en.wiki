@@ -1,0 +1,36 @@
+= List of used terms and reductions =
+
+APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
+
+[http://www.sv2agw.com/ AGW] - SV2AGW packet engine.
+
+AXIP - Internet Protocol Encapsulation of AX.25 Frames (see [http://qaprs.googlecode.com/files/rfc1226.txt RFC1226]).
+
+Internet APRS Server - сервера в сети интернет, через которые возможен обмен сообщениями, прием и передача пакетов APRS, на них происходит накопление данных. Как правило все мировые APRS сервера объединены между собой и сообщение, полученное от IGATE на один из серверов, попадает на все остальные сервера.
+
+a server in a network the Internet through which the exchange of messages is possible, reception and transfer of APRS packets, on them occurs accumulation of the data. As a rule all world APRS a server are united among themselves and the message received from IGATE on one of servers, gets on all the others of a server.
+
+CALL - callsign of HAM radiostation
+
+Digipeater (DIGI) - digital repeater of packets
+
+GPS - the device, allowing to define the exact co-ordinates
+
+GATE - the bridge for transfer APRS of packets on other bands
+
+IGATE - the bridge for transfer APRS packets on Internet APRS Server
+
+SID - number from 0 to 15, added to a station call sign (for example UA3MQJ-4). It is used for identification of several stations under one call sign. As on SID in standard APRS it is possible to define type and station appointment (mobile station, GATE etc.). If SID it is not specified, it is considered that it is equal to zero (see AX.25).
+
+TNC - the controller for management of modem and transmitter work, is connected to the computer
+KISS TNC - TNC supporting mode [http://qaprs.googlecode.com/files/kiss.txt KISS]
+
+DB - SQL standart database
+
+modem - the device for signal modulation/demodulation under the certain protocol (for example Packet protocol)
+
+APRS packet - the package of the information corresponding to report APRS (a beacon, message etc.), without dependence from the transport protocol of its transfer.
+
+AX.25 Packet - the packet of the information corresponding to the report of communication protocol [http://qaprs.googlecode.com/files/AX25.2.2.pdf AX.25]
+
+Transport - protocol and the environment used for transfer of APRS packet (for example package AX.25 can be transferred on a radio channel either on a network tcp/ip or in a text kind to server Internet APRS).

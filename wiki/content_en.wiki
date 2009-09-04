@@ -1,0 +1,5 @@
+= Project QAPRS - The Documentation =
+
+== The Maintenance ==
+
+[http://qaprs.googlecode.com/цшлш/terms_en.wiki List of used terms and reductions]
