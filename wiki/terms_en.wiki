@@ -1,5 +1,6 @@
 = List of used terms and reductions =
 
+
 APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
 
 [http://www.sv2agw.com/ AGW] - SV2AGW packet engine.
