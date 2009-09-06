@@ -2,4 +2,4 @@
 
 == The Maintenance ==
 
-[http://code.google.com/p/qaprs/wiki/terms_en List of used terms and reductions]
+[http://code.google.com/p/qaprs/wiki/terms_en List of used terms and acronyms]
