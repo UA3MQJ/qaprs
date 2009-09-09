@@ -1,5 +1,7 @@
 = Project QAPRS - The Documentation =
 
+[http://code.google.com/p/qaprs/wiki/contenr_ru RU]|EN
+
 == The Maintenance ==
 
 [http://code.google.com/p/qaprs/wiki/terms_en List of used terms and acronyms]
