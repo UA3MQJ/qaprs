@@ -1,6 +1,6 @@
 = Project QAPRS =
 
-[http://code.google.com/p/qaprs/wiki/index_ru RU]|EN
+[http://code.google.com/p/qaprs/wiki/index_ru RU]|EN|[http://code.google.com/p/qaprs/wiki/index_de DE]
 
 [http://code.google.com/p/qaprs/wiki/download Download Page]|[http://code.google.com/p/qaprs/wiki/content_en Manual]
 
