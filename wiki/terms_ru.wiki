@@ -1,6 +1,10 @@
 = Список используемых терминов и сокращений =
 <br />
 
+
+RU|[http://code.google.com/p/qaprs/wiki/terms_en EN]
+
+
 APRS - Automatic Position(или Packet) Reporting System - это специальный вариант пакетной радиосвязи, протокол которого был зарегистрирован в 1992 году Бобом Брунинга (WB4APR)
 
 [http://www.sv2agw.com/ AGW] - пакетное ядро SV2AGW
