@@ -2,12 +2,12 @@
 
 [http://code.google.com/p/qaprs/wiki/tz_ru RU]|EN
 
-To develop a system for APRS networking . 
+To develop a system for APRS networking.
 
-The system must operate correctly in the multi-port configurations, provide a convenient interface to configure all the functional parts of the product: the parameters of ports, the parameters of retransmission packets, the parameters of the routing packets between the ports, etc. 
-     
-Functional blocks of the system must be separated in different modules: the main module - the core system, additional modules - a graphic interface for displaying cards, postage and other systems. 
-     
+The system must operate correctly in the multi-port configurations, provide a convenient interface to configure all the functional parts of the product: the parameters of ports, the parameters of retransmission packets, the parameters of the routing packets between the ports, etc.
+
+Functional blocks of the system must be separated in different modules: the main module - the core system, additional modules - a graphic interface for displaying cards, postage and other systems.
+
 To use the system it’s  enough to run a kernel module. The kernel must provide the following functionality of regardless of the running of additional modules : 
 
  * Work with the physical port, packet drivers kernel (eg AGW), network ports (AXIP, APRS Internet Server), with the implementation of the transmit and receive UI packet protocol AX25, which is sufficient for the protocol APRS (but not sufficient for a full package AX25) ; 
