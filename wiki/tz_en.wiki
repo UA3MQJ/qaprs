@@ -1,4 +1,4 @@
-= Problem =
+ï»¿= Problem =
 
 [http://code.google.com/p/qaprs/wiki/tz_ru RU]|EN
 
@@ -8,11 +8,11 @@ The system must operate correctly in the multi-port configurations, provide a co
      
 Functional blocks of the system must be separated in different modules: the main module - the core system, additional modules - a graphic interface for displaying cards, postage and other systems. 
      
-To use the system it’s  enough to run a kernel module. The kernel must provide the following functionality of regardless of the running of additional modules : 
+To use the system itâ€™s  enough to run a kernel module. The kernel must provide the following functionality of regardless of the running of additional modules : 
 
  * Work with the physical port, packet drivers kernel (eg AGW), network ports (AXIP, APRS Internet Server), with the implementation of the transmit and receive UI packet protocol AX25, which is sufficient for the protocol APRS (but not sufficient for a full package AX25) ; 
  * Maintaining a list of ports: the establishment, modification of parameters, removal; 
- * All steps for configuring the kernel should not require the restart and, if  it’s possible, without breaking the joints, where it’s necessary; 
+ * All steps for configuring the kernel should not require the restart and, if  itâ€™s possible, without breaking the joints, where itâ€™s necessary; 
  * Support of remote configuration; 
  * logging of all received packets; 
  * Logging of all stations heard; 
