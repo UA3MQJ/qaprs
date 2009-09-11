@@ -4,8 +4,7 @@
 такие как отправка пакета, получение пакета и т. д. При конкретной реализации определенного порта, 
 эти методы реализуются для работы с конкретным аппаратным или программным устройством.
 
-http://qaprs.googlecode.com/svn/qaprs-corejares/images/port_struct.png <br />
-http://code.google.com/p/qaprs/wiki/port_struct.png <br />
+http://qaprs.googlecode.com/svn/wiki/port_struct.png <br />
  
 Ядро, взаимодействуя с портом, получает и отправляет данные в едином формате. Это позволяет работать 
 с разными типами портов одним способом.
