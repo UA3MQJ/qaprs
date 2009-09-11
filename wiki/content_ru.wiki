@@ -7,3 +7,7 @@ RU|[http://code.google.com/p/qaprs/wiki/content_en EN]
 [http://code.google.com/p/qaprs/wiki/terms_ru Список используемых терминов и сокращений]
 
 [http://code.google.com/p/qaprs/wiki/need_ru Обоснование необходимости разработки]
+
+[http://code.google.com/p/qaprs/wiki/tz_ru Постановка задачи. Анализ ТЗ]
+
+

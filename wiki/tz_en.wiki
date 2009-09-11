@@ -10,13 +10,13 @@ Functional blocks of the system must be separated in different modules: the main
 
 To use the system it’s  enough to run a kernel module. The kernel must provide the following functionality of regardless of the running of additional modules : 
 
- * Work with the physical port, packet drivers kernel (eg AGW), network ports (AXIP, APRS Internet Server), with the implementation of the transmit and receive UI packet protocol AX25, which is sufficient for the protocol APRS (but not sufficient for a full package AX25) ; 
- * Maintaining a list of ports: the establishment, modification of parameters, removal; 
- * All steps for configuring the kernel should not require the restart and, if  it’s possible, without breaking the joints, where it’s necessary; 
- * Support of remote configuration; 
+ * work with the physical port, packet drivers kernel (eg AGW), network ports (AXIP, APRS Internet Server), with the implementation of the transmit and receive UI packet protocol AX25, which is sufficient for the protocol APRS (but not sufficient for a full package AX25) ; 
+ * maintaining a list of ports: the establishment, modification of parameters, removal; 
+ * all steps for configuring the kernel should not require the restart and, if  it’s possible, without breaking the joints, where it’s necessary; 
+ * support of remote configuration; 
  * logging of all received packets; 
- * Logging of all stations heard; 
- * Maintaining a list of messages; 
+ * logging of all stations heard; 
+ * maintaining a list of messages; 
  * response to requests APRS (PING, DX, etc.) as well as confirmation of the admission of messages (messages with ID); 
  * relaying APRS packets on the port and between ports ; 
  * issuing APRS beacon station with its coordinates, the text of the lighthouse, a symbol interval, with the possibility of a unique setting for all of the above parameters separately for each port (the port on the HF and VHF may differ both in a symbol of the station and in the beacon interval).
