@@ -10,3 +10,4 @@
 
 [http://code.google.com/p/qaprs/wiki/tz_en Problem. Analysis of TK]
 
+[http://code.google.com/p/qaprs/wiki/struct_ru Структуры]
