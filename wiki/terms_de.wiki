@@ -5,9 +5,9 @@
 [http://code.google.com/p/qaprs/wiki/terms_ru RU]|[http://code.google.com/p/qaprs/wiki/terms_en EN]|DE
 
 
-APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
+APRS - Automatic Position Reporting System; Variante von Packet Radio, bei der viele Funkgeräte zu einem Netzwerk zusammen wachsen, dessen einzige zentrale Komponente eine Datenbank mit den Positionen der Funkstationen ist.
 
-[http://www.sv2agw.com/ AGW] - package kernel SV2AGW.
+[http://www.sv2agw.com/ AGW] - _package kernel SV2AGW_.
 
 AXIP - Standard AX.25 packet on the network TCP / IP (see [http://qaprs.googlecode.com/files/rfc1226.txt RFC1226]).
 
