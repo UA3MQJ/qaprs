@@ -2,7 +2,7 @@
 <br />
 
 
-RU|[http://code.google.com/p/qaprs/wiki/terms_en EN]
+RU|[http://code.google.com/p/qaprs/wiki/terms_en EN]|[http://code.google.com/p/qaprs/wiki/terms_de DE]
 
 
 APRS - Automatic Position(или Packet) Reporting System - это специальный вариант пакетной радиосвязи, протокол которого был зарегистрирован в 1992 году Бобом Брунинга (WB4APR)
@@ -37,4 +37,3 @@ KISS TNC - TNC поддерживающий режим работы [http://qapr
 Пакет AX.25 - пакет информации, соответствующий протоколу пакетной связи [http://qaprs.googlecode.com/files/AX25.2.2.pdf AX.25]
 
 Транспорт - протокол и среда, используемая для передачи пакетов APRS (например пакет AX.25 может быть передан по радиоканалу или по сети tcp/ip или в текстовом виде серверу Internet APRS)
-
