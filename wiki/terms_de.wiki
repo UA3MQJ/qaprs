@@ -1,0 +1,39 @@
+= List of used terms and acronyms =
+<br />
+
+
+[http://code.google.com/p/qaprs/wiki/terms_ru RU]|[http://code.google.com/p/qaprs/wiki/terms_en EN]|DE
+
+
+APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
+
+[http://www.sv2agw.com/ AGW] - package kernel SV2AGW.
+
+AXIP - Standard AX.25 packet on the network TCP / IP (see [http://qaprs.googlecode.com/files/rfc1226.txt RFC1226]).
+
+Internet APRS Server - a server on the Internet, through which can exchange messages, send and receive packets APRS, for them there is an accumulation of data. As a rule all the world's APRS server combined with each other and the communication received from IGATE on one of the servers, gets all the other server.
+
+CALL - callsign of HAM radiostation
+
+Digipeater (DIGI) - digital repeater of packets
+
+GPS - the device, allowing to define the exact co-ordinates
+
+GATE - the bridge for transfer APRS of packets on other bands
+
+IGATE - the bridge for transfer APRS packets on Internet APRS Server
+
+SID - number from 0 to 15, added to the station callsign (eg UA3MQJ-4). Used to identify a number of stations under one call sign. Also at SID in the standard APRS can determine the type and purpose of the station (mobile station, GATE, etc.). If the SID is not specified, it is considered that it is equal to zero (see AX.25).
+
+TNC - controller to operate the modem and the transmitter connects to your computer 
+KISS TNC - TNC supporting mode [http://qaprs.googlecode.com/files/kiss.txt KISS]
+
+DB - database, usually used to access structured query language SQL
+
+modem - a device for modulation / demodulation signal for a particular protocol (eg Packet) 
+
+APRS packet - an information packet, corresponding protocol APRS (a beacon, communication, etc.), regardless of transport protocol transmission. 
+
+AX.25 packet - a packet of information, appropriate communication protocol AX.25 Packet Transport - protolok and environment, used for packet APRS (for example, AX.25 packet can be transmitted over the air or on the network tcp / ip or in text form server Internet APRS ). [http://qaprs.googlecode.com/files/AX25.2.2.pdf AX.25]
+
+Transport - protocol and the environment used for transfer of APRS packet (for example AX.25 packet can be transferred on a radio channel either on a network tcp/ip or in a text kind to server Internet APRS).
