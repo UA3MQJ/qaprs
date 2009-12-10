@@ -4,6 +4,7 @@
 
 Для тестеров
 
+
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares004.rar QAPRS - Core (ver. Jares) Rel 4. - 10.12.2009
 
 Для работы требуются дополнительно:
