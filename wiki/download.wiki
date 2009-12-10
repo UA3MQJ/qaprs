@@ -2,7 +2,7 @@
 
 == Текущая версия ==
 
-Для тестеров < br/>
+Для тестеров 
 
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares004.rar QAPRS - Core (ver. Jares) Rel 4.] - 10.12.2009
 
