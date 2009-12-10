@@ -37,3 +37,5 @@ APRS packet - _an information packet, corresponding protocol APRS (a beacon, com
 AX.25 packet - für Amateur-Datenfunk modifiziertes X.25-Protokoll; _a packet of information, appropriate communication protocol AX.25 Packet Transport - protolok and environment, used for packet APRS (for example, AX.25 packet can be transmitted over the air or on the network tcp / ip or in text form server Internet APRS )_. [http://qaprs.googlecode.com/files/AX25.2.2.pdf AX.25]
 
 Transport - _protocol and the environment used for transfer of APRS packet (for example AX.25 packet can be transferred on a radio channel either on a network tcp/ip or in a text kind to server Internet APRS)_.
+
+[http://code.google.com/p/qaprs/wiki/content_en Back to content]
