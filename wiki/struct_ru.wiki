@@ -57,3 +57,8 @@ Examples:
 ||388||13.05.2009||11:11:13||(0) AXIP||RX||UA3MQJ||UA3MAD||Hello!||31 ||
 ||379||12.05.2009||14:44:40||(0) AXIP||TX||UA3MAD||UA3MQJ||Path - UA3MQJ>APU25N|| - ||
 ||379||12.05.2009||14:44:40||(0) AXIP||RX||UA3MQJ||UA3MAD||?APRST|| - ||
+
+
+
+
+[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
