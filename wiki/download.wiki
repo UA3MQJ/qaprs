@@ -1,5 +1,22 @@
 ﻿= Download Page =
 
+== Текущая версия ==
+
+Для тестеров
+
+[http://qaprs.googlecode.com/files/QAPRS-CoreJares004.rar QAPRS - Core (ver. Jares) Rel 4. - 10.12.2009
+
+Для работы требуются дополнительно:
+
+[http://qaprs.googlecode.com/files/dll.rar DLL files] - 27.08.2009 - старые dll'ки
+
+[http://qaprs.googlecode.com/files/dll2.rar DLL files] - 10.12.2009 - dll для xml
+
+[http://qaprs.googlecode.com/files/maps-min.rar DLL files] - 10.12.2009 - минимальный набор карт
+
+
+----
+
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares003.rar QAPRS - Core (ver. Jares) Rel 3. Need DLL!!! (без DLL)] - 03.09.2009
 
 [http://qaprs.googlecode.com/files/dll.rar DLL files] - 27.08.2009
