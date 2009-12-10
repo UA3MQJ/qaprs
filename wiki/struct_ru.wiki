@@ -60,5 +60,6 @@ Examples:
 
 
 
+http://qaprs.googlecode.com/svn/wiki/core_struct.png <br />
 
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
