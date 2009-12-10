@@ -2,7 +2,6 @@
 
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares003.rar QAPRS - Core (ver. Jares) Rel 3. Need DLL!!! (без DLL)] - 03.09.2009
 
-[http://qaprs.googlecode.com/files/dll.rar DLL files]
+[http://qaprs.googlecode.com/files/dll.rar DLL files] - 27.08.2009
 
-[http://qaprs.googlecode.com/files/qaprs-core_ru3.rar Русификация интерфейса]
-
+[http://qaprs.googlecode.com/files/qaprs-core_ru3.rar Русификация интерфейса для версии 003] - 03.09.2009
