@@ -4,7 +4,7 @@
 
 [http://code.google.com/p/qaprs/wiki/need_ru RU]|EN
 
-В целях самосовершенствования в области программирования протоколов пакетных сетей, закрепления навыков разработки кроссплатформенных продуктов на базе c++ и qt, было принято решение о разработке собственного аналога программного продукта UI-View и его дополнительного функционала, предоставляемого различными плагинами.
+In order to perfect myself in the field of programming protocol packet networks, and to consolidate skills of development of cross-platform products based on c + + and qt, I decided to make my own UI-View software equivalent and its additional functionality, provided by different plug-ins.
 
 Why APRS? There are several reasons. APRS Protocol  is open and fairly easy to implement the standard. AX.25 packet protocol is traditionally used for its operations  as a simple and open standard (unlike, for example, PACTOR and Winlink). Sometimes APRS uses BPSK modulation, which is even easier to implement than packet AX.25. When the APRS protocol uses the transport in the form of AX.25 packet, it does not use all its capabilities, but only one type of packages (without acknowledgment and connection setup). The simplifies the implementation of their own modulators / demodulators packages, and provides the experience of AX.25  protocol itself , which can subsequently be used in the development of full packaged applications. 
 
