@@ -14,11 +14,20 @@ MessagesWindowImpl::MessagesWindowImpl( QWidget * parent, Qt::WFlags f)
 
         isrequeringMessages = FALSE;
 
+        messagesModel.setQuery( messagesQuery );
+        messagesTableView->setModel( &messagesModel );
+
 }
 
 void MessagesWindowImpl::showEvent ( QShowEvent * event ) {
 
     qDebug() << "Messages show";
+
+    if ( getDBVal("mwin_X").length() > 0 ) {
+
+        this->setGeometry( getDBVal("mwin_X").toInt() + 4, getDBVal("mwin_Y").toInt() + 23 /* !!! DURDOM */,
+                           getDBVal("mwin_W").toInt(), getDBVal("mwin_H").toInt() );
+    }
 
     if (APRSCore->coreActive==TRUE) {
         qDebug() << "Core in active mode";
@@ -32,6 +41,17 @@ void MessagesWindowImpl::showEvent ( QShowEvent * event ) {
 void MessagesWindowImpl::closeEvent(QCloseEvent *event) {
 
     qDebug()<<"Messages Close event";
+
+    QSqlQuery query;
+
+    query.prepare( "delete from vars where varname like 'mwin_%' " );
+    query.exec();
+
+    setDBVal( "mwin_X", QString::number( this->x() ) );
+    setDBVal( "mwin_Y", QString::number( this->y() ) );
+    setDBVal( "mwin_W", QString::number( this->width() ) );
+    setDBVal( "mwin_H", QString::number( this->height() ) );
+
     hide();
     event->ignore();
 
@@ -50,9 +70,10 @@ void MessagesWindowImpl::requeryMessages() {
         isrequeringMessages = TRUE;
         qDebug()<< "MessagesWindow - messages Requery";
 
-        messagesTableView->setModel( NULL );
-        messagesModel.setQuery( messagesQuery );
-        messagesTableView->setModel( &messagesModel );
+        //messagesTableView->setModel( NULL );
+        //messagesModel.setQuery( messagesQuery );
+        //messagesTableView->setModel( &messagesModel );
+        messagesModel.setQuery( messagesModel.query().lastQuery() );
 
         messagesTableView->selectRow( 0 );
 
@@ -72,4 +93,26 @@ void MessagesWindowImpl::requeryMessages() {
 
 }
 
+QString MessagesWindowImpl::getDBVal( QString varname ) {
 
+    QSqlQuery query;
+
+    query.prepare( "select varval from vars where varname='" + varname + "'" );
+    query.exec();
+    query.first();
+    QString value = query.value( 0 ).toString();
+
+    return value;
+
+}
+
+void MessagesWindowImpl::setDBVal( QString varname, QString varval ) {
+
+    QSqlQuery query;
+
+    query.prepare( "insert into vars(varval, varname) values(:p1, :p2) " );
+    query.bindValue(":p1", varval);
+    query.bindValue(":p2", varname);
+    query.exec();
+
+}

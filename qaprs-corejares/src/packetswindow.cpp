@@ -11,6 +11,9 @@ PacketsWindowImpl::PacketsWindowImpl( QWidget * parent, Qt::WFlags f)
                        "left join port_types p3 on p3.port_type_id = p2.port_type_id "
                        "order by K desc";
 
+        packetsModel.setQuery( packetsQuery );
+        packetTableView->setModel( &packetsModel );
+
         isrequeringPackets = FALSE;
 
 }
@@ -18,6 +21,12 @@ PacketsWindowImpl::PacketsWindowImpl( QWidget * parent, Qt::WFlags f)
 void PacketsWindowImpl::showEvent ( QShowEvent * event ) {
 
     qDebug() << "Packets show";
+
+    if ( getDBVal("pwin_X").length() > 0 ) {
+
+        this->setGeometry( getDBVal("pwin_X").toInt() + 4, getDBVal("pwin_Y").toInt() + 23 /* !!! DURDOM */,
+                           getDBVal("pwin_W").toInt(), getDBVal("pwin_H").toInt() );
+    }
 
     if (APRSCore->coreActive==TRUE) {
         qDebug() << "Core in active mode";
@@ -31,12 +40,25 @@ void PacketsWindowImpl::showEvent ( QShowEvent * event ) {
 void PacketsWindowImpl::closeEvent(QCloseEvent *event) {
 
     qDebug()<<"Packets Close event";
+
+    QSqlQuery query;
+
+    query.prepare( "delete from vars where varname like 'pwin_%' " );
+    query.exec();
+
+    setDBVal( "pwin_X", QString::number( this->x() ) );
+    setDBVal( "pwin_Y", QString::number( this->y() ) );
+    setDBVal( "pwin_W", QString::number( this->width() ) );
+    setDBVal( "pwin_H", QString::number( this->height() ) );
+
     hide();
     event->ignore();
 
 }
 
 void PacketsWindowImpl::TRXPacket() {
+
+    QSqlQuery query;
 
     if (!(fromzePacketList->isChecked()) and this->isVisible() ) requeryPackets();
 
@@ -49,9 +71,7 @@ void PacketsWindowImpl::requeryPackets() {
         isrequeringPackets = TRUE;
         qDebug()<< "PacketsWindow - packets Requery";
 
-        packetTableView->setModel( NULL );
-        packetsModel.setQuery( packetsQuery );
-        packetTableView->setModel( &packetsModel );
+        packetsModel.setQuery( packetsModel.query().lastQuery() );
 
         packetTableView->selectRow( 0 );
 
@@ -71,4 +91,26 @@ void PacketsWindowImpl::requeryPackets() {
 
 }
 
+QString PacketsWindowImpl::getDBVal( QString varname ) {
 
+    QSqlQuery query;
+
+    query.prepare( "select varval from vars where varname='" + varname + "'" );
+    query.exec();
+    query.first();
+    QString value = query.value( 0 ).toString();
+
+    return value;
+
+}
+
+void PacketsWindowImpl::setDBVal( QString varname, QString varval ) {
+
+    QSqlQuery query;
+
+    query.prepare( "insert into vars(varval, varname) values(:p1, :p2) " );
+    query.bindValue(":p1", varval);
+    query.bindValue(":p2", varname);
+    query.exec();
+
+}

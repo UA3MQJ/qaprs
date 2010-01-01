@@ -1,0 +1,21 @@
+<!DOCTYPE qAPRS_Conf>
+<Conf>
+ <DBType>0</DBType>
+ <DBName>APRS001.base</DBName>
+ <UName>root</UName>
+ <UPass>123</UPass>
+ <Host>localhost</Host>
+ <Port>3306</Port>
+ <Call>UA3MQJ</Call>
+ <Name>Alex</Name>
+ <QTHN>Rybinsk</QTHN>
+ <Lat>58.01.83N</Lat>
+ <Lng>038.51.13E</Lng>
+ <Unproto>WIDE1-1,WIDE2-2</Unproto>
+ <Beacon>Alex, QTH-Rybinsk</Beacon>
+ <Symbol>/I</Symbol>
+ <APRSCall>APU26N</APRSCall>
+ <Lang>ru</Lang>
+ <AGWEn>T</AGWEn>
+ <AGWPort>8001</AGWPort>
+</Conf>

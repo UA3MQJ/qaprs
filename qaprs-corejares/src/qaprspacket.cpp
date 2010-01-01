@@ -2,7 +2,7 @@
 #include "include/qaprspacket.h"
 
 
-///////AX///////////////////////////////////////////
+///////стандартный AX пакет///////////////////////////////////////////
 QAPRSAXUIPacket::QAPRSAXUIPacket( QObject *parent) {
 
 }
@@ -19,7 +19,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
     QByteArray Text;
 
     int TSID=0;
-    int TH=0; //Retranslate bit
+    int TH=0; //бит ретрансляции
     TCall.clear();
     TCall.append(To);
     FCall.clear();
@@ -27,7 +27,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
     Text.clear();
     Text.append(MsgText);
 
-    //delete all space and upper case
+    //удаляем все пробелы и делаем большие буквы
     FCall = FCall.toUpper();
     //while (FCall.indexOf(" ")!=1)
         FCall.replace(QByteArray(" "), QByteArray(""));
@@ -83,7 +83,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
 
 
         //FromCall.append(FCall.left(subindex2+1).leftJustified(6, ' '));
-        //!!!for ignore long calls (len>6) from INTERNET
+        //!!!для обрезки длинных позывных с интернета
         FromCall.append(FCall.left(subindex2+1).leftJustified(6, ' ').left( 6 ));
 
         FromCall.append(TSID);
@@ -97,15 +97,15 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
     this->append(FromCall);
 
     for(int i=0;i<(this->length());i++) this->data()[i]=(this->data()[i]<<1);
-    //Last address byte mark bit0 set 1
+    //в последнем байте адреса бит 0 устанавливаем в 1
     this->data()[this->length()-1] = this->data()[this->length()-1] + 1;
-    //add control byte
+    //добавляем control byte
     this->append(3); // 0011 - U-Frame
-    //add PID byte
+    //добавляем PID byte
     this->append(240); // 11110000 - протокол 3-го уровня не используется
-    //add text of message
+    //добавляем текстовое сообщение
     this->append( MsgText );
-    //add enter
+    //добавляем перевод строки
     this->append( 13 );
 
     unsigned short  crc;
@@ -117,7 +117,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
     len     = this->length();
 
     crc = qChecksum(pcBlock, len);
-
+    //добавляем CRC
     this->append( crc & 0xFF );
     this->append( crc>>8 );
 
@@ -128,13 +128,13 @@ QAPRSAXUIPacket::~QAPRSAXUIPacket( ) {
 
 }
 
-///////AXIP///////////////////////////////////////////
+///////пакет AXIP///////////////////////////////////////////
 QAPRSAXIPPacket::QAPRSAXIPPacket( QObject *parent) {
 
 }
 
 QAPRSAXIPPacket::QAPRSAXIPPacket( QString To, QString From, QString MsgText ) {
-
+//полностью совпадает с AX пакетом
     QAPRSAXUIPacket AXPacket( To, From, MsgText );
 
     this->clear();
@@ -146,7 +146,7 @@ QAPRSAXIPPacket::QAPRSAXIPPacket( QString To, QString From, QString MsgText ) {
 QAPRSAXIPPacket::~QAPRSAXIPPacket( ) {
 
 }
-//////AGW///////////////////////////////////////////////////////////////
+//////пакет AGW///////////////////////////////////////////////////////////////
 QAPRSAGWPacket::QAPRSAGWPacket( QObject *parent) {
 
 }
@@ -156,15 +156,16 @@ QAPRSAGWPacket::QAPRSAGWPacket( QString To, QString From, QString MsgText ) {
     QAPRSAXUIPacket AXPacket( To, From, MsgText );
 
     QByteArray AGWHeader;
-    //020000004b00000000000000000000000000000000000000000000002d0000000000000000+packet without CRC, eof 0x0d
-    //                                                         ^-data len (pack len - 36)
-    //         ^- 'K'
-    // ^-agw port numbe ( = agwPort-1 )
+    //020000004b00000000000000000000000000000000000000000000002d0000000000000000+пакет без CRC, eof 0x0d
+    //                                                         ^-длина пакета (pack len - 36)
+    //         ^- 'K' - посылка raw пакета
+    // ^-номер порта в ядре agw ( agwPort-1 )
     AGWHeader.clear();
     AGWHeader.fill(0, 37);
     AGWHeader.data()[4] = 0x4b;
 
     //AXPacket = AXPacket.left( AXPacket.length() - 2 ); //delete CRC
+    //берем AX пакет и отрезаем от него CRC
     AXPacket.remove( AXPacket.length() - 2, 2 );
     AXPacket.prepend( AGWHeader );
 
@@ -180,7 +181,7 @@ QAPRSAGWPacket::QAPRSAGWPacket( QString To, QString From, QString MsgText ) {
 QAPRSAGWPacket::~QAPRSAGWPacket( ) {
 
 }
-//////AGWRX (Packet to AGW client)///////////////////////////////////////////////////////////////
+//////gfrtn AGWRX (пакет от ядра AGW к клиенту)///////////////////////////////////////////////////////////////
 QAPRSAGWRXPacket::QAPRSAGWRXPacket( QObject *parent) {
 
 }
@@ -190,16 +191,17 @@ QAPRSAGWRXPacket::QAPRSAGWRXPacket( QString To, QString From, QString MsgText ) 
     QAPRSAXUIPacket AXPacket( To, From, MsgText );
 
     QByteArray AGWHeader;
-    //020000004b00000000000000000000000000000000000000000000002d0000000000000000+packet without CRC, eof 0x0d
-    //                                                         ^-data len (pack len - 36)
-    //         ^- 'K'
-    // ^-agw port numbe ( = agwPort-1 )
+    //020000004b00000000000000000000000000000000000000000000002d0000000000000000+пакет без CRC, eof 0x0d
+    //                                                         ^-длина пакета (pack len - 36)
+    //         ^- 'K' - посылка raw пакета
+    // ^-номер порта в ядре agw ( agwPort-1 )
     AGWHeader.clear();
     AGWHeader.fill(0, 37);
     AGWHeader.data()[4] = 0x4b;
 
     //AXPacket = AXPacket.left( AXPacket.length() - 2 ); //delete CRC
-    AXPacket.remove( AXPacket.length() - 2, 2 ); //delete crc and enter
+    //берем AX пакет и отрезаем от него CRC
+    AXPacket.remove( AXPacket.length() - 2, 2 );
     AXPacket.prepend( AGWHeader );
 
     AXPacket.data()[28] = (AXPacket.length() - 36);
@@ -215,7 +217,7 @@ QAPRSAGWRXPacket::~QAPRSAGWRXPacket( ) {
 
 }
 
-///////KISS///////////////////////////////////////////
+///////пакет для KISS модема///////////////////////////////////////////
 QAPRSKISSPacket::QAPRSKISSPacket( QObject *parent) {
 
 }
@@ -224,10 +226,13 @@ QAPRSKISSPacket::QAPRSKISSPacket( QString To, QString From, QString MsgText ) {
 
     QAPRSAXUIPacket AXPacket( To, From, MsgText );
 
-/*                  WARNING!!!
+/*                  АХТУНГ!!!
 
-  IF port be used for RX/TX binary data
-  special characters must be transparency
+  По стандарту KISS используется 4 спецсимвола. Они должны быть заменены,
+  если данные совпадают с их кодами. При работе с APRS обычно данные
+  текстовые, поэтому данные со спецкодами не совпадают - проблем нет.
+  Если же порт будет использоваться впоследствии в пакетном режиме с
+  пересылкой двоичных данных, то этот момент нужно будет исправить!!!
 
            Abbreviation            Description                    Hex value
               FEND                 Frame  End                         C0

@@ -15,6 +15,7 @@ class QAPRSCore : public QObject
     Q_OBJECT
 public:
     QAPRSCore( QObject *parent = 0 );
+    QString   APRSCall;
     QAPRSPort *Port[256];
     QTextEdit *log;
     QSqlDatabase *db;
@@ -28,10 +29,10 @@ public:
     int       AGWEmulatorPort;
     void      sendAGWPortInfo();
     bool      coreActive;
-    //station parameters
+    //параметры станции
     QString   Lat, Lng;
-    //agw simulator
-    int agwPN; //port count
+    //agw эмулятор
+    int agwPN; //количество портов
     bool AGWEmulatorActive;
     QTcpServer *tcpServer;
     QTcpSocket *tcpServerConnection;
@@ -54,7 +55,7 @@ private slots:
         void RXPacket (int PortNum, QString To, QString From, QString MsgText);
         void TXPacket (int PortNum, QString To, QString From, QString MsgText);
         void CorePortChangeState(int pnum);
-        //agw simulator
+        //agw эмулятор
         void tcpServerNewConnection ();
         void tcpServerDisconnect () ;
         void tcpServerRead ();

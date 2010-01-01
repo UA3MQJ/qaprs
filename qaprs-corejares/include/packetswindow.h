@@ -21,6 +21,8 @@ public:
         QString packetsQuery;
         bool isrequeringPackets;
         void requeryPackets();
+        QString getDBVal( QString varname );
+        void setDBVal( QString varname, QString varval );
 
 private slots:
         void TRXPacket();

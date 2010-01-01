@@ -23,6 +23,8 @@ public:
 
         bool isrequeringStations;
         void requeryStations();
+        QString getDBVal( QString varname );
+        void setDBVal( QString varname, QString varval );
 
 private slots:
         void UpdateStationList();

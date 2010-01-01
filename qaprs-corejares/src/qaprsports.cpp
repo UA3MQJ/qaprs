@@ -61,8 +61,9 @@ void QAPRSAXIPPORT::openPort() {
 
     active = true;
 
-    emit ToLog( "(" + QString::number( PortNum ) + ")" + PortType + tr("::openPort<br>") );
-    emit ToLog( "(" + QString::number( PortNum ) + ")" + PortType + tr("::Start listen UDP on port <b>") + QString::number( RXPort ) + "</b><br>" );
+    emit ToLog( tr( "(%1)%2::openPort<br>" ).arg( PortNum ).arg( PortType ) );
+
+    emit ToLog( tr( "(%1)%2::Start listen UDP on port %3<br>" ).arg( PortNum ).arg( PortType ).arg( RXPort ) );
 
     emit ChangeState( PortNum );
 
@@ -87,14 +88,14 @@ void QAPRSAXIPPORT::closePort() {
     beacontimer->disconnect();
     udpSocket->disconnect();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>"));
+    emit ToLog( tr( "(%1)%2::closePort<br>" ).arg( PortNum ).arg( PortType ) );
     emit ChangeState( PortNum );
 
 }
 
 void QAPRSAXIPPORT::updatePort() {
 
-    //update beacon timer
+    //перезапускаем таймер маяка
     if ( BeaconInterval > 0 ) beacontimer->start( BeaconInterval ); else beacontimer->stop();
 
     if ( RXPortUpdate == TRUE ) {
@@ -102,7 +103,8 @@ void QAPRSAXIPPORT::updatePort() {
         udpSocket->bind( RXPort );
     }
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>"));
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>"));
+    emit ToLog( tr( "(%1)%2::updatePort<br>" ).arg( PortNum ).arg( PortType ) );
 
 }
 
@@ -156,7 +158,7 @@ void QAPRSAXIPPORT::readPendingDatagrams() {
     } while ( ( ( uchar( datagram.data()[sh-1] ) ) & 1 ) !=1 );
 
 
-    //replace first ',' of the Src to '>'
+    //заменяем первую запятую в списке позывных на '>'
     if (SrcCall.indexOf( ',' )!=-1) SrcCall[ SrcCall.indexOf( ',' ) ]='>';
 
     //log->insertHtml( "(" + QString::number( PortNum ) + ")" + PortType + "::SrcCall='" );
@@ -197,7 +199,7 @@ void QAPRSAXIPPORT::onTimer() {
         Beacon.append( Longitude.mid( 4 ) );
         Beacon.append( Symbol[1]+BeaconText+" {QAPRS}" );
 
-        this->sendPacket( "APU25N", Call + ">" + UnprotoAddress, Beacon );
+        this->sendPacket( APRSCall, Call + ">" + UnprotoAddress, Beacon );
 
     }
 /*
@@ -210,7 +212,7 @@ void QAPRSAXIPPORT::onTimer() {
     Ping.prepend(":");
     Ping.append("?APRST");
 
-    this->sendPacket( "APU25N", Call + ">WIDE3-1" , Ping );
+    this->sendPacket( APRSCall, Call + ">WIDE3-1" , Ping );
 */
 
 
@@ -296,8 +298,9 @@ void QAPRSINTERNETPORT::openPort() {
 
     active = true;
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::openPort<br>"));
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Connecting to APRS server")+QString::number( srvnum + 1 )+" ...</b><br>" );
+    emit ToLog( tr( "(%1)%2::openPort<br>" ).arg( PortNum ).arg( PortType ) );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Connecting to APRS server")+QString::number( srvnum + 1 )+" ...</b><br>" );
+    emit ToLog( tr( "(%1)%2::Connecting to APRS server %3 ...<br>" ).arg( PortNum ).arg( PortType ).arg( srvnum + 1 ) );
 
     connect(tcpClient, SIGNAL(connected()), this, SLOT(tcpClientconnected ()));
     connect(tcpClient, SIGNAL(disconnected()), this, SLOT(tcpClientconnected ()));
@@ -332,8 +335,10 @@ void QAPRSINTERNETPORT::openPort() {
     ConnectionString.clear();
     ConnectionString.append( "user " + UserName + " pass " + UserPass + " vers QAPRS v.001 filter " + APRSFilter + "\n" );
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::APRS Server Address = '")+APRSAddress+"'<br>");
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::APRS Server Port = '")+APRSPort+"'<br>");
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::APRS Server Address = '")+APRSAddress+"'<br>");
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::APRS Server Port = '")+APRSPort+"'<br>");
+    emit ToLog( tr( "(%1)%2::APRS Server Address = <br>" ).arg( PortNum ).arg( PortType ).arg( APRSAddress ) );
+    emit ToLog( tr( "(%1)%2::APRS Server Port = <br>" ).arg( PortNum ).arg( PortType ).arg( APRSPort ) );
 
     emit ChangeState( PortNum );
 
@@ -392,7 +397,8 @@ void QAPRSINTERNETPORT::updatePort() {
     this->closePort();
     this->openPort();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>"));
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>"));
+    emit ToLog( tr( "(%1)%2::updatePort<br>" ).arg( PortNum ).arg( PortType ) );
 
 }
 
@@ -401,7 +407,8 @@ void QAPRSINTERNETPORT::tcpClientconnected () {
 
 void QAPRSINTERNETPORT::tcpClientdisconnected () {
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Disconnected<br>"));
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Disconnected<br>"));
+    emit ToLog( tr( "(%1)%2::disconnected<br>" ).arg( PortNum ).arg( PortType ) );
 
     this->closePort();
 
@@ -409,11 +416,12 @@ void QAPRSINTERNETPORT::tcpClientdisconnected () {
 
 void QAPRSINTERNETPORT::tcpClienterror (QAbstractSocket::SocketError socketError) {
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Clienterror<br>"));
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Clienterror<br>"));
+    emit ToLog( tr( "(%1)%2::Clienterror<br>" ).arg( PortNum ).arg( PortType ) );
 
     this->closePort();
 
-    //start reconnect timer
+    //запустить таймер переподключения
     connect(reconnecttimer, SIGNAL(timeout()), this, SLOT(onReconnectTimer()));
     reconnecttimer->start( 30000 );
 
@@ -507,18 +515,19 @@ void QAPRSINTERNETPORT::onTimer() {
         Beacon.append( Longitude.mid( 4 ) );
         Beacon.append( Symbol[1]+BeaconText+" {QAPRS}" );
 
-        this->sendPacket( "APU25N", Call + ">" + UnprotoAddress, Beacon );
+        this->sendPacket( APRSCall, Call + ">" + UnprotoAddress, Beacon );
     }
 }
 
 void QAPRSINTERNETPORT::onReconnectTimer() {
 
     emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::Try reconnect to AGW core<br>") );
+    emit ToLog( tr( "(%1)%2::try reconnect to AGW core<br>" ).arg( PortNum ).arg( PortType ) );
 
     reconnecttimer->stop();
     reconnecttimer->disconnect();
 
-    //select next aprs server
+    //берем следующий aprs сервер
     srvnum++;
     if (srvnum>2) srvnum = 0;
 
@@ -532,7 +541,7 @@ void QAPRSINTERNETPORT::sendPacket( QString To, QString From, QString MsgText ){
     //log->insertHtml( "(" + QString::number(PortNum) + ")" + PortType + "::<font color='#880000'>TX Packet</font><br>" );
 
     Packet.clear();
-    Packet.append( From.left( From.indexOf('>') ) + ">APU25N,TCPIP*:" + MsgText);
+    Packet.append( From.left( From.indexOf('>') ) + ">"+APRSCall+",TCPIP*:" + MsgText);
 
     Packet.append( 13 );
     Packet.append( 10 );
@@ -551,7 +560,7 @@ void QAPRSINTERNETPORT::sendPacket( QString To, QString From, QString MsgText ){
 
 }
 
-// AGW Port
+// AGW порт
 
 QAPRSAGWPORT::QAPRSAGWPORT( QObject *parent ) {
 
@@ -599,8 +608,10 @@ void QAPRSAGWPORT::openPort() {
 
    // active = true;
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::openPort<br>") );
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Connecting to AGW core</b><br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::openPort<br>") );
+   // emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Connecting to AGW core</b><br>") );
+    emit ToLog( tr( "(%1)%2::openPort<br>" ).arg( PortNum ).arg( PortType ) );
+    emit ToLog( tr( "(%1)%2::connecting to AGW core<br>" ).arg( PortNum ).arg( PortType ) );
     emit ChangeState( PortNum );
 
     connect(tcpClient, SIGNAL(connected()), this, SLOT(tcpClientconnected ()));
@@ -614,17 +625,18 @@ void QAPRSAGWPORT::openPort() {
 
     connect(beacontimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::AGW Host = '") + agwHost + "'<br>");
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::AGW Host = '") + agwHost + "'<br>");
+    emit ToLog( tr( "(%1)%2::AGW Host = %3<br>" ).arg( PortNum ).arg( PortType ).arg( agwHost ) );
 
     AGWHostAddress.setAddress( agwHost );
 
     tcpClient->connectToHost(AGWHostAddress , 8000);
-    agwStatus = 0; //set status - connect to AGW core
+    agwStatus = 0; //статус - к ядру никто не подключен
 
     QByteArray Pkt;
     Pkt.fill(0, 36);
     Pkt[4]='R';//
-    tcpClient->write( Pkt ); //seng qry "Port Information"
+    tcpClient->write( Pkt ); //посылаем запрос ядру AGW -  "Port Information"
 
     if (BeaconInterval > 0) beacontimer->start( BeaconInterval ); else beacontimer->stop();
 
@@ -641,7 +653,8 @@ void QAPRSAGWPORT::closePort() {
     beacontimer->disconnect();
     reconnecttimer->disconnect();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>") );
+    emit ToLog( tr( "(%1)%2::closePort<br>" ).arg( PortNum ).arg( PortType ) );
     emit ChangeState( PortNum );
 
 }
@@ -651,7 +664,8 @@ void QAPRSAGWPORT::updatePort() {
     this->closePort();
     this->openPort();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>") );
+    emit ToLog( tr( "(%1)%2::updatePort<br>" ).arg( PortNum ).arg( PortType ) );
 
 }
 
@@ -661,7 +675,8 @@ void QAPRSAGWPORT::tcpClientconnected () {
 
 void QAPRSAGWPORT::tcpClientdisconnected () {
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Disconnected<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Disconnected<br>") );
+    emit ToLog( tr( "(%1)%2::Disconnected<br>" ).arg( PortNum ).arg( PortType ) );
 
     this->closePort();
 
@@ -669,11 +684,12 @@ void QAPRSAGWPORT::tcpClientdisconnected () {
 
 void QAPRSAGWPORT::tcpClienterror (QAbstractSocket::SocketError socketError) {
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Clienterror<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Clienterror<br>") );
+    emit ToLog( tr( "(%1)%2::Clienrerror<br>" ).arg( PortNum ).arg( PortType ) );
 
     this->closePort();
 
-    //start reconnect timer
+    //запускаем таймер переподключения
     connect(reconnecttimer, SIGNAL(timeout()), this, SLOT(onReconnectTimer()));
     reconnecttimer->start( 30000 );
 
@@ -691,15 +707,15 @@ void QAPRSAGWPORT::tcpClientread() {
     //log->insertPlainText("("+QString::number(PortNum)+")"+PortType+"::AGW len '"+QString::number(mesg.length())+"'\n");
     //log->insertPlainText("("+QString::number(PortNum)+")"+PortType+"::AGW packet '"+mesg.toHex()+"'\n");
 
-    if (agwStatus==0) {        
+    if (agwStatus==0) {    //на этой стадии соединения с ядром - посылаем запрос
         agwStatus=1;
         QByteArray Pkt;
         Pkt.fill(0, 36);
         Pkt[4]='G';//
-        tcpClient->write( Pkt ); //seng qry "Port Information"
+        tcpClient->write( Pkt ); //послать запрос "Port Information"
     } else
-    if (agwStatus==1) {
-        //read information of AGW port list
+    if (agwStatus==1) { //на этой стадии
+        //читаем информацию о списке портов ядра AGW
 
         mesg = mesg.mid(36);
 
@@ -709,8 +725,9 @@ void QAPRSAGWPORT::tcpClientread() {
         if ( agwPort>( mesg.left(mesg.indexOf(';')) ).toInt() ) {
             //log->insertHtml( "(" + QString::number(PortNum) + ")" + PortType + "::<font color='#FF0000'>Ports number (" +
             //                 QString::number( agwPort ) + ") not support on AGW Core!</font><br>");
-            emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::<font color='#FF0000'>Ports number (") +
-                              QString::number( agwPort ) + tr(") not support on AGW Core!</font><br>") );
+            //emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::<font color='#FF0000'>Ports number (") +
+            //                  QString::number( agwPort ) + tr(") not support on AGW Core!</font><br>") );
+            emit ToLog( tr( "(%1)%2::<font color='#FF0000'>Ports number (%3) not support on AGW Core!</font><br>" ).arg( PortNum ).arg( PortType ).arg( agwPort ) );
 
             this->closePort();
             return ;
@@ -720,23 +737,27 @@ void QAPRSAGWPORT::tcpClientread() {
 
         do  {
             //log->insertHtml("("+QString::number(PortNum)+")"+PortType+"::"+mesg.left(mesg.indexOf(';'))+"<br>");
-            emit ToLog("("+QString::number(PortNum)+")"+PortType+"::"+mesg.left(mesg.indexOf(';'))+"<br>");
+            //emit ToLog("("+QString::number(PortNum)+")"+PortType+"::"+mesg.left(mesg.indexOf(';'))+"<br>");
+            emit ToLog( tr( "(%1)%2::" ).arg( PortNum ).arg( PortType ) + ( mesg.left(mesg.indexOf(';')) ) );
+
             mesg = mesg.mid( mesg.indexOf( ';' ) + 1);
         } while ( mesg.indexOf( ';' ) !=-1 );
 
+        //посылаем ядру запрос о начале прослушивания пакетов
         agwStatus = 2;
         QByteArray Pkt;
         Pkt.fill(0, 36);
         Pkt[4]='k';
-        tcpClient->write( Pkt ); //seng qry Start Monitoring Data
+        tcpClient->write( Pkt );
 
-        //now port may be opened )
+        //теперь порт можно считать открытым
         active = true;
     } else
-    if (agwStatus==2) {
+    if (agwStatus==2) { //на этой стадии сообщения от ядра AGW являются прослушанными пакетами
 
         if ((uchar(mesg.data()[0])+1)==agwPort) {
-            //if packet to my port
+            //если пакет пришел на порт ядра AGW к которому привязан этот порт QAPRS
+            //то мы его обрабатываем, иначе это пакет не для нас
 
             QString DataIn;
             DataIn = mesg.data();
@@ -778,7 +799,7 @@ void QAPRSAGWPORT::tcpClientread() {
                 sh += 7;
             } while ( ( ( uchar( mesg.data()[sh-1] ) ) & 1 ) !=1 );
 
-            //replace first ',' of the Src to '>'
+            //заменяем запятую на '>'
             if (SrcCall.indexOf( ',' )!=-1) SrcCall[ SrcCall.indexOf( ',' ) ]='>';
 
             //log->insertHtml( "(" + QString::number( PortNum ) + ")" + PortType + "::SrcCall='" );
@@ -786,8 +807,8 @@ void QAPRSAGWPORT::tcpClientread() {
 
             QString MsgText( "" );
             //log->insertHtml( "(" + QString::number( PortNum ) + ")" + PortType + "::MsgText='" );
-            MsgText = mesg.mid( sh + 2 , mesg.count() - sh - 3 ); // +2 - skip Control byte and PID byte
-                                                                         // -5 - skip ^^ and 2 byte of CRC-16
+            MsgText = mesg.mid( sh + 2 , mesg.count() - sh - 3 ); // +2 - отрезаем Control byte и PID byte
+                                                                  // -3 - и 2 байта CRC-16
 
             //log->insertPlainText( MsgText + "'\n");
             //log->insertPlainText( datagram.toHex() );
@@ -796,7 +817,7 @@ void QAPRSAGWPORT::tcpClientread() {
             emit RXPacket( PortNum, DestCall, SrcCall, MsgText );
 
 
-        } //end if my port
+        }
 
     };
 
@@ -817,14 +838,15 @@ void QAPRSAGWPORT::onTimer() {
         Beacon.append( Longitude.mid( 4 ) );
         Beacon.append( Symbol[1]+BeaconText+" {QAPRS}" );
 
-        this->sendPacket( "APU25N", Call + ">" + UnprotoAddress, Beacon );
+        this->sendPacket( APRSCall, Call + ">" + UnprotoAddress, Beacon );
     }
 
 };
 
 void QAPRSAGWPORT::onReconnectTimer() {
 
-    emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::Try reconnect to AGW core<br>") );
+    //emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::Try reconnect to AGW core<br>") );
+    emit ToLog( tr( "(%1)%2::Try reconnect to AGW core<br>" ).arg( PortNum ).arg( PortType ) );
 
     reconnecttimer->stop();
     reconnecttimer->disconnect();
@@ -834,10 +856,10 @@ void QAPRSAGWPORT::onReconnectTimer() {
 
 void QAPRSAGWPORT::sendPacket( QString To, QString From, QString MsgText ){
 
-    //020000004b00000000000000000000000000000000000000000000002d0000000000000000+packet without CRC, eof 0x0d
-    //                                                         ^-data len (pack len - 36)
+    //020000004b00000000000000000000000000000000000000000000002d0000000000000000+пакет без CRC, eof 0x0d
+    //                                                         ^-длина (pack len - 36)
     //         ^- 'K'
-    // ^-agw port numbe ( = agwPort-1 )
+    // ^-порт agw ( = agwPort-1 )
     //QAPRSAGWPacket
 
     //log->insertHtml( "(" + QString::number(PortNum) + ")" + PortType + "::<font color='#880000'>TX Packet</font><br>" );
@@ -929,8 +951,8 @@ void ComReadThread::run() {
             if (SrcCall.indexOf( ',' )!=-1) SrcCall[ SrcCall.indexOf( ',' ) ]='>';
 
             QString MsgText( "" );
-            MsgText = ComData.mid( sh + 2, ComData.count() - sh - 3 ); // +2 - skip Control byte and PID byte
-                                                                         // -5 - skip ^^ and 2 byte of CRC-16 (NO IN KISS)
+            MsgText = ComData.mid( sh + 2, ComData.count() - sh - 3 ); // +2 - отрезаем byte и PID byte
+                                                                       // -3 - отрезаем CRC-16 (его не надо в KISS)
             emit RXPacket( DestCall, SrcCall, MsgText  );
 
         };
@@ -983,7 +1005,8 @@ void QAPRSKISSPORT::setParam( QString ParamName, QString ParamValue ) {
     if ( ParamName=="Persist")         Persist = ParamValue.toInt();
     if ( ParamName=="FullDuplex")      FullDuplex = (ParamValue=="T");
     if ( ParamName=="ExitFromKISS")    ExitFromKISS = ParamValue;
-    //commmand
+
+    //команды
     // ^C - 03h
     // ^M - 0Dh
     char ctrlC = 0x03;
@@ -1024,7 +1047,8 @@ void QAPRSKISSPORT::openPort() {
 
     active = true;
 
-    emit ToLog( "(" + QString::number( PortNum ) + ")" + PortType + tr("::openPort<br>") );
+    //emit ToLog( "(" + QString::number( PortNum ) + ")" + PortType + tr("::openPort<br>") );
+    emit ToLog( tr( "(%1)%2::openPort<br>" ).arg( PortNum ).arg( PortType ) );
     emit ChangeState( PortNum );
 
     ComReadData.clear();
@@ -1035,11 +1059,15 @@ void QAPRSKISSPORT::openPort() {
     COMPortName.clear();
     COMPortName.append( ComName );
 
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::try to open COM port<br>") );
+    emit ToLog( tr( "(%1)%2::try to open COM port<br>" ).arg( PortNum ).arg( PortType ) );
+
     m_Handle = CreateFile( reinterpret_cast<const wchar_t *>( COMPortName.utf16() ), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
     if (m_Handle == INVALID_HANDLE_VALUE) {
 
-        emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Can't open COM port<br>") );
+        //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Can't open COM port<br>") );
+        emit ToLog( tr( "(%1)%2::Can't open COM port<br>" ).arg( PortNum ).arg( PortType ) );
 
         this->closePort();
         return ;
@@ -1059,7 +1087,8 @@ void QAPRSKISSPORT::openPort() {
 
     if (!SetCommTimeouts(m_Handle, &CommTimeOuts)) {
 
-        emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Can't set COMM timeouts<br>") );
+        //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Can't set COMM timeouts<br>") );
+        emit ToLog( tr( "(%1)%2::Can't set COMM timeouts<br>" ).arg( PortNum ).arg( PortType ) );
 
         this->closePort();
         return ;
@@ -1092,13 +1121,14 @@ void QAPRSKISSPORT::openPort() {
 
     if (!SetCommState( m_Handle, &ComDCM )) {
 
-        emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Can't set COMM state<br>") );
+        //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Can't set COMM state<br>") );
+        emit ToLog( tr( "(%1)%2::Can't set COMM state<br>" ).arg( PortNum ).arg( PortType ) );
 
         this->closePort();
         return ;
     };
 
-    //send init commands
+    //посылаем команды инициализации
     DWORD feedback;
 #endif
 
@@ -1155,7 +1185,7 @@ void QAPRSKISSPORT::openPort() {
         #endif
     }
 
-    //send KISS parameters
+    //посылаем параметры KISS
     QByteArray KISSParam;
     //01 - TXDelay
     KISSParam.clear();
@@ -1313,19 +1343,20 @@ void QAPRSKISSPORT::closePort() {
 	close(fd); 
 #endif
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>") );
+    emit ToLog( tr( "(%1)%2::closePort<br>" ).arg( PortNum ).arg( PortType ) );
     emit ChangeState( PortNum );
 
 }
 
 void QAPRSKISSPORT::updatePort() {
 
-    //update beacon timer
-    //if (BeaconInterval > 0) beacontimer->start( BeaconInterval ); else beacontimer->stop();
+    //порт KISS обновить лучше его переоткрыв
     this->closePort();
     this->openPort();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>") );
+    emit ToLog( tr( "(%1)%2::updatePort<br>" ).arg( PortNum ).arg( PortType ) );
 
 }
 
@@ -1343,7 +1374,7 @@ void QAPRSKISSPORT::onTimer() {
         Beacon.append( Longitude.mid( 4 ) );
         Beacon.append( Symbol[1]+BeaconText+" {QAPRS}" );
 
-        this->sendPacket( "APU25N", Call + ">" + UnprotoAddress, Beacon );
+        this->sendPacket( APRSCall, Call + ">" + UnprotoAddress, Beacon );
     }
 
 }
@@ -1351,7 +1382,8 @@ void QAPRSKISSPORT::onTimer() {
 void QAPRSKISSPORT::onComReadTimer() {
 
 #ifdef Q_OS_WIN
-// Test if data in inQueue(outQueue)
+
+    //проверяем, есть ли данные в потоке
     QByteArray ComData;
     QByteArray OneMsg;
 
@@ -1362,7 +1394,7 @@ void QAPRSKISSPORT::onComReadTimer() {
         if (aInQueue>0) {
             //log->insertHtml("("+QString::number(PortNum)+")"+PortType+"::ready fr read "+QString::number(aInQueue)+" bytes<br>");
             //log->verticalScrollBar()->setSliderPosition( log->verticalScrollBar()->maximum() );
-            //read com data
+            //читаем данные из СОМ порта
 
             static char *buffer = NULL;
             if(!buffer) { buffer = (char *)malloc(1024); };
@@ -1401,14 +1433,15 @@ void QAPRSKISSPORT::onComReadTimer() {
         feedback += nbytes;
     };
 		    
-    //if data readed then append data to buffer ComReadData
+    //если данные считали, то добавим их к буферу ComReadData
     if (feedback>0) {
         for(int i=0;i<feedback;i++) {
             ComReadData.append( buffer[i] );
         }
     }
 
-    //if buffer start from 0xc0 and end 0xc0 then data read complete
+    //и если в буфере накопились данные, что в начале 0xc0, а в конце 0xc0
+    //то считаем, что в буфере один или несколько целых принятых пакетов
     if ( (uchar(ComReadData.data()[0])==uchar(0xc0)) and (uchar(ComReadData.data()[ ComReadData.length()-1 ])==uchar(0xc0))  ){
         ComData.clear();
         ComData.append( ComReadData );
@@ -1428,8 +1461,8 @@ void QAPRSKISSPORT::onComReadTimer() {
 
                     if ( ((ComData.data()[0])==char(0xC0)) and ((ComData.data()[1])==char(0x00)) ) {
 
-                        ComData = ComData.mid( 2 ); //delete first FEND and command 0
-                        OneMsg = ComData.left( ComData.indexOf( 0xC0 ) );
+                        ComData = ComData.mid( 2 ); //удаляем команду FEND и следующий 0
+                        OneMsg = ComData.left( ComData.indexOf( 0xC0 ) ); //и в конце 0xC0
 
                         int i;
                         QString DestCall( "" );
@@ -1453,25 +1486,27 @@ void QAPRSKISSPORT::onComReadTimer() {
                             };
                             SrcSID = ( uchar( OneMsg.data()[sh+6] ) >> 1 ) & 15;             //SID
                             if ( SrcSID>0 ) SrcCall += "-" + QString::number( SrcSID );
-                            if ( ( ( uchar( OneMsg.data()[sh+6] ) >> 7 ) & 1) == 1) SrcCall += "*";  //H - retranslator bit
+                            if ( ( ( uchar( OneMsg.data()[sh+6] ) >> 7 ) & 1) == 1) SrcCall += "*";  //H - бит ретрансляции
                             if ( ( ( uchar( OneMsg.data()[sh+6] ) ) & 1) == 0) SrcCall += ",";    //HDLC bit (бит расширения адреса)
                             sh += 7;
                         } while ( ( ( uchar( OneMsg.data()[sh-1] ) ) & 1 ) !=1 );
 
 
                         //replace first ',' of the Src to '>'
+                        //заменяем запятую на '>'
                         if (SrcCall.indexOf( ',' )!=-1) SrcCall[ SrcCall.indexOf( ',' ) ]='>';
 
                         QString MsgText( "" );
-                        MsgText = OneMsg.mid( sh + 2, OneMsg.count() - sh - 3 ); // +2 - skip Control byte and PID byte
-                                                                                     // -5 - skip ^^ and 2 byte of CRC-16 (NO IN KISS)
+                        MsgText = OneMsg.mid( sh + 2, OneMsg.count() - sh - 3 ); // +2 - обрезаем Control byte и PID byte
+                                                                                 // -3 - обрезаем CRC-16 (нету в KISS)
                         emit RXPacket( PortNum, DestCall, SrcCall, MsgText );
 
                     } else {
 
                         //log->insertHtml("("+QString::number(PortNum)+")"+PortType+"::ignore packet<br>");
                         //log->verticalScrollBar()->setSliderPosition( log->verticalScrollBar()->maximum() );
-                        emit ToLog("("+QString::number(PortNum)+")"+PortType+"::ignore packet<br>");
+                        //emit ToLog("("+QString::number(PortNum)+")"+PortType+"::ignore packet<br>");
+                        emit ToLog( tr( "(%1)%2::ignore packet<br>" ).arg( PortNum ).arg( PortType ) );
 
                         ComData = ComData.mid( 2 ); //delete first FEND and command 0
                     }
@@ -1524,7 +1559,7 @@ void QAPRSKISSPORT::sendPacket( QString To, QString From, QString MsgText ){
 
 QAPRSFLDIGIPORT::QAPRSFLDIGIPORT( QObject *parent ) {
 
-    PortType    = "FLDigi";
+    PortType    = "Inet";
     active      = false;
 
     tcpClient   = new QTcpSocket(this);
@@ -1574,8 +1609,11 @@ void QAPRSFLDIGIPORT::openPort() {
 
     datain.clear();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::openPort<br>") );
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Connecting to FLDigi server")+QString::number( srvnum + 1 )+" ...</b><br>" );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::openPort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Connecting to FLDigi server")+QString::number( srvnum + 1 )+" ...</b><br>" );
+    emit ToLog( tr( "(%1)%2::openPort<br>" ).arg( PortNum ).arg( PortType ) );
+    emit ToLog( tr( "(%1)%2::Connecting to FLDigi server %3<br>" ).arg( PortNum ).arg( PortType ).arg( srvnum + 1  ) );
+
 
     connect(tcpClient, SIGNAL(connected()), this, SLOT(tcpClientconnected ()));
     connect(tcpClient, SIGNAL(disconnected()), this, SLOT(tcpClientconnected ()));
@@ -1607,7 +1645,8 @@ void QAPRSFLDIGIPORT::closePort() {
     beacontimer->disconnect();
     reconnecttimer->disconnect();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::closePort<br>") );
+    emit ToLog( tr( "(%1)%2::closePort<br>" ).arg( PortNum ).arg( PortType ) );
     emit ChangeState( PortNum );
 
 }
@@ -1617,7 +1656,8 @@ void QAPRSFLDIGIPORT::updatePort() {
     this->closePort();
     this->openPort();
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::updatePort<br>") );
+    emit ToLog( tr( "(%1)%2::updatePort<br>" ).arg( PortNum ).arg( PortType ) );
 
 }
 
@@ -1626,7 +1666,8 @@ void QAPRSFLDIGIPORT::tcpClientconnected () {
 
 void QAPRSFLDIGIPORT::tcpClientdisconnected () {
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Disconnected<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Disconnected<br>") );
+    emit ToLog( tr( "(%1)%2::Disconnected<br>" ).arg( PortNum ).arg( PortType ) );
 
     this->closePort();
 
@@ -1634,11 +1675,12 @@ void QAPRSFLDIGIPORT::tcpClientdisconnected () {
 
 void QAPRSFLDIGIPORT::tcpClienterror (QAbstractSocket::SocketError socketError) {
 
-    emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Clienterror<br>") );
+    //emit ToLog("("+QString::number(PortNum)+")"+PortType+tr("::Clienterror<br>") );
+    emit ToLog( tr( "(%1)%2::Clienterror<br>" ).arg( PortNum ).arg( PortType ) );
 
     this->closePort();
 
-    //start reconnect timer
+    //запускаем таймер переподключения
     connect(reconnecttimer, SIGNAL(timeout()), this, SLOT(onReconnectTimer()));
     reconnecttimer->start( 30000 );
 
@@ -1717,20 +1759,18 @@ void QAPRSFLDIGIPORT::onTimer() {
         Beacon.append( Longitude.mid( 4 ) );
         Beacon.append( Symbol[1]+BeaconText+" {QAPRS}" );
 
-        this->sendPacket( "APU25N", Call + ">" + UnprotoAddress, Beacon );
+        this->sendPacket( APRSCall, Call + ">" + UnprotoAddress, Beacon );
     }
 }
 
 void QAPRSFLDIGIPORT::onReconnectTimer() {
 
-    emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::Try reconnect to AGW core<br>") );
+    //emit ToLog( "(" + QString::number(PortNum) + ")" + PortType + tr("::Try reconnect to AGW core<br>") );
+    emit ToLog( tr( "(%1)%2::Try reconnect to FLDIGI core<br>" ).arg( PortNum ).arg( PortType ) );
 
     reconnecttimer->stop();
     reconnecttimer->disconnect();
 
-    //select next aprs server
-    srvnum++;
-    if (srvnum>2) srvnum = 0;
 
     this->openPort();
 
@@ -1746,7 +1786,7 @@ void QAPRSFLDIGIPORT::sendPacket( QString To, QString From, QString MsgText ){
     Packet.append( QByteArray::fromHex("0d0a") );
 
     //Packet.append( 1 );
-    Packet.append( From.left( From.indexOf('>') ) + ">APU25N,TCPIP*:" + MsgText);
+    Packet.append( From.left( From.indexOf('>') ) + ">"+APRSCall+",TCPIP*:" + MsgText);
 
     Packet.append( QByteArray::fromHex("0d0a") );
     Packet.append( QByteArray::fromHex("0d0a") );

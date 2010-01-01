@@ -13,12 +13,14 @@
 #include <QFile>
 #include <QMenu>
 #include <QDebug>
+#include <QDomDocument>
 #include "ui_mainwindow.h"
 #include "include/qaprscore.h"
 #include "include/customsqlmodels.h"
 #include "include/packetswindow.h"
 #include "include/messageswindow.h"
 #include "include/stationswindow.h"
+#include "include/mapswindow.h"
 
 
 //
@@ -38,9 +40,11 @@ public:
         bool isrequeringPorts;
 
         QString messagesQuery;
-        QString DBType, DBName, UName, UPass, Host, Port, Call, Name, QTHN, Beacon, Symbol, Lat, Lng, Unproto, AGWEN, AGWP ;
         QAPRSCore *APRSCore;
         QString portsQuery;
+        QTimer  *autoconnectTimer;
+
+        int    autoTime; //
 
         void closeEvent(QCloseEvent *event);
         void hideEvent ( QHideEvent * event );
@@ -49,8 +53,9 @@ public:
         PacketsWindowImpl  PacketsWindow;
         MessagesWindowImpl MessagesWindow;
         StationsWindowImpl StationsWindow;
+        MapsWindowImpl     MapsWindow;
 
-private slots:
+public slots:
 	void newBaseButtonClick();
 	void connectButtonClick();
 	void disconnectButtonClick();
@@ -62,6 +67,8 @@ private slots:
 	void currentIndexChanged ( int index); 
         void upAllPorts();
         void downAllPorts();
+        void autoconnect();
+        void saveAndQuit();
 
 
         void UpdatePortsState( int pnum );
@@ -75,6 +82,7 @@ private slots:
         void showPackets();
         void showMessages();
         void showStations();
+        void showMaps();
 
 private:
 	void loadOptionsFromFile();
@@ -87,6 +95,7 @@ private:
         QAction *showPacketsAction;
         QAction *showMessagesAction;
         QAction *showStationsAction;
+        QAction *showMapsAction;
         QAction *quitAction;
 
         QSystemTrayIcon *trayIcon;

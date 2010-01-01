@@ -10,7 +10,6 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
 
     QApplication::setPalette( QApplication::style()->standardPalette() );
 
-    //setWindowIcon( QIcon(":/images/ico.png") );
 
     loadOptionsFromFile();
 
@@ -30,6 +29,9 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
 
     connect( disconnectButton,  SIGNAL( clicked() ),
              this,              SLOT( disconnectButtonClick() ) );
+
+    connect( closeButton,       SIGNAL( clicked() ),
+             this,              SLOT( saveAndQuit() ) );
 
     connect( dbTypeComboBox,    SIGNAL( currentIndexChanged( int ) ),
              this,              SLOT( currentIndexChanged ( int ) ) );
@@ -62,12 +64,22 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
              this,              SLOT( changeTab( int ) ) );
 
     connect( AGWcheckBox,       SIGNAL( stateChanged ( int ) ),
-             this,              SLOT( AGWOnOff( ) ) );
+             this,              SLOT( AGWOnOff() ) );
 
+    autoconnectTimer = new QTimer(this);
+
+    autoTime = 10;
+
+    connect( autoconnectTimer,SIGNAL( timeout() ),
+             this,      SLOT( autoconnect() ) );
+
+    autoconnectTimer->start( 1000 );
 
     APRSCore = new QAPRSCore(this);
     APRSCore->log = logEdit;
     APRSCore->db = db;
+
+    APRSCore->APRSCall = APRSCallEdit->text();
 
 //    APRSCore->AGWEmulatorStart();
 
@@ -80,6 +92,15 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
     StationsWindow.APRSCore = APRSCore;
     StationsWindow.db = db;
     StationsWindow.stationsModel.APRSCore = APRSCore;
+
+    portsQuery = "select ports.port_num as PN, ports.port_type_id as PTID, port_types.port_type_note as PType, "
+                 "ports.port_note as PNote, ports.port_call as PCall, "
+                 "ports.port_beacon_text as 'Bacon Text', ports.port_beacon_interval as 'Beacon Interval', "
+                 "ports.port_unproto_address as 'Unproto Address', "
+                 "ports.port_latitude as Lat, ports.port_longitude as Lng, ports.port_symbol as PSym, NULL as Act "
+                 "from ports left join port_types on "
+                 "ports.port_type_id=port_types.port_type_id "
+                 "order by ports.port_num";
 
     connect(PacketsWindow.APRSCore,   SIGNAL( TRXPacket() ),
             &PacketsWindow,           SLOT( TRXPacket() ) );
@@ -98,8 +119,34 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
     createActions();
     createTrayIcon();
 
+    showPacketsAction->setDisabled(true);
+    showMessagesAction->setDisabled(true);
+    showStationsAction->setDisabled(true);
+    showMapsAction->setDisabled(true);
+
 
 }
+
+void MainWindowImpl::autoconnect() {
+
+
+    connectButton->setText( tr("Connect (%n)", "", autoTime) );
+
+    if (autoconnectCheckBox->isChecked()!=TRUE) {
+        autoconnectTimer->stop();
+        connectButton->setText( tr("Connect") );
+    }
+
+    if (autoTime==0) {
+        autoconnectTimer->stop();
+        connectButtonClick();
+    }
+
+    autoTime--;
+
+}
+
+
 
 MainWindowImpl::~MainWindowImpl( ) {
 
@@ -128,12 +175,11 @@ void MainWindowImpl::createActions() {
     showGenOptionAction->setIcon( QIcon(":/images/config.png") );
 
     quitAction = new QAction(tr("&Quit"), this);
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(saveAndQuit()));
     quitAction->setIcon( QIcon(":/images/exit.png") );
 
     showPacketsAction = new QAction(tr("&Packets"), this);
     connect(showPacketsAction, SIGNAL(triggered()), this, SLOT(showPackets()));
-    showPacketsAction->setIcon( QIcon(":/images/packet.png") );
 
     showMessagesAction = new QAction(tr("&Messages"), this);
     connect(showMessagesAction, SIGNAL(triggered()), this, SLOT(showMessages()));
@@ -143,7 +189,18 @@ void MainWindowImpl::createActions() {
     connect(showStationsAction, SIGNAL(triggered()), this, SLOT(showStations()));
     showStationsAction->setIcon( QIcon(":/images/stlist.png") );
 
+    showMapsAction = new QAction(tr("&Maps"), this);
+    connect(showMapsAction, SIGNAL(triggered()), this, SLOT(showMaps()));
+
 }
+
+void MainWindowImpl::saveAndQuit(){
+
+    this->disconnectButtonClick();
+    qApp->quit();
+
+}
+
 
 void MainWindowImpl::createTrayIcon() {
 
@@ -155,6 +212,7 @@ void MainWindowImpl::createTrayIcon() {
     trayIconMenu->addAction(showPacketsAction);
     trayIconMenu->addAction(showMessagesAction);
     trayIconMenu->addAction(showStationsAction);
+    trayIconMenu->addAction(showMapsAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(showGenOptionAction);
     trayIconMenu->addSeparator();
@@ -175,14 +233,13 @@ void MainWindowImpl::newBaseButtonClick() {
     //APRSCore->ToLog( tr("QAPRSCore::Create test ports<br>") );
 
     if (connectButton->isEnabled()) {
-        DBName = baseNameEdit->text(); 
-        db->setDatabaseName( DBName );
+        db->setDatabaseName( baseNameEdit->text() );
         db->open();
     }
 
     QSqlQuery query( *db );
 
-    //port types table and data
+    //таблица с типами портов
     query.exec( "drop table port_types" );
     query.exec( "create table port_types (port_type_id int primary key, "
                 "port_type_note varchar(100), port_type_not varchar(15) ) " );
@@ -203,14 +260,14 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
                 "values(-1,'n\\a', 'n\\a')" );
 
-    //ports table
+    //порты
     query.exec( "drop table ports" );
     query.exec( "create table ports (port_num int primary key, "
                 "port_type_id int, port_note varchar(50), port_call varchar(10), port_beacon_text varchar(20),"
                 "port_beacon_interval int, port_unproto_address varchar(50),"
                 "port_latitude varchar(20), port_longitude varchar(20), port_symbol varchar(3) ) " );
 
-    //ports demo data
+    //примеры заполнения
     /*
     query.exec( "insert into ports (port_num, port_type_id, port_note, port_call, port_beacon_text, port_beacon_interval, port_unproto_address, port_latitude, port_longitude, port_symbol) "
                 "values(0,0,'APRS.NET', 'UA3MAD', 'ua3mad@mail.ru', 3000, '', '57.01.83N', '038.51.13E', '/I') " );
@@ -226,17 +283,17 @@ void MainWindowImpl::newBaseButtonClick() {
                 "values(5,5,'AXIP RK3MWI host', 'UA3MAD', 'ua3mad@mail.ru', 3000, 'RK3MWI-2', '57.01.83N', '038.51.13E', '/I')" );
 */
 
-    //port parameters name table and data
+    //таблица имен параметров портов
     query.exec( "drop table port_param_names; " );
     query.exec( "create table port_param_names (par_code int, port_type_id int, par_name varchar(20) )" );
-    //AXIP param names
+    //параметры AXIP порта
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(1,5,'RXPort')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(2,5,'IPAddress')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(3,5,'TXPort')" );
-    //APRS Internet Server
+    //параметры порта APRS Internet Server
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(1,0,'Server1')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
@@ -262,17 +319,17 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(12,0,'PPass')" );
 
-    //AGW param names
+    //параметры порта AGW
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(1,2,'Host')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(2,2,'AGWPort')" );
-    //FLDIGI param names
+    //параметры порта FLDIGI
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(1,6,'Host')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(2,6,'Port')" );
-    //KISS param names
+    //параметры KISS порта
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(1,1,'COM')" );
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
@@ -298,11 +355,12 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "insert into port_param_names (par_code, port_type_id, par_name) "
                 "values(12,1,'ExitFromKISS')" );
 
-    //port params table
+    //таблица параметров портов
     query.exec( "drop table port_param_values; " );
     query.exec( "create table port_param_values (port_num int , "
                 "par_code int, par_value varchar(50) ); " );
-    //ports param demo data
+				
+    //пример заполнения
     /*
     query.exec( "insert into port_param_values (port_num, par_code, par_value) "
                 "values(0,1,'127.0.0.1:14000') " );
@@ -342,11 +400,10 @@ void MainWindowImpl::newBaseButtonClick() {
                 "values(5,3,'60000') " );
 */
 
-    //symbol table
+    //таблица с APRS символами
     query.exec( "drop table symbols" );
     query.exec( "create table symbols (sym varchar(2), comment varchar(25) )" );
-    //data
-
+    //данные
     query.exec( "insert into symbols ( sym, comment ) values( '\\!', 'Emergency' ); " );
     query.exec( "insert into symbols ( sym, comment ) values( '\\\"', 'No Symbol' );" );
     query.exec( "insert into symbols ( sym, comment ) values( '\\#', 'No. Digi' );" );
@@ -537,28 +594,33 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "insert into symbols ( sym, comment ) values( '/}',	'No Symbol' );" );
     query.exec( "insert into symbols ( sym, comment ) values( '/~',	'No Symbol' );" );
 
-    //packets table
+    //таблица пакетов
     query.exec( "drop table packets" );
     query.exec( "create table packets (K integer primary key, "
                 "DT datetime, port_num int, trx char(10), PTo char(20),"
                 "PFrom char(20), PVia char(50), Message char(80) ) " );
 
-    //messages table
+    //таблица сообщений
     query.exec( "drop table messages" );
     query.exec( "create table messages (packet_K int, MTo varchar(10),Message varchar(250), Mess_ID varchar(6) )" );
-    //demo data
+    //пример
     //query.exec( "insert into  messages (packet_K, MTo, Message, Mess_ID ) values(0, 'UA3MM', 'Test message', '001') " );
 
-    //station list table
+    //таблица со списком станций
     query.exec( "drop table stations" );
     //query.exec( "create table stations (call varchar(10), sym varchar(2), lat varchar(9), lng varchar(10), grid varchar(7), Via varchar(50), length float, deg float, LH DateTime, StComment varchar(100) )" );
     //length and deg for station no need for save. this parameters must be calculated
     query.exec( "create table stations (call varchar(10), sym varchar(2), lat varchar(9), lng varchar(10), grid varchar(7), Via varchar(50), LH DateTime, StComment varchar(100) )" );
 
-    //demo data
+    //пример
     //query.exec( "insert into stations (call, sym, lat, lng, grid, length, deg, LH, Via ) "
     //            "values('UA3MAD', '/-', '58.01.84N', '038.51.13E', 'KO98KA', 0, 0, '2009-01-01 08:00:00', 'APU25N,RR3MD')" );
 
+    //таблица с системными переменными
+    query.exec( "drop table vars" );
+    query.exec( "create table vars (varval varchar(50), varname varchar(50) )" );
+    //данные - карта по умолчанию
+    query.exec( "insert into vars ( varval, varname ) values( './maps/world.jpg', 'map' ); " );
 
     this->disconnectButtonClick();
 
@@ -580,10 +642,11 @@ void MainWindowImpl::requeryPorts() {
         //!!!
         isrequeringPorts = TRUE;
 
-        portsTableView->setModel( NULL );
-        portsModel.setQuery( portsQuery );
+        //portsTableView->setModel( NULL );
+        //portsModel.setQuery( portsQuery );
         //portsModel.setHeaderData(5, Qt::Horizontal, "ColName" );
-        portsTableView->setModel( &portsModel );
+        //portsTableView->setModel( &portsModel );
+        portsModel.setQuery( portsModel.query().lastQuery() );
 
         if ( saveIndex == -1 ) saveIndex = 0;
         portsTableView->selectRow( saveIndex );
@@ -598,7 +661,7 @@ void MainWindowImpl::requeryPorts() {
         portsTableView->setColumnWidth( 10,  40 );
         portsTableView->setColumnWidth( 11,  40 );
 
-        portsTableView->hideColumn( 1 ); //hide PTID
+        //portsTableView->hideColumn( 1 ); //hide PTID
 
         isrequeringPorts = FALSE;
 
@@ -610,6 +673,10 @@ void MainWindowImpl::requeryPorts() {
 void MainWindowImpl::connectButtonClick() {
 
     APRSCore->ToLog( tr("QAPRSCore::Connecting to system database<br>") );
+
+    autoconnectTimer->stop();
+    connectButton->setText( tr("Connect") );
+
 
     APRSCore->Lat = latEdit->text();
     APRSCore->Lng = lngEdit->text();
@@ -628,26 +695,27 @@ void MainWindowImpl::connectButtonClick() {
     upPortButton     ->setEnabled( TRUE );
     downPortButton   ->setEnabled( TRUE );
 
-    DBName = baseNameEdit->text();
-    db->setDatabaseName( DBName );
+
+    db->setDatabaseName( baseNameEdit->text() );
     db->open();
+
+    portsModel.setQuery( portsQuery );
+    portsTableView->setModel( &portsModel );
 
     APRSCore->coreActive = TRUE;
 
     PacketsWindow.requeryPackets();
     MessagesWindow.requeryMessages();
     StationsWindow.requeryStations();
-
-    portsQuery = "select ports.port_num as PN, ports.port_type_id as PTID, port_types.port_type_note as PType, "
-                 "ports.port_note as PNote, ports.port_call as PCall, "
-                 "ports.port_beacon_text as 'Bacon Text', ports.port_beacon_interval as 'Beacon Interval', "
-                 "ports.port_unproto_address as 'Unproto Address', "
-                 "ports.port_latitude as Lat, ports.port_longitude as Lng, ports.port_symbol as PSym, NULL as Act "
-                 "from ports left join port_types on "
-                 "ports.port_type_id=port_types.port_type_id "
-                 "order by ports.port_num";
+    MapsWindow.loadMap( MapsWindow.getDBVal("map") );
+    MapsWindow.setWindowTitle( "qAPRS - [" + MapsWindow.scene->map->mapName + "]" );
 
     requeryPorts();
+
+    showPacketsAction->setDisabled(false);
+    showMessagesAction->setDisabled(false);
+    showStationsAction->setDisabled(false);
+    showMapsAction->setDisabled(false);
 
     this->upAllPorts();
     if ( AGWcheckBox->isChecked() ) APRSCore->AGWEmulatorStart();
@@ -656,7 +724,7 @@ void MainWindowImpl::connectButtonClick() {
 
 void MainWindowImpl::upAllPorts() {
 
-    //up ports
+    //включить все порты
     APRSCore->ToLog( tr("QAPRSCore::Try to up of ") + QString::number( portsModel.rowCount() ) + tr(" port(s)<br>") );
     APRSCore->createPorts();
     //upPortsButton    ->setEnabled( FALSE );
@@ -677,16 +745,27 @@ void MainWindowImpl::disconnectButtonClick() {
     downPortsButton  ->setEnabled( FALSE );
     upPortButton     ->setEnabled( FALSE );
     downPortButton   ->setEnabled( FALSE );
-    db->close();
 
+    showPacketsAction->setDisabled(true);
+    showMessagesAction->setDisabled(true);
+    showStationsAction->setDisabled(true);
+    showMapsAction->setDisabled(true);
+
+    PacketsWindow.close();
+    MessagesWindow.close();
+    StationsWindow.close();
+    MapsWindow.close();
+
+    db->close();
 
     portsTableView->setModel( NULL );
 
     PacketsWindow.requeryPackets();
     MessagesWindow.requeryMessages();
     StationsWindow.requeryStations();
+    MapsWindow.unloadMap();
 
-    //down all ports
+    //отключить все порты
     logEdit->insertHtml( tr("QAPRSCore::All port(s) is down<br>") );
     if (APRSCore->AGWEmulatorActive == TRUE)
         APRSCore->AGWEmulatorStop();
@@ -700,7 +779,7 @@ void MainWindowImpl::disconnectButtonClick() {
 
 void MainWindowImpl::downAllPorts() {
 
-    //down ports
+    //отключить все порты
     APRSCore->ToLog( tr("QAPRSCore::All port(s) is down<br>") );
     APRSCore->closePorts();
     //upPortsButton    ->setEnabled( TRUE );
@@ -762,6 +841,7 @@ void MainWindowImpl::addPortButtonClick() {
 
 void MainWindowImpl::loadOptionsFromFile() {
 //!!!!!!!!!!!
+    /*
     QFile file( "./config.ini" );
 
     file.open( QIODevice::ReadOnly );
@@ -840,12 +920,64 @@ void MainWindowImpl::loadOptionsFromFile() {
     passEdit->setEnabled( DBType.toInt()!=0 );
     hostEdit->setEnabled( DBType.toInt()!=0 );
     portBox ->setEnabled( DBType.toInt()!=0 );
+*/
+
+    //загрузка конфигурации из XML
+
+    QDomDocument doc("qAPRS_Conf");
+    QFile fileConfig("./config.xml");
+    if (!fileConfig.open(QIODevice::ReadOnly))
+        return;
+    if (!doc.setContent(&fileConfig)) {
+        fileConfig.close();
+        return;
+    }
+    fileConfig.close();
+
+    QDomElement docElem = doc.documentElement();
+
+    QDomNode n = docElem.firstChild();
+    while(!n.isNull()) {
+        QDomElement e = n.toElement();
+        if(!e.isNull()) {
+
+            if (e.tagName()=="DBType")  dbTypeComboBox ->setCurrentIndex( e.text().toInt() );
+            if (e.tagName()=="DBName")  baseNameEdit   ->setText( e.text() );
+            if (e.tagName()=="UName")   userEdit       ->setText( e.text() );
+            if (e.tagName()=="UPass")   passEdit       ->setText( e.text() );
+            if (e.tagName()=="Host")    hostEdit       ->setText( e.text() );
+            if (e.tagName()=="Port")    portBox        ->setValue( e.text().toInt() );
+            if (e.tagName()=="Call")    callEdit       ->setText( e.text() );
+            if (e.tagName()=="Name")    nameEdit       ->setText( e.text() );
+            if (e.tagName()=="QTHN")    qthnameEdit    ->setText( e.text() );
+            if (e.tagName()=="Lat")     latEdit        ->setText( e.text() );
+            if (e.tagName()=="Lng")     lngEdit        ->setText( e.text() );
+            if (e.tagName()=="Unproto") unprotoEdit    ->setText( e.text() );
+            if (e.tagName()=="Beacon")  beacontextEdit ->setText( e.text() );
+            if (e.tagName()=="Symbol")  symbolEdit     ->setText( e.text() );
+            if (e.tagName()=="AGWEn")   AGWcheckBox    ->setChecked( e.text()=="T" );
+            if (e.tagName()=="AGWPort") AGWPort        ->setValue( e.text().toInt() );
+            if (e.tagName()=="APRSCall")APRSCallEdit   ->setText( e.text() );
+            if (e.tagName()=="Lang")    langEdit       ->setText( e.text() );
+
+
+        }
+        n = n.nextSibling();
+    }
+
+
+
+    disconnectButton->setEnabled( FALSE );
+    userEdit->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
+    passEdit->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
+    hostEdit->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
+    portBox ->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
 
 }
 
 void MainWindowImpl::saveOptionsToFile() {
 //!!!!!!!!!!!!!!!!!
-    QFile file( "./config.ini" );
+ /*   QFile file( "./config.ini" );
 
     file.open( QIODevice::WriteOnly );
     QTextStream out( &file );
@@ -887,18 +1019,55 @@ void MainWindowImpl::saveOptionsToFile() {
     out << "AGWPort="   << ( AGWPort->text() ) << endl;
 
     file.close();
+*/
+    //сохранение конфигурации в XML
+
+    QDomDocument doc("qAPRS_Conf");
+    QDomElement root = doc.createElement("Conf");
+    doc.appendChild( root );
+
+    (root.appendChild( doc.createElement( "DBType" ) ))   .appendChild( doc.createTextNode( QString::number( dbTypeComboBox->currentIndex() ) ) );
+    (root.appendChild( doc.createElement( "DBName" ) ))   .appendChild( doc.createTextNode( baseNameEdit->text() ) );
+    (root.appendChild( doc.createElement( "UName" ) ))    .appendChild( doc.createTextNode( userEdit->text() ) );
+    (root.appendChild( doc.createElement( "UPass" ) ))    .appendChild( doc.createTextNode( passEdit->text() ) );
+    (root.appendChild( doc.createElement( "Host" ) ))     .appendChild( doc.createTextNode( hostEdit->text() ) );
+    (root.appendChild( doc.createElement( "Port" ) ))     .appendChild( doc.createTextNode( QString::number( portBox->value() ) ) );
+    (root.appendChild( doc.createElement( "Call" ) ))     .appendChild( doc.createTextNode( callEdit->text() ) );
+    (root.appendChild( doc.createElement( "Name" ) ))     .appendChild( doc.createTextNode( nameEdit->text() ) );
+    (root.appendChild( doc.createElement( "QTHN" ) ))     .appendChild( doc.createTextNode( qthnameEdit->text() ) );
+    (root.appendChild( doc.createElement( "Lat" ) ))      .appendChild( doc.createTextNode( latEdit->text() ) );
+    (root.appendChild( doc.createElement( "Lng" ) ))      .appendChild( doc.createTextNode( lngEdit->text() ) );
+    (root.appendChild( doc.createElement( "Unproto" ) ))  .appendChild( doc.createTextNode( unprotoEdit->text() ) );
+    (root.appendChild( doc.createElement( "Beacon" ) ))   .appendChild( doc.createTextNode( beacontextEdit->text() ) );
+    (root.appendChild( doc.createElement( "Symbol" ) ))   .appendChild( doc.createTextNode( symbolEdit->text() ) );
+    (root.appendChild( doc.createElement( "APRSCall" ) )) .appendChild( doc.createTextNode( APRSCallEdit->text() ) );
+    (root.appendChild( doc.createElement( "Lang" ) ))     .appendChild( doc.createTextNode( langEdit->text() ) );
+    if ( AGWcheckBox->isChecked() ) {
+        (root.appendChild( doc.createElement( "AGWEn" ) )).appendChild( doc.createTextNode( "T" ) );
+    } else {
+        (root.appendChild( doc.createElement( "AGWEn" ) )).appendChild( doc.createTextNode( "F" ) );
+    }
+    (root.appendChild( doc.createElement( "AGWPort" ) ))  .appendChild( doc.createTextNode( AGWPort->text() ) );
+
+    QFile confFile("./config.xml");
+
+    confFile.open( QIODevice::WriteOnly );
+
+    QTextStream outXML( &confFile );
+
+    outXML << doc.toString();
+
+    confFile.close();
+
 
 }
 
 void MainWindowImpl::currentIndexChanged ( int index ) {
 
-    DBType = QString::number( index );
-
-    //if dbtype=SQLITE then disable edits user, pass, host, port
-      userEdit->setEnabled( DBType.toInt()!=0 );
-      passEdit->setEnabled( DBType.toInt()!=0 );
-      hostEdit->setEnabled( DBType.toInt()!=0 );
-      portBox ->setEnabled( DBType.toInt()!=0 );
+      userEdit->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
+      passEdit->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
+      hostEdit->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
+      portBox ->setEnabled( dbTypeComboBox ->currentIndex()!=0 );
  
 }
 
@@ -1151,6 +1320,14 @@ void MainWindowImpl::showStations() {
     qDebug() << "Show Stations";
 
     StationsWindow.show();
+
+}
+
+void MainWindowImpl::showMaps() {
+
+    qDebug() << "Show Stations";
+
+    MapsWindow.show();
 
 }
 

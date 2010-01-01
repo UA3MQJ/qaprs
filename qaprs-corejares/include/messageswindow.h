@@ -22,6 +22,8 @@ public:
         QString messagesQuery;
         bool isrequeringMessages;
         void requeryMessages();
+        QString getDBVal( QString varname );
+        void setDBVal( QString varname, QString varval );
 
 
 private slots:

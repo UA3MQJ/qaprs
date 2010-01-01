@@ -33,7 +33,7 @@ QAPRSCore::QAPRSCore( QObject *parent )
 
 }
 
-//AGW CORE SIMULATOR
+//эмулятор AGW CORE
 void QAPRSCore::tcpServerNewConnection () {
 
     ToLog( tr("QAPRSCore::Incoming connection to the AGW Core simulator<br>") );
@@ -52,7 +52,7 @@ void QAPRSCore::tcpServerNewConnection () {
 
 void QAPRSCore::AGWEmulatorStart( ){
 
-    //AGW EMULATOR start
+    //запуск AGW эмулятора
     if ( AGWEmulatorActive == FALSE ) {
         //ToLog( "QAPRSCore::Ready for connection to the AGW Core simulator<br>" );
         tcpServer->listen( QHostAddress::QHostAddress("127.0.0.1"), AGWEmulatorPort);
@@ -66,7 +66,7 @@ void QAPRSCore::AGWEmulatorStart( ){
 
 void QAPRSCore::AGWEmulatorStop( ){
 
-    //AGW EMULATOR STOP
+    //остановка AGW эмулятора
     if ( AGWEmulatorActive == TRUE ) {
 
         tcpServer->close();
@@ -97,7 +97,7 @@ void QAPRSCore::tcpServerDisconnect () {
 }
 
 void QAPRSCore::tcpServerRead () {
-    //read data from AGW Core Emulator Client
+	//чтение данных от клиента, подключенного к эмулятору
 
     QByteArray datagram;
     QByteArray mesg;
@@ -216,6 +216,7 @@ void QAPRSCore::tcpServerRead () {
             } while ( ( ( uchar( mesg.data()[sh-1] ) ) & 1 ) !=1 );
 
             //replace first ',' of the Src to '>'
+			//меняем первую запяту ',' на значек '>' в списке позывных, если это не так
             if (SrcCall.indexOf( ',' )!=-1) SrcCall[ SrcCall.indexOf( ',' ) ]='>';
 
             //log->insertHtml( "QAPRSCore::SrcCall='" );
@@ -279,10 +280,9 @@ QAPRSPort *QAPRSCore::createPort( QString PortType ) {
     if ( PortType=="KISS TNC" ) newPort = new QAPRSKISSPORT(this);
     if ( PortType=="FL Digi" ) newPort = new QAPRSFLDIGIPORT(this);
 
+    newPort->APRSCall = this->APRSCall;
 
-    //newPort->log = this->log; //!!!! if no need post to log direct from port
-                                //     use signal ToLog : emit ToLog( QString );
-    return newPort;
+	return newPort;
 
 }
 
@@ -299,7 +299,7 @@ void QAPRSCore::createPorts() {
          int     port_num             = query.value( query.record().indexOf("port_num") ).toInt();
          int     port_type_id         = query.value( query.record().indexOf("port_type_id") ).toInt();
 
-         //create port
+         //создаем порт. если был, то сначала прибиваем 
          if (Port[port_num]!=NULL) {
              Port[port_num]->closePort();
              Port[port_num]->disconnect();
@@ -309,7 +309,7 @@ void QAPRSCore::createPorts() {
          }
          Port[port_num] = this->createPort( query.value( query.record().indexOf("port_type_note") ).toString() );
 
-         //setup specify port parameters
+         //устанавливаем параметры, специфичные для данного типа порта
          QSqlQuery query2;
          query2.exec( "select p2.par_name, p1.par_value "
                       "from port_param_values p1 "
@@ -321,7 +321,7 @@ void QAPRSCore::createPorts() {
          while (query2.next())
             Port[port_num]->setParam( query2.value( query2.record().indexOf("par_name") ).toString(), query2.value( query2.record().indexOf("par_value") ).toString() );
 
-         //setup standart port parameters
+         //устанавливаем стандартные для всех типов портов параметры
          Port[port_num]->PortNum = port_num;
          Port[port_num]->agwPortNum = agwPN++;
 
@@ -334,7 +334,6 @@ void QAPRSCore::createPorts() {
          Port[port_num]->setParam( "Longitude", query.value( query.record().indexOf("port_longitude") ).toString() );            //port_longitude
          Port[port_num]->setParam( "Symbol", query.value( query.record().indexOf("port_symbol") ).toString() );                      //port_symbol
 
-         Port[port_num]->openPort(); //!! open port, set up connections parameters and connect
 
          connect(Port[port_num], SIGNAL( RXPacket(int, QString, QString, QString) ),
             this, SLOT( RXPacket (int, QString, QString, QString) ) );
@@ -347,6 +346,9 @@ void QAPRSCore::createPorts() {
 
          connect(Port[port_num], SIGNAL( ChangeState(int) ),
             this, SLOT( CorePortChangeState (int) ) );
+
+         Port[port_num]->openPort(); //!! открыть порт
+
 
 
          this->sendAGWPortInfo();
@@ -411,7 +413,7 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
     query.bindValue(":p8", MsgText);
     query.exec();
 
-    //save packet to log
+    //сохраняем пакет в текстовый файл
     outPacketLog
     << "\"" << next_K << "\";"
     << "\"" << QDate::currentDate().toString( "yyyy-MM-dd " )+ QTime::currentTime().toString( "hh:mm:ss.zzz" ) << "\";"
@@ -426,12 +428,12 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
     << endl;
 
 
-    //message
+    //если пакет является сообщением, то...
     if (MsgText.left(1)==":") {
 
         MTo = MsgText.mid(1, 9).trimmed();
         if ( MsgText.indexOf("{")==-1 ) {
-            //no ID
+            //пакет не имеет ID
             MMsg = MsgText.mid(11);
             MID = "";
         } else {
@@ -450,9 +452,10 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
 
 
         if (MTo==Port[PortNum]->Call) {
-            //if message to my
+            //если сообщение для меня
 
-            if (MMsg=="?APRST") {
+            //если это сообщение - пинг, то отвечаем (надо бы пока заремарить)
+			if (MMsg=="?APRST") {
                 QString Ping;
 
                 Ping.clear();
@@ -466,7 +469,7 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
                     Ping.append( "," + Via + "*" );
                 }
 
-                Port[PortNum]->sendPacket( "APU25N", Port[PortNum]->Call, Ping );
+                Port[PortNum]->sendPacket( APRSCall, Port[PortNum]->Call, Ping );
 
             }
         }
@@ -496,8 +499,6 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
     //log->insertHtml( "!!!!!!!!!!!!!!!!!!!!!!!!!Snd packet = '" + Packet.toHex() + "'<br>" );
     tcpServerConnection->write( Packet );
 
-    //generate station list
-
     query.prepare( "select count(*) as cnt from stations "
                    "where  call = ( :p1 )" );
     query.bindValue(":p1", From);
@@ -526,11 +527,11 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
     }
 
 
-    //decode position information
+    //декодирование информации о позиции станции
     QString StLat, StLng;
     if ( MsgText.left(1) == "=" or MsgText.left(1) == "!" ) {
 
-        //if use normal position format
+        //если используется обычный формат
         if ( ( ( MsgText.mid( 8, 1 ) == "N" ) or ( MsgText.mid( 8, 1 ) == "S" ) ) and
              ( ( MsgText.mid( 18, 1 ) == "W" ) or ( MsgText.mid( 18, 1 ) == "E" ) ) ) {
 
@@ -563,7 +564,7 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
             query.bindValue(":p7", From );
             query.exec();
         } else {
-            //decode COMPRESSED POSITION
+            //если используется упакованный формат
             QByteArray CompPos;
             CompPos.clear();
             CompPos.append( MsgText.mid( 1, 13 ) );
@@ -609,8 +610,6 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
     }
 
 
-
-
     emit TRXPacket();
 
     Packet.clear();
@@ -650,7 +649,7 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
     query.exec( );
 
 
-    //save packet to log
+    //сохраняем пакет в лог файл
     outPacketLog
     << "\"" << next_K << "\";"
     << "\"" << QDate::currentDate().toString( "yyyy-MM-dd " )+ QTime::currentTime().toString( "hh:mm:ss.zzz" ) << "\";"
@@ -665,7 +664,7 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
     << endl;
 
 
-    //message
+    //есл сообщение
     if (MsgText.left(1)==":") {
         QString MTo;
         QString MMsg;
@@ -673,7 +672,7 @@ void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText
 
         MTo = MsgText.mid(1, 9).trimmed();
         if ( MsgText.indexOf("{")==-1 ) {
-            //no ID
+            //без ID
             MMsg = MsgText.mid(11);
             MID = "";
         } else {
@@ -746,7 +745,7 @@ void QAPRSCore::updatePort( int pnum ) {
 
     if ( Port[port_num] != NULL ) {
 
-        //setup specify port parameters
+        //задаем специфические для данного типа параметры порта
         QSqlQuery query2;
         query2.exec( "select p2.par_name, p1.par_value "
                      "from port_param_values p1 "
@@ -758,7 +757,7 @@ void QAPRSCore::updatePort( int pnum ) {
         while (query2.next())
             Port[port_num]->setParam( query2.value( query2.record().indexOf("par_name") ).toString(), query2.value( query2.record().indexOf("par_value") ).toString() );
 
-        //setup standart port parameters
+        //задаем стандартные параметры
 
         Port[port_num]->PortName = query.value( query.record().indexOf("port_note") ).toString();
         Port[port_num]->setParam( "Call", query.value( query.record().indexOf("port_call") ).toString() );                     //port_call
@@ -773,7 +772,6 @@ void QAPRSCore::updatePort( int pnum ) {
             Port[port_num]->PortNum = port_num;
             Port[port_num]->agwPortNum = agwPN++;
 
-            Port[port_num]->openPort();
 
             connect(Port[port_num], SIGNAL( RXPacket(int, QString, QString, QString) ),
                     this, SLOT( RXPacket (int, QString, QString, QString) ) );
@@ -784,8 +782,11 @@ void QAPRSCore::updatePort( int pnum ) {
             connect(Port[port_num], SIGNAL( ToLog(QString) ),
                     this, SLOT( ToLog (QString) ) );
 
-           connect(Port[port_num], SIGNAL( ChangeState(int) ),
-                   this, SLOT( CorePortChangeState (int) ) );
+            connect(Port[port_num], SIGNAL( ChangeState(int) ),
+                    this, SLOT( CorePortChangeState (int) ) );
+
+            Port[port_num]->openPort();
+
 
         }
         else if (portCreated == FALSE) {
@@ -795,7 +796,7 @@ void QAPRSCore::updatePort( int pnum ) {
         this->sendAGWPortInfo();
 
 
-    } //if port supported
+    } 
 }
 
 void QAPRSCore::deletePort( int pnum ) {
@@ -824,7 +825,7 @@ void QAPRSCore::CorePortChangeState(int pnum) {
 }
 
 void QAPRSCore::sendAGWPortInfo( ) {
-//send updated port information
+//послать клиенту эмулятора AGW сигнал об обновлении списка портов
 
     if ( AGWEmulatorActive == TRUE ) {
 

@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>DialogLoadMap</name>
+    <message>
+        <location filename="ui/loadmap.ui" line="22"/>
+        <source>Select a map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/loadmap.ui" line="87"/>
+        <source>Load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/loadmap.ui" line="103"/>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/loadmap.ui" line="122"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DialogPortoption</name>
     <message>
         <location filename="ui/portoption.ui" line="17"/>
@@ -86,13 +109,11 @@
     <message>
         <location filename="ui/portoption.ui" line="294"/>
         <source>Police Stn</source>
-        <extracomment>/!</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="304"/>
         <source>Emergency</source>
-        <extracomment>\!</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -137,958 +158,732 @@
         <location filename="ui/portoption.ui" line="2154"/>
         <location filename="ui/portoption.ui" line="2164"/>
         <source>No Symbol</source>
-        <extracomment>/&quot;
-----------
-\&quot;
-----------
-\%
-----------
-/)
-----------
-/*
-----------
-\.
-----------
-\/
-----------
-\1
-----------
-\2
-----------
-\3
-----------
-\4
-----------
-\5
-----------
-\6
-----------
-\7
-----------
-\8
-----------
-\=
-----------
-/D
-----------
-/F
-----------
-/J
-----------
-/L
-----------
-\M
-----------
-\O
-----------
-\Y
-----------
-\Z
-----------
-\\
-----------
-\]
-----------
-\i
-----------
-\k
-----------
-/l
-----------
-\q
-----------
-\x
-----------
-/z
-----------
-\z
-----------
-/{
-----------
-/|
-----------
-\|
-----------
-/}
-----------
-\}
-----------
-/~
-----------
-\~</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="334"/>
         <source>Digi</source>
-        <extracomment>/#</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="344"/>
         <source>No. Digi</source>
-        <extracomment>\#</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="354"/>
         <source>Phone</source>
-        <extracomment>/$</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="364"/>
         <source>Bank</source>
-        <extracomment>\$</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="374"/>
         <source>DX Cluster</source>
-        <extracomment>/%</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="394"/>
         <source>HF Gateway</source>
-        <extracomment>/&amp;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="404"/>
         <source>No. Diam&apos;d</source>
-        <extracomment>\&amp;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="414"/>
         <source>Plane sm</source>
-        <extracomment>/&apos;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="424"/>
         <source>Crash site</source>
-        <extracomment>\&apos;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="434"/>
         <location filename="ui/portoption.ui" line="444"/>
         <source>Cloudy</source>
-        <extracomment>/(
-----------
-\(</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="464"/>
         <source>MEO</source>
-        <extracomment>\)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="484"/>
         <source>Snow</source>
-        <extracomment>\*</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="494"/>
         <source>Red Cross</source>
-        <extracomment>/+</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="504"/>
         <source>Church</source>
-        <extracomment>\+</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="514"/>
         <source>Boy Scout</source>
-        <extracomment>/,</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="524"/>
         <source>Girl Scout</source>
-        <extracomment>\,</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="534"/>
         <source>Home</source>
-        <extracomment>/-</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="544"/>
         <source>Home (HF)</source>
-        <extracomment>\-</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="554"/>
         <source>X</source>
-        <extracomment>/.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="574"/>
         <source>Dot</source>
-        <extracomment>//</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="594"/>
         <source>Circle (0)</source>
-        <extracomment>/0</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="604"/>
         <source>No. Circle</source>
-        <extracomment>\0</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="614"/>
         <source>Circle (1)</source>
-        <extracomment>/1</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="634"/>
         <source>Circle (2)</source>
-        <extracomment>/2</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="654"/>
         <source>Circle (3)</source>
-        <extracomment>/3</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="674"/>
         <source>Circle (4)</source>
-        <extracomment>/4</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="694"/>
         <source>Circle (5)</source>
-        <extracomment>/5</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="714"/>
         <source>Circle (6)</source>
-        <extracomment>/6</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="734"/>
         <source>Circle (7)</source>
-        <extracomment>/7</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="754"/>
         <source>Circle (8)</source>
-        <extracomment>/8</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="774"/>
         <source>Circle (9)</source>
-        <extracomment>/9</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="784"/>
         <source>Petrol Stn</source>
-        <extracomment>\9</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="794"/>
         <source>Fire</source>
-        <extracomment>/:</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="804"/>
         <source>Hail</source>
-        <extracomment>\:</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="814"/>
         <source>Campground</source>
-        <extracomment>/;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="824"/>
         <source>Park</source>
-        <extracomment>\;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="834"/>
         <source>Motorcycle</source>
-        <extracomment>/&lt;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="844"/>
         <source>Advisory</source>
-        <extracomment>\&lt;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="854"/>
         <source>Rail Eng.</source>
-        <extracomment>/=</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="874"/>
         <source>Car</source>
-        <extracomment>/&gt;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="884"/>
         <source>No. Car</source>
-        <extracomment>\&gt;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="894"/>
         <source>File svr</source>
-        <extracomment>/?</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="904"/>
         <source>Info Kiosk</source>
-        <extracomment>\?</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="914"/>
         <source>HC Future</source>
-        <extracomment>/@</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="924"/>
         <source>Hurricane</source>
-        <extracomment>\@</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="934"/>
         <source>Aid Stn</source>
-        <extracomment>/A</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="944"/>
         <source>No. Box</source>
-        <extracomment>\A</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="954"/>
         <source>BBS</source>
-        <extracomment>/B</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="964"/>
         <source>Snow blwng</source>
-        <extracomment>\B</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="974"/>
         <source>Canoe</source>
-        <extracomment>/C</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="984"/>
         <source>Coast G&apos;rd</source>
-        <extracomment>\C</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1004"/>
         <source>Drizzle</source>
-        <extracomment>\D</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1014"/>
         <source>Eyeball</source>
-        <extracomment>/E</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1024"/>
         <source>Smoke</source>
-        <extracomment>\E</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1044"/>
         <source>Fr&apos;ze Rain</source>
-        <extracomment>\F</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1054"/>
         <source>Grid Squ.</source>
-        <extracomment>/G</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1064"/>
         <source>Snow Shwr</source>
-        <extracomment>\G</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1074"/>
         <source>Hotel</source>
-        <extracomment>/H</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1084"/>
         <source>Haze</source>
-        <extracomment>\H</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1094"/>
         <source>Tcp/ip</source>
-        <extracomment>/I</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1104"/>
         <source>Rain Shwr</source>
-        <extracomment>\I</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1124"/>
         <source>Lightning</source>
-        <extracomment>\J</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1134"/>
         <source>School</source>
-        <extracomment>/K</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1144"/>
         <source>Kenwood</source>
-        <extracomment>\K</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1164"/>
         <source>Lighthouse</source>
-        <extracomment>\L</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1174"/>
         <source>MacAPRS</source>
-        <extracomment>/M</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1194"/>
         <source>NTS Stn</source>
-        <extracomment>/N</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1204"/>
         <source>Nav Buoy</source>
-        <extracomment>\N</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1214"/>
         <source>Balloon</source>
-        <extracomment>/O</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1234"/>
         <source>Police</source>
-        <extracomment>/P</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1244"/>
         <source>Parking</source>
-        <extracomment>\P</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1254"/>
         <source>TBD</source>
-        <extracomment>/Q</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1264"/>
         <source>Quake</source>
-        <extracomment>\Q</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1274"/>
         <source>Rec Veh&apos;le</source>
-        <extracomment>/R</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1284"/>
         <source>Restaurant</source>
-        <extracomment>\R</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1294"/>
         <source>Shuttle</source>
-        <extracomment>/S</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1304"/>
         <source>Sat/Pacsat</source>
-        <extracomment>\S</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1314"/>
         <source>SSTV</source>
-        <extracomment>/T</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1324"/>
         <source>T&apos;storm</source>
-        <extracomment>\T</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1334"/>
         <source>Bus</source>
-        <extracomment>/U</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1344"/>
         <source>Sunny</source>
-        <extracomment>\U</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1354"/>
         <source>ATV</source>
-        <extracomment>/V</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1364"/>
         <source>VORTAC</source>
-        <extracomment>\V</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1374"/>
         <source>WX Service</source>
-        <extracomment>/W</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1384"/>
         <source>No. WXS</source>
-        <extracomment>\W</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1394"/>
         <source>Helo</source>
-        <extracomment>/X</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1404"/>
         <source>Pharmacy</source>
-        <extracomment>\X</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1414"/>
         <source>Yacht</source>
-        <extracomment>/Y</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1434"/>
         <source>WinAPRS</source>
-        <extracomment>/Z</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1454"/>
         <source>Jogger</source>
-        <extracomment>/[</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1464"/>
         <source>Wall Cloud</source>
-        <extracomment>\[</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1474"/>
         <source>Triangle</source>
-        <extracomment>/\</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1494"/>
         <source>PBBS</source>
-        <extracomment>/]</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1514"/>
         <source>Plane lrge</source>
-        <extracomment>/^</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1524"/>
         <source>No. Plane</source>
-        <extracomment>\^</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1534"/>
         <source>WX Station</source>
-        <extracomment>/_</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1544"/>
         <source>No. WX Stn</source>
-        <extracomment>\_</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1554"/>
         <source>Dish Ant.</source>
-        <extracomment>/`</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1564"/>
         <source>Rain</source>
-        <extracomment>\`</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1574"/>
         <source>Ambulance</source>
-        <extracomment>/a</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1584"/>
         <source>RSGB,ARRL</source>
-        <extracomment>\a</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1594"/>
         <source>Bike</source>
-        <extracomment>/b</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1604"/>
         <source>Dust blwng</source>
-        <extracomment>\b</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1614"/>
         <source>ICP</source>
-        <extracomment>/c</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1624"/>
         <source>No. CivDef</source>
-        <extracomment>\c</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1634"/>
         <source>Garage</source>
-        <extracomment>/d</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1644"/>
         <source>DX Spot</source>
-        <extracomment>\d</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1654"/>
         <source>Horse</source>
-        <extracomment>/e</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1664"/>
         <source>Sleet</source>
-        <extracomment>\e</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1674"/>
         <source>Fire Truck</source>
-        <extracomment>/f</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1684"/>
         <source>Funnel Cld</source>
-        <extracomment>\f</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1694"/>
         <source>Glider</source>
-        <extracomment>/g</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1704"/>
         <source>Gale</source>
-        <extracomment>\g</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1714"/>
         <source>Hospital</source>
-        <extracomment>/h</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1724"/>
         <source>HAM store</source>
-        <extracomment>\h</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1734"/>
         <source>IOTA</source>
-        <extracomment>/i</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1754"/>
         <source>Jeep</source>
-        <extracomment>/j</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1764"/>
         <source>WorkZone</source>
-        <extracomment>\j</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1774"/>
         <source>Truck</source>
-        <extracomment>/k</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1804"/>
         <source>Area Locns</source>
-        <extracomment>\l</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1814"/>
         <source>Repeater</source>
-        <extracomment>/m</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1824"/>
         <source>Milepost</source>
-        <extracomment>\m</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1834"/>
         <source>Node</source>
-        <extracomment>/n</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1844"/>
         <source>No. Triang</source>
-        <extracomment>\n</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1854"/>
         <source>EOC</source>
-        <extracomment>/o</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1864"/>
         <source>Circle sm</source>
-        <extracomment>\o</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1874"/>
         <source>Rover</source>
-        <extracomment>/p</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1884"/>
         <source>Part Cloud</source>
-        <extracomment>\p</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1894"/>
         <source>Grid squ.</source>
-        <extracomment>/q</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1914"/>
         <source>Antenna</source>
-        <extracomment>/r</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1924"/>
         <source>Restrooms</source>
-        <extracomment>\r</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1934"/>
         <source>Power Boat</source>
-        <extracomment>/s</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1944"/>
         <source>No. Boat</source>
-        <extracomment>\s</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1954"/>
         <source>Truck Stop</source>
-        <extracomment>/t</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1964"/>
         <source>Tornado</source>
-        <extracomment>\t</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1974"/>
         <source>Truck 18wh</source>
-        <extracomment>/u</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1984"/>
         <source>No. Truck</source>
-        <extracomment>\u</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="1994"/>
         <source>Van</source>
-        <extracomment>/v</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2004"/>
         <source>No. Van</source>
-        <extracomment>\v</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2014"/>
         <source>Water Stn</source>
-        <extracomment>/w</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2024"/>
         <source>Flooding</source>
-        <extracomment>\w</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2034"/>
         <source>XAPRS</source>
-        <extracomment>/x</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2054"/>
         <source>Yagi</source>
-        <extracomment>/y</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2064"/>
         <source>Sky Warn</source>
-        <extracomment>\y</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/portoption.ui" line="2104"/>
         <source>Fog</source>
-        <extracomment>\{</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1712,132 +1507,249 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="610"/>
+        <location filename="ui/mainwindow.ui" line="577"/>
+        <source>APRS Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/mainwindow.ui" line="619"/>
+        <source>Interface Lang</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/mainwindow.ui" line="692"/>
+        <source>Auto Connect --&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/mainwindow.ui" line="702"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="617"/>
+        <location filename="ui/mainwindow.ui" line="709"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="624"/>
+        <location filename="ui/mainwindow.ui" line="716"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="631"/>
+        <location filename="ui/mainwindow.ui" line="723"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="641"/>
+        <location filename="ui/mainwindow.ui" line="730"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/mainwindow.ui" line="740"/>
         <source>Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="675"/>
+        <location filename="ui/mainwindow.ui" line="774"/>
         <source>Delete Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="685"/>
+        <location filename="ui/mainwindow.ui" line="784"/>
         <source>Add Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="695"/>
+        <location filename="ui/mainwindow.ui" line="794"/>
         <source>Edit Port Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="722"/>
+        <location filename="ui/mainwindow.ui" line="821"/>
         <source>Up Current Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="732"/>
+        <location filename="ui/mainwindow.ui" line="831"/>
         <source>Down Current Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="742"/>
+        <location filename="ui/mainwindow.ui" line="841"/>
         <source>Up All Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="752"/>
+        <location filename="ui/mainwindow.ui" line="851"/>
         <source>Down All Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.ui" line="762"/>
+        <location filename="ui/mainwindow.ui" line="861"/>
         <source>Sys Log</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindowImpl</name>
+    <message numerus="yes">
+        <location filename="src/mainwindowimpl.cpp" line="133"/>
+        <source>Connect (%n)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="126"/>
+        <location filename="src/mainwindowimpl.cpp" line="137"/>
+        <location filename="src/mainwindowimpl.cpp" line="678"/>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/mainwindowimpl.cpp" line="173"/>
         <source>&amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="129"/>
+        <location filename="src/mainwindowimpl.cpp" line="177"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="132"/>
+        <location filename="src/mainwindowimpl.cpp" line="181"/>
         <source>&amp;Packets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="135"/>
+        <location filename="src/mainwindowimpl.cpp" line="184"/>
         <source>&amp;Messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="138"/>
+        <location filename="src/mainwindowimpl.cpp" line="188"/>
         <source>&amp;Stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="169"/>
+        <location filename="src/mainwindowimpl.cpp" line="192"/>
+        <source>&amp;Maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/mainwindowimpl.cpp" line="232"/>
         <source>QAPRSCore::Recreate system database&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="563"/>
+        <location filename="src/mainwindowimpl.cpp" line="630"/>
         <source>The system database created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="607"/>
+        <location filename="src/mainwindowimpl.cpp" line="675"/>
         <source>QAPRSCore::Connecting to system database&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="655"/>
+        <location filename="src/mainwindowimpl.cpp" line="728"/>
         <source>QAPRSCore::Try to up of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="655"/>
+        <location filename="src/mainwindowimpl.cpp" line="728"/>
         <source> port(s)&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="665"/>
+        <location filename="src/mainwindowimpl.cpp" line="738"/>
         <source>QAPRSCore::Disconnectiong from system database&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindowimpl.cpp" line="685"/>
-        <location filename="src/mainwindowimpl.cpp" line="699"/>
+        <location filename="src/mainwindowimpl.cpp" line="769"/>
+        <location filename="src/mainwindowimpl.cpp" line="783"/>
         <source>QAPRSCore::All port(s) is down&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MapsWindow</name>
+    <message>
+        <location filename="ui/maps.ui" line="14"/>
+        <location filename="ui/maps.ui" line="114"/>
+        <source>Map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="69"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="125"/>
+        <source>toolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="140"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="149"/>
+        <source>Terminal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="158"/>
+        <source>Station list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="167"/>
+        <source>Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="176"/>
+        <source>Load map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="185"/>
+        <source>Zoom IN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="194"/>
+        <source>Zoom OUT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="199"/>
+        <location filename="ui/maps.ui" line="240"/>
+        <source>Load Map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="204"/>
+        <source>---</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="216"/>
+        <source>Zoom In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/maps.ui" line="228"/>
+        <source>Zoom Out</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1865,86 +1777,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QAPRSAGWPORT</name>
     <message>
-        <location filename="src/qaprsports.cpp" line="602"/>
-        <source>::openPort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="613"/>
+        <source>(%1)%2::openPort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="603"/>
-        <source>::Connecting to AGW core&lt;/b&gt;&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="614"/>
+        <source>(%1)%2::connecting to AGW core&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="617"/>
-        <source>::AGW Host = &apos;</source>
+        <location filename="src/qaprsports.cpp" line="629"/>
+        <source>(%1)%2::AGW Host = %3&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="644"/>
-        <source>::closePort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="657"/>
+        <source>(%1)%2::closePort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="654"/>
-        <source>::updatePort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="668"/>
+        <source>(%1)%2::updatePort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="664"/>
-        <source>::Disconnected&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="679"/>
+        <source>(%1)%2::Disconnected&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="672"/>
-        <source>::Clienterror&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="688"/>
+        <source>(%1)%2::Clienrerror&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="706"/>
+        <location filename="src/qaprsports.cpp" line="722"/>
         <source>::AGW Ports information&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="707"/>
+        <location filename="src/qaprsports.cpp" line="723"/>
         <source>::Ports count = </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="712"/>
-        <source>::&lt;font color=&apos;#FF0000&apos;&gt;Ports number (</source>
+        <location filename="src/qaprsports.cpp" line="730"/>
+        <source>(%1)%2::&lt;font color=&apos;#FF0000&apos;&gt;Ports number (%3) not support on AGW Core!&lt;/font&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="713"/>
-        <source>) not support on AGW Core!&lt;/font&gt;&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="741"/>
+        <source>(%1)%2::</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="827"/>
-        <source>::Try reconnect to AGW core&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="847"/>
+        <source>(%1)%2::Try reconnect to AGW core&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QAPRSAXIPPORT</name>
     <message>
+        <location filename="src/qaprsports.cpp" line="66"/>
+        <source>(%1)%2::Start listen UDP on port %3&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="91"/>
+        <source>(%1)%2::closePort&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="107"/>
+        <source>(%1)%2::updatePort&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/qaprsports.cpp" line="64"/>
-        <source>::openPort&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="65"/>
-        <source>::Start listen UDP on port &lt;b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="90"/>
-        <source>::closePort&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="105"/>
-        <source>::updatePort&lt;br&gt;</source>
+        <source>(%1)%2::openPort&lt;br&gt;</source>
+        <oldsource>::openPort&lt;br&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1984,86 +1897,90 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QAPRSFLDIGIPORT</name>
     <message>
-        <location filename="src/qaprsports.cpp" line="1577"/>
-        <source>::openPort&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="1578"/>
-        <source>::Connecting to FLDigi server</source>
-        <oldsource>::Connecting to APRS server</oldsource>
+        <location filename="src/qaprsports.cpp" line="1609"/>
+        <source>(%1)%2::openPort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/qaprsports.cpp" line="1610"/>
-        <source>::closePort&lt;br&gt;</source>
+        <source>(%1)%2::Connecting to FLDigi server %3&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1620"/>
-        <source>::updatePort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1644"/>
+        <source>(%1)%2::closePort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1629"/>
-        <source>::Disconnected&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1655"/>
+        <source>(%1)%2::updatePort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1637"/>
-        <source>::Clienterror&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1665"/>
+        <source>(%1)%2::Disconnected&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1726"/>
-        <source>::Try reconnect to AGW core&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1674"/>
+        <source>(%1)%2::Clienterror&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="1764"/>
+        <source>(%1)%2::Try reconnect to AGW core&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QAPRSINTERNETPORT</name>
     <message>
-        <location filename="src/qaprsports.cpp" line="299"/>
-        <source>::openPort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="301"/>
+        <source>(%1)%2::openPort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="300"/>
-        <source>::Connecting to APRS server</source>
+        <location filename="src/qaprsports.cpp" line="303"/>
+        <source>(%1)%2::Connecting to APRS server %3 ...&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="335"/>
-        <source>::APRS Server Address = &apos;</source>
+        <location filename="src/qaprsports.cpp" line="340"/>
+        <source>(%1)%2::APRS Server Address = &lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="336"/>
-        <source>::APRS Server Port = &apos;</source>
+        <location filename="src/qaprsports.cpp" line="341"/>
+        <source>(%1)%2::APRS Server Port = &lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="385"/>
+        <location filename="src/qaprsports.cpp" line="401"/>
+        <source>(%1)%2::updatePort&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="411"/>
+        <source>(%1)%2::disconnected&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="420"/>
+        <source>(%1)%2::Clienterror&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="525"/>
+        <source>(%1)%2::try reconnect to AGW core&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="390"/>
         <source>::closePort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="395"/>
-        <source>::updatePort&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="404"/>
-        <source>::Disconnected&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="412"/>
-        <source>::Clienterror&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/qaprsports.cpp" line="516"/>
+        <location filename="src/qaprsports.cpp" line="524"/>
         <source>::Try reconnect to AGW core&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2071,33 +1988,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QAPRSKISSPORT</name>
     <message>
-        <location filename="src/qaprsports.cpp" line="1027"/>
-        <source>::openPort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1060"/>
+        <source>(%1)%2::try to open COM port&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1042"/>
-        <source>::Can&apos;t open COM port&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1048"/>
+        <source>(%1)%2::openPort&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1062"/>
-        <source>::Can&apos;t set COMM timeouts&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1067"/>
+        <source>(%1)%2::Can&apos;t open COM port&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1095"/>
-        <source>::Can&apos;t set COMM state&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1088"/>
+        <source>(%1)%2::Can&apos;t set COMM timeouts&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1316"/>
-        <source>::closePort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1122"/>
+        <source>(%1)%2::Can&apos;t set COMM state&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/qaprsports.cpp" line="1328"/>
-        <source>::updatePort&lt;br&gt;</source>
+        <location filename="src/qaprsports.cpp" line="1344"/>
+        <source>(%1)%2::closePort&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="1357"/>
+        <source>(%1)%2::updatePort&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/qaprsports.cpp" line="1504"/>
+        <source>(%1)%2::ignore packet&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

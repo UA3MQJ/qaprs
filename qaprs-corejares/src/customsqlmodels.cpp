@@ -38,24 +38,24 @@
              Sym.append( symindex );
 
              picName.append( Sym.toHex().toUpper() );
-             picName.append( ".bmp" );
+             picName.append( ".png" );
 
              return QIcon( picName );\
          }
          if (index.column() == 2) {
              picName.clear();
              if ( this->record(index.row()).value("PTID").toString() == "-1" )
-                     picName.append( ":images/port.jpg" );
+                     picName.append( ":images/port.png" );
              if ( this->record(index.row()).value("PTID").toString() == "0" )
-                     picName.append( ":images/portinet.jpg" );
+                     picName.append( ":images/portinet.png" );
              if ( this->record(index.row()).value("PTID").toString() == "1" )
-                     picName.append( ":images/portkiss.jpg" );
+                     picName.append( ":images/portkiss.png" );
              if ( this->record(index.row()).value("PTID").toString() == "2" )
-                     picName.append( ":images/portagw.jpg" );
+                     picName.append( ":images/portagw.png" );
              if ( this->record(index.row()).value("PTID").toString() == "5" )
-                     picName.append( ":images/portaxip.jpg" );
+                     picName.append( ":images/portaxip.png" );
              if ( this->record(index.row()).value("PTID").toString() == "6" )
-                     picName.append( ":images/portfldigi.jpg" );
+                     picName.append( ":images/portfldigi.png" );
 
              return QIcon( picName );
          }
@@ -160,7 +160,7 @@
              Sym.append( symindex );
 
              picName.append( Sym.toHex().toUpper() );
-             picName.append( ".bmp" );
+             picName.append( ".png" );
 
              return QIcon( picName );\
          }

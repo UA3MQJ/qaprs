@@ -37,6 +37,7 @@ class QAPRSPort: public QObject
     virtual void    updatePort();
     virtual void    sendPacket( QString To, QString From, QString MsgText );
     virtual void    setParam( QString ParamName, QString ParamValue );
+    QString APRSCall;
     bool    isActive() { return active; };
     void    setReadOnly(bool RO);
     bool    isReadOnly();
@@ -47,8 +48,8 @@ class QAPRSPort: public QObject
     void    setBeaconComment(QString Text);
     void    setSymbol(QString Text);
     void    setBeaconInterval(int iv);
-    QString PortType; //name of port type (Internet, KISS, AXIP etc)
-    QString PortName; //user name of port (Internet aprs.net, kiss<->mix, etc)
+    QString PortType; //имя порта (Internet, KISS, AXIP etc)
+    QString PortName; //пользовательское имя порта (Internet aprs.net, kiss<->mix, etc)
     int     PortNum;
     int     agwPortNum;
     bool    active;
@@ -99,7 +100,7 @@ class QAPRSAXIPPORT: public QAPRSPort  {
     int     RXPort;
     int     TXPort;
     QHostAddress *TXAddress;
-    //for dinamic update
+
     bool    RXPortUpdate;
 
 private slots:
@@ -186,7 +187,7 @@ class QAPRSAGWPORT: public QAPRSPort  {
     QTimer     *beacontimer;
     QTimer     *reconnecttimer;
     QTcpSocket *tcpClient;
-    int     agwStatus; //0-connect to agw; //1-normal work
+    int     agwStatus; //0-соединение с agw; //1-нормальная работа
     QString agwHost;   //
     int     agwPort;   //
 

@@ -18,6 +18,12 @@ void StationsWindowImpl::showEvent ( QShowEvent * event ) {
 
     qDebug() << "Stations show";
 
+    if ( getDBVal("swin_X").length() > 0 ) {
+
+        this->setGeometry( getDBVal("swin_X").toInt() + 4, getDBVal("swin_Y").toInt() + 23 /* !!! DURDOM */,
+                           getDBVal("swin_W").toInt(), getDBVal("swin_H").toInt() );
+    }
+
     if (APRSCore->coreActive==TRUE) {
         qDebug() << "Core in active mode";
         requeryStations();
@@ -30,6 +36,17 @@ void StationsWindowImpl::showEvent ( QShowEvent * event ) {
 void StationsWindowImpl::closeEvent(QCloseEvent *event) {
 
     qDebug()<<"Stations Close event";
+
+    QSqlQuery query;
+
+    query.prepare( "delete from vars where varname like 'swin_%' " );
+    query.exec();
+
+    setDBVal( "swin_X", QString::number( this->x() ) );
+    setDBVal( "swin_Y", QString::number( this->y() ) );
+    setDBVal( "swin_W", QString::number( this->width() ) );
+    setDBVal( "swin_H", QString::number( this->height() ) );
+
     hide();
     event->ignore();
 
@@ -70,6 +87,30 @@ void StationsWindowImpl::requeryStations() {
         isrequeringStations = FALSE;
 
     }
+
+}
+
+QString StationsWindowImpl::getDBVal( QString varname ) {
+
+    QSqlQuery query;
+
+    query.prepare( "select varval from vars where varname='" + varname + "'" );
+    query.exec();
+    query.first();
+    QString value = query.value( 0 ).toString();
+
+    return value;
+
+}
+
+void StationsWindowImpl::setDBVal( QString varname, QString varval ) {
+
+    QSqlQuery query;
+
+    query.prepare( "insert into vars(varval, varname) values(:p1, :p2) " );
+    query.bindValue(":p1", varval);
+    query.bindValue(":p2", varname);
+    query.exec();
 
 }
 
