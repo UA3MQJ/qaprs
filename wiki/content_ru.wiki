@@ -8,6 +8,12 @@ RU|[http://code.google.com/p/qaprs/wiki/content_en EN]
 
 [http://code.google.com/p/qaprs/wiki/need_ru Обоснование необходимости разработки]
 
+== Версия Jares ==
+
 [http://code.google.com/p/qaprs/wiki/tz_ru Постановка задачи. Анализ ТЗ]
 
 [http://code.google.com/p/qaprs/wiki/struct_ru Структуры]
+
+== Версия Remus ==
+
+[http://code.google.com/p/qaprs/wiki/tz2_ru Постановка задачи. Анализ ТЗ]
