@@ -17,3 +17,25 @@ RU|[http://code.google.com/p/qaprs/wiki/content_en EN]
 == Версия Rem ==
 
 [http://code.google.com/p/qaprs/wiki/tz2_ru Постановка задачи. Анализ ТЗ]
+
+=== Инструкция пользователя ===
+
+[http://code.google.com/p/qaprs/wiki/rem_man00_ru Введение]
+
+[http://code.google.com/p/qaprs/wiki/rem_man01_ru Общие настройки программы]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru Настройка портов]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_01_ru Настройка порта Internet]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_02_ru Настройка порта AXIP]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_03_ru Настройка порта AGW]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_04_ru Настройка порта KISS]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_05_ru Настройка порта FLDigi]
+
+[http://code.google.com/p/qaprs/wiki/rem_man02_06_ru Настройка порта VAska]
+
+[http://code.google.com/p/qaprs/wiki/rem_man03_ru Настройка маяков]
