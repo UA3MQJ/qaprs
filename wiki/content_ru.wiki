@@ -33,18 +33,3 @@ RU|[http://code.google.com/p/qaprs/wiki/content_en EN]
 [http://code.google.com/p/qaprs/wiki/rem_man02_06_ru 2.6 Настройка порта VAska]
 
 [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
-
-
-
-
-
-
-
-
-
-
-== Архив. Версия Jares (предыдущая версия) ==
-
-[http://code.google.com/p/qaprs/wiki/tz_ru Постановка задачи. Анализ ТЗ]
-
-[http://code.google.com/p/qaprs/wiki/struct_ru Структуры]
