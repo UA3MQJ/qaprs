@@ -1,0 +1,7 @@
+= 2.4 Настройка порта KISS =
+<br />
+
+Текст 
+
+
+[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
