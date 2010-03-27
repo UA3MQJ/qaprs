@@ -4,6 +4,13 @@
 
 Для тестеров 
 
+[http://qaprs.googlecode.com/files/QAPRS-CoreRem001.rar QAPRS - Core (ver. Rem) Rel 1.] - 27.03.2010
+
+
+
+----
+== Предыдущая версия ==
+
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares004.rar QAPRS - Core (ver. Jares) Rel 4.] - 10.12.2009
 
 Для работы требуются дополнительно:
@@ -15,11 +22,6 @@
 [http://qaprs.googlecode.com/files/maps-min.rar MAP files] - 10.12.2009 - минимальный набор карт
 
 [http://qaprs.googlecode.com/files/qaprs-core_ru4.rar Русификация интерфейса для версии 004] - 10.12.2009
-
-
-
-----
-== Предыдущая версия ==
 
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares003.rar QAPRS - Core (ver. Jares) Rel 3. Need DLL!!! (без DLL)] - 03.09.2009
 
