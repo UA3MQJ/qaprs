@@ -5,6 +5,6 @@
 
 В настройках порта указывается порт для KISS модема и скорость. При работе с виртуальным TNC выбирается второй порт из пары (тот к которому НЕ подключен MixW).
 
-http://qaprs.googlecode.com/svn/wiki/port_struct.png <br />
+http://qaprs.googlecode.com/svn/wiki/port_kiss.PNG <br />
 
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
