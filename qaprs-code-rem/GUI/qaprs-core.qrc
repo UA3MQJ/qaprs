@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/ico.png</file>
+        <file>images/mopen.png</file>
+        <file>images/z_in.png</file>
+        <file>images/z_out.png</file>
+        <file>images/config.png</file>
+        <file>images/exit.png</file>
+        <file>images/email.png</file>
+        <file>images/stlist.png</file>
+        <file>images/postoffk.png</file>
+        <file>images/port.png</file>
+        <file>images/portinet.png</file>
+        <file>images/portagw.png</file>
+        <file>images/portkiss.png</file>
+        <file>images/portaxip.png</file>
+        <file>images/porton.png</file>
+        <file>images/portoff.png</file>
+        <file>images/portnot.png</file>
+        <file>images/porttx.png</file>
+        <file>images/portrx.png</file>
+        <file>images/portfldigi.png</file>
+        <file>images/portvaska.png</file>
+    </qresource>
+</RCC>
