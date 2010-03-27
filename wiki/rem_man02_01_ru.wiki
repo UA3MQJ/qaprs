@@ -7,4 +7,6 @@ APRS Internet Server Connection - порт соединения с APRS Internet
 
 Соединяться с серверами можно как напрямую, так и через просежуточные сервера (PROXY). При необходимости, может быть указано имя и пароль для proxy-сервера.
 
+http://qaprs.googlecode.com/svn/wiki/port_inet.PNG <br />
+
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
