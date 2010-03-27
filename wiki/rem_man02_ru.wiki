@@ -32,4 +32,11 @@ http://qaprs.googlecode.com/svn/wiki/port_list_add1.PNG <br />
 http://qaprs.googlecode.com/svn/wiki/port_list_add2.PNG <br />
 
 
+У созданных портов есть возможность менять параметры "Edit Port Parameters", включая тип порта.
+
+Нажатием кнопки "Delete Port" порт может быть удален.
+
+В нижней части окна расположены кнопки управления всеми портами сразу: можно открыть сразу все порты - "Open All Ports" или все сразу закрыть - "Close All Ports".
+
+
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
