@@ -1,7 +1,29 @@
 = 3 Настройка маяков =
 <br />
 
-Текст 
+В данной версии ядра выдача маяков выделена в отдельную подсистему. Маяк не привязан к порту. Порт является просто параметром у маяка. На каждый порт может быть назначено несколько маяков. 
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list.PNG <br />
+
+Каждый маяк имеет свои настройки о используемом позывном, символе, периоде, тексте и адресу Unproto.
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list2.PNG <br />
+
+Для добавления маяка необходимо нажать кнопку "Create Beacon".
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list_add.PNG <br />
+
+Выбрать порт, через который будет передаваться маяк.
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list_add2.PNG <br />
+
+Выбрать символ маяка
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list_add3.PNG <br />
+
+А так же остальные параметры маяка.
+
+
 
 
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
