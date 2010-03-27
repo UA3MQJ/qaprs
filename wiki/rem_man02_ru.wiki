@@ -29,7 +29,7 @@ http://qaprs.googlecode.com/svn/wiki/port_list_add1.PNG <br />
 
 Задается пользовательское имя порта и специфические для данного вида порта параметры
 
-http://qaprs.googlecode.com/svn/wiki/port_list_add1.PNG <br />
+http://qaprs.googlecode.com/svn/wiki/port_list_add2.PNG <br />
 
 
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
