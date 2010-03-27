@@ -24,6 +24,12 @@ http://qaprs.googlecode.com/svn/wiki/beacon_list_add3.PNG <br />
 А так же остальные параметры маяка.
 
 
+У созданных маяков есть возможность менять параметры "Edit Beacon Parameters".
 
+Нажатием кнопки "Delete Beacon " маяк может быть удален.
+
+В нижней части окна расположены кнопки управления всеми маяками сразу: можно включить сразу все маяки - "Switch ON All Beacons" или все сразу выключить - "Switch OFF All Beacons". 
+
+Кнопки "Send All Beacons" и "Send Beacon" пока не работают.
 
 [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
