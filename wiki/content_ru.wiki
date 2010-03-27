@@ -34,4 +34,4 @@ RU|[http://code.google.com/p/qaprs/wiki/content_en EN]
 
 [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
 
-[http://code.google.com/p/qaprs/wiki/rem_man_pr1_ru Приложение 1. Назначение файлов в папке программы]
+[http://code.google.com/p/qaprs/wiki/rem_man_pr1_ru Приложение 1. Комплект файлов для работы программы]
