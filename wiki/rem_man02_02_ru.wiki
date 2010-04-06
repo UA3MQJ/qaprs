@@ -5,4 +5,4 @@ AXIP. Передача и приемAX пакетов через TCPIP сети.
 
 http://qaprs.googlecode.com/svn/wiki/port_axip.PNG <br />
 
-[http://code.google.com/p/qaprs/wiki/rem_man02_01_ru 2.1 Настройка порта Internet] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_03_ru 2.3 Настройка порта AGW]
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/rem_man02_01_ru 2.1 Настройка порта Internet] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_03_ru 2.3 Настройка порта AGW] | [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
