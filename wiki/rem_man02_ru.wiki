@@ -39,4 +39,4 @@ http://qaprs.googlecode.com/svn/wiki/port_list_add2.PNG <br />
 В нижней части окна расположены кнопки управления всеми портами сразу: можно открыть сразу все порты - "Open All Ports" или все сразу закрыть - "Close All Ports".
 
 
-[http://code.google.com/p/qaprs/wiki/rem_man01_ru 1 Общие настройки программы] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_01_ru 2.1 Настройка порта Internet]
+[http://code.google.com/p/qaprs/wiki/rem_man01_ru 1 Общие настройки программы] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_01_ru 2.1 Настройка порта Internet] | [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
