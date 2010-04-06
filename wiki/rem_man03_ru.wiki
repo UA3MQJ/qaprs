@@ -32,4 +32,4 @@ http://qaprs.googlecode.com/svn/wiki/beacon_list_add3.PNG <br />
 
 Кнопки "Send All Beacons" и "Send Beacon" пока не работают.
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man_pr1_ru Приложение 1. Комплект файлов для работы программы]
