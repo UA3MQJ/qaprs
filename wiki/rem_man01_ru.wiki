@@ -15,4 +15,4 @@ http://qaprs.googlecode.com/svn/wiki/gen_conf.PNG <br />
 Правильно введенные данные необходимо сохранить. Если данные введены неправильно, то их можно отменить (тогда загрузятся предыдущие значения).
 
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man00_ru Введение] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов]
