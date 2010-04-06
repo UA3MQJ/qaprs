@@ -7,4 +7,4 @@
 
 http://qaprs.googlecode.com/svn/wiki/port_kiss.PNG <br />
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man02_03_ru 2.3 Настройка порта AGW] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_05_ru 2.5 Настройка порта FLDigi]
