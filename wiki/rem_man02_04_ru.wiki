@@ -1,5 +1,7 @@
 = 2.4 Настройка порта KISS =
 <br />
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/rem_man02_03_ru 2.3 Настройка порта AGW] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_05_ru 2.5 Настройка порта FLDigi] | 
+[http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
 
 Порт поддерживает работу с KISS TNC. Контроллер может быть как аппаратным, так и эмуляцией. Часто в качестве KISS модема используется программа [http://qaprs.googlecode.com/files/MixW214Rf.rar MixW]. В ней выбирается пакетный режим, необходимая скорость. Включается поддержка эмуляции TNC по порту A. В программе, которая должна пользоваться данным модемом указывается порт B. Теперь, если два этих порта соединить нуль-модемом, то получится эмуляция работы реального KISS TNC. В качестве виртуального нуль-модема может быть использована одна из множества программ ([http://qaprs.googlecode.com/files/ComEmulDrv3-MixW.rar ComEmulDrv3-MixW], [http://qaprs.googlecode.com/files/N8VBvCOMSetup-226a.rar N8VBvCOM]). Рекомендую первую.
 
@@ -7,4 +9,5 @@
 
 http://qaprs.googlecode.com/svn/wiki/port_kiss.PNG <br />
 
-[http://code.google.com/p/qaprs/wiki/rem_man02_03_ru 2.3 Настройка порта AGW] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_05_ru 2.5 Настройка порта FLDigi]
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/rem_man02_03_ru 2.3 Настройка порта AGW] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_05_ru 2.5 Настройка порта FLDigi] | 
+[http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
