@@ -1,5 +1,6 @@
 = 2.1 Настройка порта Internet =
 <br />
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_02_ru 2.2 Настройка порта AXIP] | [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
 
 APRS Internet Server Connection - порт соединения с APRS Internet сервером. Порт хранит 3 адреса серверов и, при потере соединения с первым, пытается установить соединение со следующим. Время пересодинения 30с. 
 
@@ -9,4 +10,4 @@ APRS Internet Server Connection - порт соединения с APRS Internet
 
 http://qaprs.googlecode.com/svn/wiki/port_inet.PNG <br />
 
-[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_02_ru 2.2 Настройка порта AXIP]
+[http://code.google.com/p/qaprs/wiki/rem_man02_ru 2 Настройка портов] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_02_ru 2.2 Настройка порта AXIP] | [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
