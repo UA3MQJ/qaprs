@@ -6,4 +6,4 @@ AGW. реализован прием и передача пакетов чере
 
 http://qaprs.googlecode.com/svn/wiki/port_agw.PNG <br />
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man02_02_ru 2.2 Настройка порта AXIP] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_04_ru 2.4 Настройка порта KISS]
