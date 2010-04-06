@@ -23,4 +23,4 @@ FLDigi - программа для работы цифровыми видами 
 
 http://qaprs.googlecode.com/svn/wiki/port_fldigi.PNG <br />
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man02_04_ru 2.4 Настройка порта KISS] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man02_06_ru 2.6 Настройка порта VAska]
