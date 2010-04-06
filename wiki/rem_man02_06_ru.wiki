@@ -11,4 +11,4 @@ http://qaprs.googlecode.com/svn/wiki/port_vaska2.PNG <br />
 
 Параметр Mode выбирает формат передаваемых сообщений. Если выбран режим bin, тогда сообщения передаются в виде AX пакетов. Если выбран текстовый режим, тогда сообщения передаются в текстовом виде в том же формате, в котором идет обмен с APRS серверами Internet.
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man02_05_ru 2.5 Настройка порта FLDigi] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию] | [http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков]
