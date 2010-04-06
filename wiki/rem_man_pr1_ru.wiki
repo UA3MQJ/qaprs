@@ -11,4 +11,4 @@
 ||console.exe||Ядро. Запускается только ядро без графической части. Работает весь реализованный функционал ядра (работа портов, маяки).||
 
 
-[http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
+[http://code.google.com/p/qaprs/wiki/rem_man03_ru 3 Настройка маяков] | [http://code.google.com/p/qaprs/wiki/content_ru Вернуться к содержанию]
