@@ -1,6 +1,6 @@
 = Проект QAPRS - Документация =
 
-RU|[http://code.google.com/p/qaprs/wiki/content_en EN]
+
 
 == Содержание ==
 
