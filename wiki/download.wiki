@@ -4,12 +4,14 @@
 
 Для тестеров 
 
-[http://qaprs.googlecode.com/files/QAPRS-CoreRem001.rar QAPRS - Core (ver. Rem) Rel 1.] - 27.03.2010
+[http://qaprs.googlecode.com/files/QAPRS-CoreRem002.rar QAPRS - Core (ver. Rem) Rel 2.] - 19.04.2010
 
 
 
 ----
 == Предыдущая версия ==
+
+[http://qaprs.googlecode.com/files/QAPRS-CoreRem001.rar QAPRS - Core (ver. Rem) Rel 1.] - 27.03.2010
 
 [http://qaprs.googlecode.com/files/QAPRS-CoreJares004.rar QAPRS - Core (ver. Jares) Rel 4.] - 10.12.2009
 
