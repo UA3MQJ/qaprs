@@ -3,6 +3,7 @@
 == Текущая версия ==
 
 Для тестеров 
+
 [http://qaprs.googlecode.com/files/Setup.exe QAPRS - Core (ver. Rem) Rel 2.1 EXE] - 22.04.2010
 
 или
