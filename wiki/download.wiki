@@ -4,11 +4,11 @@
 
 Для тестеров 
 
-[http://qaprs.googlecode.com/files/Setup.exe QAPRS - Core (ver. Rem) Rel 2.1 EXE] - 22.04.2010
+[http://qaprs.googlecode.com/files/Setup.exe QAPRS - Core (ver. Rem) Rel 2.1] - 22.04.2010 (exe - установщик программы на ПК)
 
 или
 
-[http://qaprs.googlecode.com/files/QAPRS-CoreRem002.1.rar QAPRS - Core (ver. Rem) Rel 2.1 RAR] - 21.04.2010
+[http://qaprs.googlecode.com/files/QAPRS-CoreRem002.1.rar QAPRS - Core (ver. Rem) Rel 2.1 RAR] - 21.04.2010 (rar - архив с программой)
 
 
 
