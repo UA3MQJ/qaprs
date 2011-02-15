@@ -6,9 +6,9 @@
 
 
 
-[http://qaprs.googlecode.com/files/Setup-Misa.exe QAPRS - Core (ver. Misa) V1.0] - 09.02.2011 (exe - установщик программы на ПК))
+[http://qaprs.googlecode.com/files/SetuP%20MISA%20V1.1.exe QAPRS - Core (ver. Misa) V1.1] - 15.02.2011 (exe - установщик программы на ПК))
 
-[http://qaprs.googlecode.com/files/QAPRS-01.2011.rar QAPRS - Core (ver. Misa) V1.0] - 07.02.2011 (rar - архив с программой PORTABLE)
+[http://qaprs.googlecode.com/files/QAPRS-02.2011.rar QAPRS - Core (ver. Misa) V1.1] - 15.02.2011 (rar - архив с программой PORTABLE)
 
 
 
