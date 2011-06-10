@@ -17,3 +17,5 @@ The work of APRS system can also be provided without application of the addition
 Realization of the project will allow to learn APRS protokol, to fix skills of work with network protocol practically, to master development of modules for work with hardware devices (sound cards, serial ports). Recently a set of novelties in the field of network services has appeared with which it is possible to integrate to APRS, to add functionalities of application of a network, it helps to develop opportunities and a scope of the report, to involve additional users. 
 
 _Sincerely, Alex UA3MQJ. 73!_
+
+http://foto.qrz.ru/albums/userpics/10388/normal_qaprs.png
