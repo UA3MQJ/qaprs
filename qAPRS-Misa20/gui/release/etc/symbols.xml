@@ -1,0 +1,192 @@
+<symbols>
+	<symbol code="/!" 		name="Police Stn" 		img="primary/00.png"/>
+	<symbol code="\!" 		name="Emergency" 		img="alternate/00.png"/>
+	<symbol code="/&quot;"		name="No Symbol" 			img="primary/01.png"/>
+	<symbol code="\&quot;"		name="No Symbol" 		img="alternate/01.png"/>
+	<symbol code="/#" 		name="Digi" 			img="primary/02.png"/>
+	<symbol code="\#" 		name="No. Digi" 		img="alternate/02.png"/>
+	<symbol code="/$" 		name="Phone" 			img="primary/03.png"/>
+	<symbol code="\$" 		name="Bank" 		img="alternate/03.png"/>
+	<symbol code="/%" 		name="DX Cluster" 		img="primary/04.png"/>
+	<symbol code="\%" 		name="No Symbol" 		img="alternate/04.png"/>
+	<symbol code="/&amp;" 		name="HF Gateway" 		img="primary/05.png"/>
+	<symbol code="\&amp;" 		name="No. Diam'd" 	img="alternate/05.png"/>
+	<symbol code="/'" 		name="Plane sm" 			img="primary/06.png"/>
+	<symbol code="\'" 		name="Crash site" 	img="alternate/06.png"/>
+	<symbol code="/(" 		name="Cloudy" 			img="primary/07.png"/>
+	<symbol code="\(" 		name="Cloudy" 		img="alternate/07.png"/>
+	<symbol code="/)" 		name="No Symbol" 			img="primary/08.png"/>
+	<symbol code="\)" 		name="MEO" 			img="alternate/08.png"/>
+	<symbol code="/*" 		name="No Symbol" 			img="primary/09.png"/>
+	<symbol code="\*" 		name="Snow" 		img="alternate/09.png"/>
+	<symbol code="/+" 		name="Red Cross" 			img="primary/0A.png"/>
+	<symbol code="\+" 		name="Church" 		img="alternate/0A.png"/>
+	<symbol code="/," 		name="Boy Scout" 			img="primary/0B.png"/>
+	<symbol code="\," 		name="Girl Scout" 	img="alternate/0B.png"/>
+	<symbol code="/-" 		name="Home" 			img="primary/0C.png"/>
+	<symbol code="\-" 		name="Home (HF)" 		img="alternate/0C.png"/>
+	<symbol code="/." 		name="X"				img="primary/0D.png"/>
+	<symbol code="\." 		name="No Symbol" 		img="alternate/0D.png"/>
+	<symbol code="//" 		name="Dot" 				img="primary/0E.png"/>
+	<symbol code="\/" 		name="No Symbol" 		img="alternate/0E.png"/>
+	<symbol code="/0" 		name="Circle (0)" 		img="primary/0F.png"/>
+	<symbol code="\0" 		name="No. Circle" 	img="alternate/0F.png"/>
+	<symbol code="/1" 		name="Circle (1)" 		img="primary/10.png"/>
+	<symbol code="\1" 		name="No Symbol" 		img="alternate/10.png"/>
+	<symbol code="/2" 		name="Circle (2)" 		img="primary/11.png"/>
+	<symbol code="\2" 		name="No Symbol" 		img="alternate/11.png"/>
+	<symbol code="/3" 		name="Circle (3)" 		img="primary/12.png"/>
+	<symbol code="\3" 		name="No Symbol" 		img="alternate/12.png"/>
+	<symbol code="/4" 		name="Circle (4)" 		img="primary/13.png"/>
+	<symbol code="\4" 		name="No Symbol" 		img="alternate/13.png"/>
+	<symbol code="/5" 		name="Circle (5)" 		img="primary/14.png"/>
+	<symbol code="\5" 		name="No Symbol" 		img="alternate/14.png"/>
+	<symbol code="/6" 		name="Circle (6)" 		img="primary/15.png"/>
+	<symbol code="\6" 		name="No Symbol" 		img="alternate/15.png"/>
+	<symbol code="/7" 		name="Circle (7)" 		img="primary/16.png"/>
+	<symbol code="\7" 		name="No Symbol" 		img="alternate/16.png"/>
+	<symbol code="/8" 		name="Circle (8)" 		img="primary/17.png"/>
+	<symbol code="\8" 		name="No Symbol" 		img="alternate/17.png"/>
+	<symbol code="/9" 		name="Circle (9)" 		img="primary/18.png"/>
+	<symbol code="\9" 		name="Petrol Stn" 	img="alternate/18.png"/>
+	<symbol code="/:" 		name="Fire" 			img="primary/19.png"/>
+	<symbol code="\:" 		name="Hail" 		img="alternate/19.png"/>
+	<symbol code="/;" 		name="Campground" 		img="primary/1A.png"/>
+	<symbol code="\;" 		name="Park" 		img="alternate/1A.png"/>
+	<symbol code="/&lt;" 		name="Motorcycle" 		img="primary/1B.png"/>
+	<symbol code="\&lt;" 		name="Advisory" 		img="alternate/1B.png"/>
+	<symbol code="/=" 		name="Rail Eng." 			img="primary/1C.png"/>
+	<symbol code="\=" 		name="No Symbol" 		img="alternate/1C.png"/>
+	<symbol code="/&gt;" 		name="Car" 				img="primary/1D.png"/>
+	<symbol code="\&gt;" 		name="No. Car" 		img="alternate/1D.png"/>
+	<symbol code="/?" 		name="File svr" 			img="primary/1E.png"/>
+	<symbol code="\?" 		name="Info Kiosk" 	img="alternate/1E.png"/>
+	<symbol code="/@" 		name="HC Future" 			img="primary/1F.png"/>
+	<symbol code="\@" 		name="Hurricane" 		img="alternate/1F.png"/>
+	<symbol code="/A" 		name="Aid Stn" 			img="primary/20.png"/>
+	<symbol code="\A" 		name="No. Box" 		img="alternate/20.png"/>
+	<symbol code="/B" 		name="BBS" 				img="primary/21.png"/>
+	<symbol code="\B" 		name="Snow blwng" 	img="alternate/21.png"/>
+	<symbol code="/C" 		name="Canoe" 			img="primary/22.png"/>
+	<symbol code="\C" 		name="Coast G'rd" 	img="alternate/22.png"/>
+	<symbol code="/D" 		name="No Symbol" 			img="primary/23.png"/>
+	<symbol code="\D" 		name="Drizzle" 		img="alternate/23.png"/>
+	<symbol code="/E" 		name="Eyeball" 			img="primary/24.png"/>
+	<symbol code="\E" 		name="Smoke" 		img="alternate/24.png"/>
+	<symbol code="/F" 		name="No Symbol" 			img="primary/25.png"/>
+	<symbol code="\F" 		name="Fr'ze Rain" 	img="alternate/25.png"/>
+	<symbol code="/G" 		name="Grid Squ." 			img="primary/26.png"/>
+	<symbol code="\G" 		name="Snow Shwr" 		img="alternate/26.png"/>
+	<symbol code="/H" 		name="Hotel" 			img="primary/27.png"/>
+	<symbol code="\H" 		name="Haze" 		img="alternate/27.png"/>
+	<symbol code="/I" 		name="Tcp/ip" 			img="primary/28.png"/>
+	<symbol code="\I" 		name="Rain Shwr" 		img="alternate/28.png"/>
+	<symbol code="/J"			name="No Symbol" 			img="primary/29.png"/>
+	<symbol code="\J" 		name="Lightning" 		img="alternate/29.png"/>
+	<symbol code="/K" 		name="School" 			img="primary/2A.png"/>
+	<symbol code="\K" 		name="Kenwood" 		img="alternate/2A.png"/>
+	<symbol code="/L" 		name="No Symbol" 			img="primary/2B.png"/>
+	<symbol code="\L" 		name="Lighthouse" 	img="alternate/2B.png"/>
+	<symbol code="/M" 		name="MacAPRS" 			img="primary/2C.png"/>
+	<symbol code="\M" 		name="No Symbol" 		img="alternate/2C.png"/>
+	<symbol code="/N" 		name="NTS Stn" 			img="primary/2D.png"/>
+	<symbol code="\N" 		name="Nav Buoy" 		img="alternate/2D.png"/>
+	<symbol code="/O" 		name="Balloon" 			img="primary/2E.png"/>
+	<symbol code="\O" 		name="No Symbol" 		img="alternate/2E.png"/>
+	<symbol code="/P" 		name="Police" 			img="primary/2F.png"/>
+	<symbol code="\P" 		name="Parking" 		img="alternate/2F.png"/>
+	<symbol code="/Q" 		name="TBD" 				img="primary/30.png"/>
+	<symbol code="\Q" 		name="Quake" 		img="alternate/30.png"/>
+	<symbol code="/R" 		name="Rec Vehle" 			img="primary/31.png"/>
+	<symbol code="\R" 		name="Restaurant" 	img="alternate/31.png"/>
+	<symbol code="/S" 		name="Shuttle" 			img="primary/32.png"/>
+	<symbol code="\S" 		name="Sat/Pacsat" 	img="alternate/32.png"/>
+	<symbol code="/T" 		name="SSTV" 			img="primary/33.png"/>
+	<symbol code="\T" 		name="T'storm" 		img="alternate/33.png"/>
+	<symbol code="/U" 		name="Bus" 				img="primary/34.png"/>
+	<symbol code="\U" 		name="Sunny" 		img="alternate/34.png"/>
+	<symbol code="/V" 		name="ATV" 				img="primary/35.png"/>
+	<symbol code="\V" 		name="VORTAC" 		img="alternate/35.png"/>
+	<symbol code="/W" 		name="WX Service" 		img="primary/36.png"/>
+	<symbol code="\W" 		name="No. WXS" 		img="alternate/36.png"/>
+	<symbol code="/X" 		name="Helo" 			img="primary/37.png"/>
+	<symbol code="\X" 		name="Pharmacy" 		img="alternate/37.png"/>
+	<symbol code="/Y" 		name="Yacht" 			img="primary/38.png"/>
+	<symbol code="\Y" 		name="No Symbol" 		img="alternate/38.png"/>
+	<symbol code="/Z" 		name="WinAPRS" 			img="primary/39.png"/>
+	<symbol code="\Z" 		name="No Symbol" 		img="alternate/39.png"/>
+	<symbol code="/[" 		name="Jogger" 			img="primary/3A.png"/>
+	<symbol code="\[" 		name="Wall Cloud" 	img="alternate/3A.png"/>
+	<symbol code="/\" 		name="Triangle" 			img="primary/3B.png"/>
+	<symbol code="\\" 		name="No Symbol" 		img="alternate/3B.png"/>
+	<symbol code="/]" 		name="PBBS" 			img="primary/3C.png"/>
+	<symbol code="\]" 		name="No Symbol" 		img="alternate/3C.png"/>
+	<symbol code="/^" 		name="Plane lrge" 		img="primary/3D.png"/>
+	<symbol code="\^" 		name="No. Plane" 		img="alternate/3D.png"/>
+	<symbol code="/_" 		name="WX Station" 		img="primary/3E.png"/>
+	<symbol code="\_" 		name="No. WX Stn" 	img="alternate/3E.png"/>
+	<symbol code="/`" 		name="Dish Ant." 			img="primary/3F.png"/>
+	<symbol code="\`" 		name="Rain" 		img="alternate/3F.png"/>
+	<symbol code="/a" 		name="Ambulance" 			img="primary/40.png"/>
+	<symbol code="\a" 		name="RSGB,ARRL" 		img="alternate/40.png"/>
+	<symbol code="/b" 		name="Bike" 			img="primary/41.png"/>
+	<symbol code="\b" 		name="Dust blwng" 	img="alternate/41.png"/>
+	<symbol code="/c" 		name="ICP" 				img="primary/42.png"/>
+	<symbol code="\c" 		name="No. CivDef" 	img="alternate/42.png"/>
+	<symbol code="/d" 		name="Garage" 			img="primary/43.png"/>
+	<symbol code="\d" 		name="DX Spot" 		img="alternate/43.png"/>
+	<symbol code="/e" 		name="Horse" 			img="primary/44.png"/>
+	<symbol code="\e" 		name="Sleet" 		img="alternate/44.png"/>
+	<symbol code="/f" 		name="Fire Truck" 		img="primary/45.png"/>
+	<symbol code="\f" 		name="Funnel Cld" 	img="alternate/45.png"/>
+	<symbol code="/g" 		name="Glider" 			img="primary/46.png"/>
+	<symbol code="\g" 		name="Gale" 		img="alternate/46.png"/>
+	<symbol code="/h" 		name="Hospital" 			img="primary/47.png"/>
+	<symbol code="\h" 		name="HAM store" 		img="alternate/47.png"/>
+	<symbol code="/i" 		name="IOTA" 			img="primary/48.png"/>
+	<symbol code="\i" 		name="No Symbol" 		img="alternate/48.png"/>
+	<symbol code="/j" 		name="Jeep" 			img="primary/49.png"/>
+	<symbol code="\j" 		name="WorkZone" 		img="alternate/49.png"/>
+	<symbol code="/k" 		name="Truck" 			img="primary/4A.png"/>
+	<symbol code="\k" 		name="No Symbol" 		img="alternate/4A.png"/>
+	<symbol code="/l" 		name="No Symbol" 			img="primary/4B.png"/>
+	<symbol code="\l" 		name="Area Locns" 	img="alternate/4B.png"/>
+	<symbol code="/m" 		name="Repeater" 			img="primary/4C.png"/>
+	<symbol code="\m" 		name="Milepost" 		img="alternate/4C.png"/>
+	<symbol code="/n" 		name="Node" 			img="primary/4D.png"/>
+	<symbol code="\n" 		name="No. Triang" 	img="alternate/4D.png"/>
+	<symbol code="/o" 		name="EOC" 				img="primary/4E.png"/>
+	<symbol code="\o" 		name="Circle sm" 		img="alternate/4E.png"/>
+	<symbol code="/p" 		name="Rover" 			img="primary/4F.png"/>
+	<symbol code="\p" 		name="Part Cloud" 	img="alternate/4F.png"/>
+	<symbol code="/q" 		name="Grid squ." 			img="primary/50.png"/>
+	<symbol code="\q" 		name="No Symbol" 		img="alternate/50.png"/>
+	<symbol code="/r" 		name="Antenna" 			img="primary/51.png"/>
+	<symbol code="\r" 		name="Restrooms" 		img="alternate/51.png"/>
+	<symbol code="/s" 		name="Power Boat" 		img="primary/52.png"/>
+	<symbol code="\s" 		name="No. Boat" 		img="alternate/52.png"/>
+	<symbol code="/t" 		name="Truck Stop" 		img="primary/53.png"/>
+	<symbol code="\t" 		name="Tornado" 		img="alternate/53.png"/>
+	<symbol code="/u" 		name="Truck 18wh" 		img="primary/54.png"/>
+	<symbol code="\u" 		name="No. Truck" 		img="alternate/54.png"/>
+	<symbol code="/v" 		name="Van" 				img="primary/55.png"/>
+	<symbol code="\v" 		name="No. Van" 		img="alternate/55.png"/>
+	<symbol code="/w" 		name="Water Stn" 			img="primary/56.png"/>
+	<symbol code="\w" 		name="Flooding" 		img="alternate/56.png"/>
+	<symbol code="/x" 		name="XAPRS" 			img="primary/57.png"/>
+	<symbol code="\x" 		name="No Symbol" 		img="alternate/57.png"/>
+	<symbol code="/y" 		name="Yagi" 			img="primary/58.png"/>
+	<symbol code="\y" 		name="Sky Warn" 		img="alternate/58.png"/>
+	<symbol code="/z" 		name="No Symbol" 			img="primary/59.png"/>
+	<symbol code="\z" 		name="No Symbol" 		img="alternate/59.png"/>
+	<symbol code="/{" 		name="No Symbol" 			img="primary/5A.png"/>
+	<symbol code="\{" 		name="Fog" 			img="alternate/5A.png"/>
+	<symbol code="/|" 		name="No Symbol" 			img="primary/5B.png"/>
+	<symbol code="\|" 		name="No Symbol" 		img="alternate/5B.png"/>
+	<symbol code="/}" 		name="No Symbol" 			img="primary/5C.png"/>
+	<symbol code="\}" 		name="No Symbol" 		img="alternate/5C.png"/>
+	<symbol code="/~" 		name="No Symbol" 			img="primary/5D.png"/>
+	<symbol code="\~" 		name="No Symbol" 		img="alternate/5D.png"/>
+
+</symbols>
+

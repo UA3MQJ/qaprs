@@ -1,0 +1,7 @@
+<!DOCTYPE qAPRS_APRS_INTERNET_SERVER_LIST>
+<SERVER_LIST>
+ <SERVER1>aprswest.aprs2.net:14580</SERVER1>
+ <SERVER2>argentina.aprs2.net:14580</SERVER2>
+ <SERVER3>australia.aprs2.net:14580</SERVER3>
+ <filter>p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/</filter>
+</SERVER_LIST>
