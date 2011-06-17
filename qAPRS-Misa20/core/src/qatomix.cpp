@@ -74,12 +74,152 @@ void QAtomix::setStorageType( int stp ) {
     //2.дочерний атом запрашивает. основной передает с пометкой LOAD. дочерний создает и наполняет
     //3.далее все set это weset
 
+    // 17.06.2011 если ядро - Storage - это еще не значит, что оно должно себе создать порты!
+    // поэтому если уж ядро является еще и держателем портов, то для этого должна быть отдельная функция.
+    // запрос из хранилища списка портов и создание их.
 
     if ( stp == 0 ) { //значить данные с sql
 
-        say( "I'm storage!" );
+        say( "I'm SQLITE storage!" );
 
-        SysPorts = new QSysPorts::QSysPorts();
+        QSqlQuery query;
+        QSqlQuery query2;
+
+        qDebug() << "QSysDBase::QSysDBase.vars - Try load from storage";
+
+        query.prepare( "select count(*) as cnt from vars" );
+        query.exec();
+        query.first();
+
+        if ( query.isActive() ) {
+            //если БД не пустая то НИЧЕГО НЕ ДЕЛАЕМ!
+        } else {
+            //если пустая
+            qDebug() << "QSysDBase::QSysDBase.vars - Data is not available. RECREATE AND SET VALUES BY DEFAULT";
+
+            //создать таблички, т.к. их может и не быть
+            query.exec( "drop table vars" );
+            query.exec( "create table vars (varval varchar(100), varname varchar(50) )" );
+
+            query.exec( "insert into vars( varname, varval ) values( 'Call', 'NOCALL' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'Name', 'NONAME' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'Lat', '00.00.00N' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'Lng', '000.00.00E' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'DefaultUnproto', 'WIDE1-1,WIDE2-2' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'Beacon', 'NAME, QTH-NAME' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'Symbol', '/I' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'APRSCall', 'APZ012' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'APRSVersion, '"+versionName+"' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'RevPath', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSTen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSDen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSHen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSMen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSOen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSPen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'qryAPRSSen', '0' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'AXCODEPAGE', 'IBM 866' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'MYCALLS', '' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'MSGID', '0' ) " );
+
+        }
+
+        qDebug() << "QSysDBase::QSysDBase.ports - Try load from storage";
+
+        query.prepare( "select count(*) as cnt from ports" );
+        query.exec();
+        query.first();
+
+        if ( query.isActive() ) {
+            //если БД не пустая то НИЧЕГО НЕ ДЕЛАЕМ!
+        } else {
+            //если пустая
+            qDebug() << "QSysDBase::QSysDBase.ports - Data is not available. RECREATE TABLES";
+
+            query.exec( "drop table port_types" );
+            query.exec( "create table port_types (port_type_id int primary key, "
+                        "port_type_note varchar(100), port_type_not varchar(15) ) " );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(0,'APRS Internet Server Connection', 'Inet')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(1,'KISS TNC', 'KISS')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(2,'AGW CORE', 'AGW')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(3,'FLEX CORE(!)', 'FLEX')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(4,'[X]-NET CORE(!)', 'XNET')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(5,'AXIP', 'AXIP')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(6,'FL Digi', 'FLDIGI')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(7,'VAska', 'VASKA')" );
+            query.exec( "insert into port_types (port_type_id, port_type_note, port_type_not) "
+                        "values(-1,'n\\a', 'n\\a')" );
+
+            //порты
+            query.exec( "drop table ports" );
+            query.exec( "create table ports (port_num int primary key, "
+                        "port_type_id int, port_note varchar(50) ) " );
+
+            query.exec( "drop table port_param_values; " );
+            query.exec( "create table port_param_values (port_num int , "
+                        "par_code int, par_value varchar(50) ); " );
+
+
+        }
+
+        qDebug() << "QSysDBase::QSysDBase.beacons - Try load from storage";
+
+        query.prepare( "select count(*) as cnt from beacons" );
+        query.exec();
+        query.first();
+
+        if ( query.isActive() ) {
+            //если БД не пустая то НИЧЕГО НЕ ДЕЛАЕМ!
+        } else {
+            //если пустая
+            qDebug() << "QSysDBase::QSysDBase.beacons - Data is not available. RECREATE";
+
+            query.exec( "drop table beacons" );
+            query.exec( "create table beacons (beacon_num int primary key, "
+                        "port_num int, sym char(50), call char(12), "
+                        "lat char(9), lng char(10), "
+                        "bUnproto char(250), bText char(250), bInterval int, sText char(250), sInterval int ) " );
+
+        }
+
+
+        qDebug() << "QSysDBase::QSysDBase.packets - Try load from storage";
+
+        query.prepare( "select count(*) as cnt from packets" );
+        query.exec();
+        query.first();
+
+        if ( query.isActive() ) {
+            //если БД не пустая то НИЧЕГО НЕ ДЕЛАЕМ!
+        } else {
+            //если пустая
+            qDebug() << "QSysDBase::QSysDBase.packets - Data is not available. RECREATE";
+
+            //таблица пакетов
+            query.exec( "drop table packets" );
+            query.exec( "create table packets (K integer primary key, "
+                        "DT char(25), port_num int, trx char(10), PTo char(20),"
+                        "PFrom char(20), PVia char(50), Message char(250) ) " );
+
+        }
+
+    }
+
+
+/*
+    if ( stp == 0 ) { //значить данные с sql
+
+        say( "I'm SQLITE storage!" );
+
+        SysPorts = new QSysPorts::QSysPorts(); // 17.06.2011 если ядро - Storage - это еще не значит, что оно должно себе создать порты!
 
         SysBeacons = new QSysBeacons::QSysBeacons();
 
@@ -348,12 +488,13 @@ void QAtomix::setStorageType( int stp ) {
         this->weSysbeaconOpenAll();
 
     }
+*/
 
 }
 
 void QAtomix::say( QString msg ) {
 
-    qDebug() << QDateTime::currentDateTime().toString( "dd.MM.yyyy hh:mm:ss.zzz" ) << " - QAtomix(" << atomName() << ")::" << msg;
+    qDebug() << QDateTime::currentDateTime().toString( "dd.MM.yyyy hh:mm:ss.zzz" ) << " - QAtomix(" << uid <<":"<< atomName() << ")::" << msg;
 
 };
 
