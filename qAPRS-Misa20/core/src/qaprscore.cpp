@@ -54,6 +54,7 @@ void QAPRSCore::Start() {
     db.setDatabaseName( SYSDBName );
     db.open();
 
-    atomCORE->setStorageType( 0 ); //SQLite
-
+    //atomCORE->setStorageType( 0 ); //SQLite
+    atomCORE->addAbStorage();
+    atomCORE->addAbSysVars();
 }

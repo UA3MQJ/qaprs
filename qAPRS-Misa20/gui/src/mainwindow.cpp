@@ -606,9 +606,9 @@ void MainWindow::saveButtonClick() {
 void MainWindow::cancelButtonClick() {
 //отменить изменения параметров
 
-   this->atomGUI->loadingMode = true;
+   //this->atomGUI->loadingMode = true;
    this->atomGUI->weSysvarReq();
-   this->atomGUI->doThink( "ALL DATA LOADED?" );
+   //this->atomGUI->doThink( "ALL DATA LOADED?" );
 
 }
 
@@ -834,7 +834,7 @@ void MainWindow::editPortButtonClick() {
 
     atomGUI->loadingMode = true;
     atomGUI->weSysportReqParams( ui->portsTableView->currentIndex().row() );
-    atomGUI->doThink( "ALL DATA LOADED?" );
+    //atomGUI->doThink( "ALL DATA LOADED?" );
 
     win->show();
 
@@ -1136,7 +1136,7 @@ void MainWindow::editBeaconButtonClick() {
 
     atomGUI->loadingMode = true;
     atomGUI->weSysbeaconReqParams( ui->beaconsTableView->currentIndex().row() );
-    atomGUI->doThink( "ALL DATA LOADED?" );
+    //atomGUI->doThink( "ALL DATA LOADED?" );
 
     win->show();
 
@@ -1332,7 +1332,8 @@ void MainWindow::qrySaveButtonClick() {
 void MainWindow::qryCancelButtonClick() {
 //отменить изменения параметров
 
-    atomGUI->doThink( "SYSVAR SET" );
+    //atomGUI->doThink( "", a, "SYSVAR SET" );
+    this->atomGUI->weSysvarReq();
 
 }
 

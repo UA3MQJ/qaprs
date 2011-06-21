@@ -7,9 +7,12 @@ QAtomix::QAtomix(QObject *parent) :
 
     started = false;
 
+    connected = false;
+
     loadingMode = false;
 
     uid        = qrand() % 65535 + 1;
+    atomID     = QString::number( uid );
 
     iStorageType = -1;
 
@@ -20,7 +23,7 @@ QAtomix::QAtomix(QObject *parent) :
     SysPorts    = NULL;
     SysBeacons  = NULL;
 
-    SysVars     = new QSysVars::QSysVars();
+
     SysSymbols  = new QAPRSSymbols::QAPRSSymbols();
     SysPackets  = new QAPRSPacketList::QAPRSPacketList();
     SysStations = new QAPRSstationList::QAPRSstationList();
@@ -41,6 +44,24 @@ void QAtomix::setAtomName( QString sAtomName ) {
 
     vatomName = sAtomName;
     say( "My name is " + vatomName );
+
+}
+
+//добавление атому способности писать и читать в системную БД
+void QAtomix::addAbStorage() {
+
+    say( "addAbStorage" );
+    this->setStorageType( 0 );
+
+}
+
+//добавление атому способности иметь список своих переменных
+void QAtomix::addAbSysVars() {
+
+    say( "addAbSysVars" );
+    SysVars = new QSysVars::QSysVars();
+    this->weSysvarReq();
+
 
 }
 
@@ -103,6 +124,7 @@ void QAtomix::setStorageType( int stp ) {
 
             query.exec( "insert into vars( varname, varval ) values( 'Call', 'NOCALL' ) " );
             query.exec( "insert into vars( varname, varval ) values( 'Name', 'NONAME' ) " );
+            query.exec( "insert into vars( varname, varval ) values( 'QTHN', 'QTH-Name' ) " );
             query.exec( "insert into vars( varname, varval ) values( 'Lat', '00.00.00N' ) " );
             query.exec( "insert into vars( varname, varval ) values( 'Lng', '000.00.00E' ) " );
             query.exec( "insert into vars( varname, varval ) values( 'DefaultUnproto', 'WIDE1-1,WIDE2-2' ) " );
@@ -210,6 +232,8 @@ void QAtomix::setStorageType( int stp ) {
                         "PFrom char(20), PVia char(50), Message char(250) ) " );
 
         }
+
+        iStorageType = stp;
 
     }
 
@@ -615,7 +639,19 @@ void QAtomix::tcpServerRead (){
 
             //берем о посылаем на обработку
 
-            weThink( sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) );
+            QString tStr;
+            QString ID_DEST;
+            QString ID_SRC;
+            QString tgh;
+
+            //qDebug() << ( "!!!!!!"+sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) );
+            tStr = sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) ;
+            ID_DEST = tStr.left( tStr.indexOf('>') );
+            tStr    = tStr.mid( tStr.indexOf('>') + 1);
+            ID_SRC  = tStr.left( tStr.indexOf(' ') );
+            tgh    = tStr.mid( tStr.indexOf(' ') + 1);
+
+            weThink( ID_DEST, ID_SRC, tgh );
 
             inData = inData.mid( inData.indexOf("\n") + 1 ); //отрезать
 
@@ -629,24 +665,29 @@ void QAtomix::tcpClientconnected() {
 
     say( "Connection to another atom" );
 
-    loadingMode = true;
+    connected = true;
 
-    this->weSysvarReq();
 
-    this->weSysportReqPorts();
+    //loadingMode = true;
 
-    this->weSysbeaconReqBeacons();
+    //this->weSysvarReq();
 
-    this->weSyspacketsReq(); //запрашиваем пакеты
+    //this->weSysportReqPorts();
 
-    doThink( "ALL DATA LOADED?" );
+    //this->weSysbeaconReqBeacons();
+
+    //this->weSyspacketsReq(); //запрашиваем пакеты
+
+    addAbSysVars();
+
+    //doThink( "ALL", atomID, "ALL DATA LOADED?" );
 
 }
 
 void QAtomix::tcpClientread(){
     //чтение сообщения
 
-        //say( "I hear the other atom" );
+        say( "I hear the other atom" );
 
         QByteArray datagram;
         //while (tcpGUIServerConnection->bytesAvailable()==0);
@@ -661,7 +702,19 @@ void QAtomix::tcpClientread(){
 
                 //берем о посылаем на обработку
 
-                weThink( sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) );
+                QString tStr;
+                QString ID_DEST;
+                QString ID_SRC;
+                QString tgh;
+
+                //qDebug() << ( "!!!!!!"+sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) );
+                tStr = sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) ;
+                ID_DEST = tStr.left( tStr.indexOf('>') );
+                tStr    = tStr.mid( tStr.indexOf('>') + 1);
+                ID_SRC  = tStr.left( tStr.indexOf(' ') );
+                tgh    = tStr.mid( tStr.indexOf(' ') + 1);
+
+                weThink( ID_DEST, ID_SRC, tgh );
 
                 inData = inData.mid( inData.indexOf("\n") + 1 ); //отрезать
 
@@ -671,11 +724,13 @@ void QAtomix::tcpClientread(){
 
     }
 
-void QAtomix::weThink( QString thought ) {
+void QAtomix::weThink( QString ID_DEST, QString ID_SRC, QString thought ) {
 
     QString Tthought;
 
     Tthought = thought;
+
+    say( "weThink ID_DEST='"+ID_DEST+"'"+" ID_SRC='"+ID_SRC+"'"+" Tthought='"+Tthought+"'" );
 
     //say( "Tthought='"+Tthought+"'" );
     if ( ( Tthought.left( 4 ) == "LOAD" ) && ( loadingMode == true ) ) {
@@ -686,7 +741,6 @@ void QAtomix::weThink( QString thought ) {
         Tthought = Tthought.mid( 5 ); //обрезаем LOAD
 
     }
-    //say( "Tthought='"+Tthought+"'" );
 
     QStringList cmd = Tthought.split(' ');
 
@@ -707,7 +761,7 @@ void QAtomix::weThink( QString thought ) {
     //SYSVAR SET - список
     if ( Tthought == "ALL DATA LOADED?" ) {
         if ( iStorageType == 0 )  {
-            doThink( "ALL DATA LOADED!" );
+            doThink( "all", atomID, "ALL DATA LOADED!" );
         }
     } else
 
@@ -722,9 +776,9 @@ void QAtomix::weThink( QString thought ) {
 
     //SYSVAR SET - список
     if ( Tthought == "SYSVAR LOAD" ) {
-        //если хочется знать системные переменные, то пусть тот, кто их знает всех их озвучит
+        //если хочется знать системные переменные, то пусть тот, кто их знает всех их озвучит для того, кто запросил
         //!!! нене не!!! пусть атом, который storage скажет
-        this->DOweSysvarReq();
+        this->DOweSysvarReq( ID_SRC );
     } else
 
     if ( Tthought == "SYSPORT LOAD" ) {
@@ -1100,18 +1154,18 @@ void QAtomix::weThink( QString thought ) {
 
 }
 
-void QAtomix::doThink( QString thought ) {
+void QAtomix::doThink(  QString ID_DEST, QString ID_SRC, QString thought  ) {
 //подумать
 
-    weThink( thought );
+    weThink( ID_DEST, ID_SRC, thought );
 
     if ( im == 0 ) {
 
-        tcpServerConnection->write( sysDecoder->fromUnicode( thought ) + (QByteArray)("\r\n") );
+        tcpServerConnection->write( sysDecoder->fromUnicode( tr( "%1>%2 %3" ).arg( ID_DEST ).arg( ID_SRC ).arg( thought ) ) + (QByteArray)("\r\n") );
 
     } else {
 
-        tcpClient->write( sysDecoder->fromUnicode( thought ) + (QByteArray)("\r\n") );
+        tcpClient->write( sysDecoder->fromUnicode( tr( "%1>%2 %3" ).arg( ID_DEST ).arg( ID_SRC ).arg( thought ) ) + (QByteArray)("\r\n") );
 
     }
 
@@ -1126,11 +1180,9 @@ void QAtomix::portRXPacket( int pNum,  bool isRX ) {
 void QAtomix::weportRXPacket( int pNum,  bool isRX ) {
 //идет прием пакета
     if ( isRX ) {
-        //doThink( "EVENT RXPACKET PORT_NUM=" + QString::number( pNum )+"; RX=TRUE;" );
-        doThink( "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" RX=\"TRUE\"" );
+        doThink( "all", atomID, "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" RX=\"TRUE\"" );
     } else {
-        //doThink( "EVENT RXPACKET PORT_NUM=" + QString::number( pNum )+"; RX=FALSE;" );
-        doThink( "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" RX=\"FALSE\"" );
+        doThink( "all", atomID, "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" RX=\"FALSE\"" );
     }
 
 }
@@ -1143,11 +1195,9 @@ void QAtomix::portTXPacket( int pNum,  bool isRX ){
 void QAtomix::weportTXPacket( int pNum, bool isRX ) {
 //идет передача пакета
     if ( isRX ) {
-        //doThink( "EVENT TXPACKET PORT_NUM=" + QString::number( pNum )+"; TX=TRUE;" );
-        doThink( "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" TX=\"TRUE\"" );
+        doThink( "all", atomID, "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" TX=\"TRUE\"" );
     } else {
-        //doThink( "EVENT TXPACKET PORT_NUM=" + QString::number( pNum )+"; TX=FALSE;" );
-        doThink( "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" TX=\"FALSE\"" );
+        doThink( "all", atomID, "PACKET EVENT_TRX PORT_NUM=\"" + QString::number( pNum )+"\" TX=\"FALSE\"" );
     }
 }
 
@@ -1183,9 +1233,7 @@ void QAtomix::weportRXAPRSPacket( int pNum,  QString To, QString From, QString M
 
         tk = this->SysPackets->packet_Key = this->SysPackets->packet_Key + 1;
 
-        //parseAPRSPacket( this->SysPackets->packet_Key, pNum, "RX", PacketDateTime, To, From, MsgText );
-        //'PACKET EVENT PORT_NUM="0" RX="FALSE"'
-        doThink( "PACKET EVENT_RX PORT_NUM=\"" + QString::number( pNum ) +
+        doThink( "all", atomID, "PACKET EVENT_RX PORT_NUM=\"" + QString::number( pNum ) +
                  "\" K=\"" + QString::number( tk ) +
                  "\" DATETIME=\"" + PacketDateTime.toString( "dd.MM.yyyy hh:mm:ss.zzz" ) +
                  "\" TO=\"" + To +
@@ -1215,7 +1263,7 @@ void QAtomix::weportTXAPRSPacket( int pNum,  QString To, QString From, QString M
     tk = this->SysPackets->packet_Key = this->SysPackets->packet_Key + 1;
 
     //parseAPRSPacket( this->SysPackets->packet_Key, pNum, "RX", PacketDateTime, To, From, MsgText );
-    doThink( "PACKET EVENT_TX PORT_NUM=\"" + QString::number( pNum ) +
+    doThink(  "all", atomID, "PACKET EVENT_TX PORT_NUM=\"" + QString::number( pNum ) +
              "\" K=\"" + QString::number( tk ) +
              "\" DATETIME=\"" + PacketDateTime.toString( "dd.MM.yyyy hh:mm:ss.zzz" ) +
              "\" TO=\"" + To +
@@ -1705,13 +1753,14 @@ void QAtomix::beaconSendBeacon( int bNum,  int pNum, QString To, QString From, Q
 //работа с системными переменными
 void QAtomix::weSysvarSet( QString VarName, QString VarVal ) {
 
-    doThink( "SYSVAR SET " + VarName + "=\"" + trPar( VarVal ) + "\"" );
+    doThink(  "all", atomID, "SYSVAR SET " + VarName + "=\"" + trPar( VarVal ) + "\"" );
 
 }
 
 void QAtomix::weSysvarReq() {
 
-    doThink( "SYSVAR LOAD" );
+    //ID_DEST>ID_SRC
+    doThink(  "ALL", atomID, "SYSVAR LOAD" );
 
 }
 
@@ -1729,9 +1778,12 @@ void QAtomix::DOweSysvarSet( QString VarName, QString VarVal ) {
 
 }
 
-void QAtomix::DOweSysvarReq() {
+void QAtomix::DOweSysvarReq( QString ID_SRC ) {
+
+    //qDebug() << "iStorageType=" << iStorageType;
 
     if ( iStorageType == 0 ) {
+
         if ( SysVars != NULL ) {
 
             if ( SysVars->first != NULL ) {
@@ -1742,7 +1794,7 @@ void QAtomix::DOweSysvarReq() {
                 tmpvar = SysVars->first;
                 while ( tmpvar != NULL ) {
 
-                    doThink( "LOAD SYSVAR SET " + tmpvar->name + "=\"" + trPar( tmpvar->value ) + "\"" );
+                    doThink( ID_SRC, atomID, "SYSVAR SET " + tmpvar->name + "=\"" + trPar( tmpvar->value ) + "\"" );
                     tmpvar = tmpvar->next;
 
                 }
@@ -1750,7 +1802,20 @@ void QAtomix::DOweSysvarReq() {
 
             } else {
 
-                say( "I dont known SYSVARS!" );
+                //say( "I dont known SYSVARS!" );
+                //если этот атом - имеет хранилище, но не имеет списка переменных
+                //значит он о них еще не знает - надо загрузить из БД
+
+                QSqlQuery query;
+
+                //qDebug() << "QSysDBase::QSysDBase.vars - Data is available - loading";
+
+                query.prepare( "select varname, varval from vars" );
+
+                query.exec();
+                while ( query.next() ) {
+                    doThink( ID_SRC, atomID, "SYSVAR SET " + query.value(0).toString() + "=\"" + trPar( query.value(1).toString() ) + "\"" );
+                }
 
             }
 
@@ -1764,14 +1829,14 @@ void QAtomix::DOweSysvarReq() {
 //открыть все порты
 void QAtomix::weSysportOpenAll( ) {
 
-    doThink( "SYSPORT_ALL DO OPEN=\"TRUE\"" );
+    doThink( "all", atomID, "SYSPORT_ALL DO OPEN=\"TRUE\"" );
 
 }
 
 //закрыть все порты
 void QAtomix::weSysportCloseAll( ) {
 
-    doThink( "SYSPORT_ALL DO OPEN=\"FALSE\"" );
+    doThink( "all", atomID, "SYSPORT_ALL DO OPEN=\"FALSE\"" );
 
 }
 
@@ -1779,7 +1844,7 @@ void QAtomix::weSysportCloseAll( ) {
 //передаваться будет список созданных портов: номер/тип/значение а так же запрашиваться статус
 void QAtomix::weSysportReqPorts( ) {
 
-    doThink( "SYSPORT LOAD" );
+    doThink( "all", atomID, "SYSPORT LOAD" );
 
 }
 
@@ -1787,7 +1852,7 @@ void QAtomix::weSysportReqPorts( ) {
 void QAtomix::weSysportOpen( int PortNum ) {
 
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " OPEN" );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " DO OPEN=\"TRUE\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " DO OPEN=\"TRUE\"" );
 
 }
 
@@ -1795,7 +1860,7 @@ void QAtomix::weSysportOpen( int PortNum ) {
 void QAtomix::weSysportClose( int PortNum ) {
 
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " CLOSE" );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " DO OPEN=\"FALSE\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " DO OPEN=\"FALSE\"" );
 
 }
 
@@ -1803,7 +1868,7 @@ void QAtomix::weSysportClose( int PortNum ) {
 void QAtomix::weSysportDelete( int PortNum ) {
 
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " DELETE" );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " DO DELETE=\"TRUE\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " DO DELETE=\"TRUE\"" );
 
 }
 
@@ -1811,7 +1876,7 @@ void QAtomix::weSysportDelete( int PortNum ) {
 void QAtomix::weSysportUpdate( int PortNum ) {
 
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " UPDATE" );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " DO UPDATE=\"TRUE\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " DO UPDATE=\"TRUE\"" );
 
 }
 
@@ -1820,7 +1885,7 @@ void QAtomix::weSysportSetParam( int PortNum, QString ParName, QString ParVal ) 
 
     if ( ( ParName != "" ) && ( ParVal != "" ) )
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " SET " + ParName + "=" + ParVal );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " SET " + ParName + "=\"" + trPar( ParVal ) + "\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " SET " + ParName + "=\"" + trPar( ParVal ) + "\"" );
 
 }
 
@@ -1828,7 +1893,7 @@ void QAtomix::weSysportSetParam( int PortNum, QString ParName, QString ParVal ) 
 void QAtomix::weSysportReqParams( int PortNum ) {
 
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " SET" );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " GET PARAMS=\"?\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " GET PARAMS=\"?\"" );
 
 }
 
@@ -1836,7 +1901,7 @@ void QAtomix::weSysportReqParams( int PortNum ) {
 void QAtomix::weSysportReqStatus( int PortNum ) {
 
     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " GET STATE" );
-    doThink( "SYSPORT_" + QString::number( PortNum ) + " GET STATUS=\"?\"" );
+    doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum ) + " GET STATUS=\"?\"" );
 
 
 }
@@ -1847,8 +1912,7 @@ void QAtomix::weSysportReqStatus( int PortNum ) {
 //установка параметра маяка
 void QAtomix::weSysbeaconSetParam( int BcknNum, QString ParName, QString ParVal ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum )  + " SET " + ParName + "=" + ParVal );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " SET " + ParName + "=\"" + trPar( ParVal ) + "\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " SET " + ParName + "=\"" + trPar( ParVal ) + "\"" );
 
     //qDebug() << ( "SYSBEACON_" + QString::number( BcknNum ) + " SET " + ParName + "=\"" + trPar( ParVal ) + "\"" );
 
@@ -1857,93 +1921,84 @@ void QAtomix::weSysbeaconSetParam( int BcknNum, QString ParName, QString ParVal 
 //открытие указанного маяка
 void QAtomix::weSysbeaconOpen( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " OPEN" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " DO OPEN=\"TRUE\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " DO OPEN=\"TRUE\"" );
 
 }
 
 //закрытие указанного маяка
 void QAtomix::weSysbeaconClose( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " CLOSE" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " DO OPEN=\"FALSE\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " DO OPEN=\"FALSE\"" );
 
 }
 
 //удаление указанного маяка
 void QAtomix::weSysbeaconDelete( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " DELETE" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " DO DELETE=\"TRUE\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " DO DELETE=\"TRUE\"" );
 
 }
 
 //передача указанного маяка
 void QAtomix::weSysbeaconSend( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " SEND" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " DO SEND=\"TRUE\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " DO SEND=\"TRUE\"" );
 
 }
 
 //передача статуса указанного маяка
 void QAtomix::weSysbeaconStatusSend( int BcknNum ) {
 
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " DO SENDSTATUS=\"TRUE\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " DO SENDSTATUS=\"TRUE\"" );
 
 }
 
 //обновление указанного маяка
 void QAtomix::weSysbeaconUpdate( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " UPDATE" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " DO UPDATE=\"TRUE\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " DO UPDATE=\"TRUE\"" );
 
 }
 
 //передаваться будет список созданных маяков
 void QAtomix::weSysbeaconReqBeacons( ) {
 
-    doThink( "SYSBEACON LOAD" );
+    doThink( "all", atomID, "SYSBEACON LOAD" );
 
 }
 
 //запросить все параметры маяка
 void QAtomix::weSysbeaconReqParams( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " SET" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " GET PARAMS=\"?\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " GET PARAMS=\"?\"" );
 
 }
 
 //запросить статус маяка
 void QAtomix::weSysbeaconReqStatus( int BcknNum ) {
 
-    //doThink( "SYSBEACON BCN_NUM=" + QString::number( BcknNum ) + " GET STATE" );
-    doThink( "SYSBEACON_" + QString::number( BcknNum ) + " GET STATUS=\"?\"" );
+    doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum ) + " GET STATUS=\"?\"" );
 
 }
 
 //открыть все маяки
 void QAtomix::weSysbeaconOpenAll( ) {
 
-    //doThink( "SYSBEACON ALL OPEN" );
-    doThink( "SYSBEACON_ALL DO OPEN=\"TRUE\"" );
+    doThink( "all", atomID, "SYSBEACON_ALL DO OPEN=\"TRUE\"" );
 
 }
 
 //закрыть все маяки
 void QAtomix::weSysbeaconCloseAll( ) {
 
-    //doThink( "SYSBEACON ALL CLOSE" );
-    doThink( "SYSBEACON_ALL DO OPEN=\"FALSE\"" );
+    doThink( "all", atomID, "SYSBEACON_ALL DO OPEN=\"FALSE\"" );
 
 }
 
 //запросить все пакеты
 void QAtomix::weSyspacketsReq( ) {
 //PACKETS GET LAST 100
-    doThink( "PACKETS LOAD" );
+    doThink( "all", atomID, "PACKETS LOAD" );
 
 }
 
@@ -1955,7 +2010,7 @@ void QAtomix::weSendMessage( int portNum, QString To, QString From, QString Via,
         ackNeed = "TRUE";
     }
 
-    doThink( "SYSPORT_" + QString::number( portNum ) + " DO MSGSEND=\"TRUE\""
+    doThink( "all", atomID, "SYSPORT_" + QString::number( portNum ) + " DO MSGSEND=\"TRUE\""
              " TO=\"" + To + "\""
              " FROM=\"" + From + "\""
              " VIA=\"" + Via + "\""
@@ -2102,7 +2157,7 @@ void QAtomix::DOweSysportReqPorts() {
                     //if ( ( ParName != "" ) && ( ParVal != "" ) )
                     //doThink( "SYSPORT PORT_NUM=" + QString::number( PortNum ) + " SET " + ParName + "=" + ParVal );
 
-                    doThink( "LOAD SYSPORT_" + QString::number( i )
+                    doThink( "all", atomID, "LOAD SYSPORT_" + QString::number( i )
                              + " SET PORT_TYPE=\"" + SysPorts->port[ i ]->portTypeID()
                              + "\" PORT_NAME=\"" + trPar( SysPorts->port[ i ]->portName() ) + "\"" );
 
@@ -2119,7 +2174,7 @@ void QAtomix::DOweSysportReqPorts() {
                                           break;
                         };
 
-                    doThink( "LOAD SYSPORT_" + QString::number( i )
+                    doThink( "all", atomID, "LOAD SYSPORT_" + QString::number( i )
                              + " EVENT STATUS=\"" + status + "\"" );
 
 
@@ -2219,16 +2274,16 @@ void QAtomix::DOweSysportReqParams( int PortNum ) {
 
             //this->weSysportSetParam( PortNum, "PORT_TYPE", SysPorts->port[ PortNum ]->portTypeID() );
             //this->weSysportSetParam( PortNum, "PORT_NAME", SysPorts->port[ PortNum ]->portName() );
-            doThink( "LOAD SYSPORT_" + QString::number( PortNum ) +
+            doThink( "all", atomID, "LOAD SYSPORT_" + QString::number( PortNum ) +
                      " SET PORT_TYPE=\"" + SysPorts->port[ PortNum ]->portTypeID() + "\"" );
 
-            doThink( "LOAD SYSPORT_" + QString::number( PortNum ) +
+            doThink( "all", atomID, "LOAD SYSPORT_" + QString::number( PortNum ) +
                      " SET PORT_NAME=\"" + trPar( SysPorts->port[ PortNum ]->portName() ) + "\"" );
 
             int i;
             for(i=0;i<( SysPorts->port[ PortNum ]->getParamCount() );i++) {
                 //this->weSysportSetParam( PortNum, SysPorts->port[ PortNum ]->getParamName( i ), SysPorts->port[ PortNum ]->getParamValue( i ) );
-                doThink( "LOAD SYSPORT_" + QString::number( PortNum ) +
+                doThink( "all", atomID, "LOAD SYSPORT_" + QString::number( PortNum ) +
                          " SET " + SysPorts->port[ PortNum ]->getParamName( i ) +
                          "=\"" + trPar( SysPorts->port[ PortNum ]->getParamValue( i ) ) + "\"" );
 
@@ -2263,11 +2318,11 @@ void QAtomix::DOweSysportReqStatus( int PortNum ) {
             };
 
             //doThink( "EVENT CHANGESTATE PORT_NUM=" + QString::number( PortNum ) + "; STATUS=" + status + ";" );
-            doThink( "SYSPORT_" + QString::number( PortNum )
+            doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum )
                      + " EVENT STATUS=\"" + status + "\"" );
         } else {
             //doThink( "EVENT CHANGESTATE PORT_NUM=" + QString::number( PortNum ) + "; STATUS=DELETED;" );
-            doThink( "SYSPORT_" + QString::number( PortNum )
+            doThink( "all", atomID, "SYSPORT_" + QString::number( PortNum )
                      + " EVENT STATUS=\"DELETED\"" );
         }
 
@@ -2423,7 +2478,7 @@ void QAtomix::DOweSysbeaconReqBeacons( ) {
 
             if ( SysBeacons->beacon[ i ] != NULL ) {
 
-                doThink( "LOAD SYSBEACON_" + QString::number( i )
+                doThink( "all", atomID, "LOAD SYSBEACON_" + QString::number( i )
                          + " SET"
                          + " PORT_NUM=\"" +     trPar( SysBeacons->beacon[ i ]->getParam( "PORT_NUM" ) ) + "\""
                          + " SYM=\"" +          trPar( SysBeacons->beacon[ i ]->getParam( "SYM" ) ) + "\""
@@ -2449,7 +2504,7 @@ void QAtomix::DOweSysbeaconReqBeacons( ) {
 
                     };
 
-                doThink( "LOAD SYSBEACON_" + QString::number( i )
+                doThink( "all", atomID, "LOAD SYSBEACON_" + QString::number( i )
                          + " EVENT STATUS=\"" + status + "\"" );
 
             }
@@ -2471,7 +2526,7 @@ void QAtomix::DOweSysbeaconReqParams( int BcknNum ) {
 
                 //this->weSysbeaconSetParam( BcknNum, SysBeacons->beacon[ BcknNum ]->getParamName( i ), SysBeacons->beacon[ BcknNum ]->getParamValue( i ) );
 
-                doThink( "LOAD SYSBEACON_" + QString::number( BcknNum ) +
+                doThink( "all", atomID, "LOAD SYSBEACON_" + QString::number( BcknNum ) +
                              " SET " + SysBeacons->beacon[ BcknNum ]->getParamName( i ) +
                              "=\"" + trPar( SysBeacons->beacon[ BcknNum ]->getParamValue( i ) ) + "\"" );
 
@@ -2503,11 +2558,11 @@ void QAtomix::DOweSysbeaconReqStatus( int BcknNum ) {
             };
 
             //doThink( "EVENT CHANGESTATE BCN_NUM=" + QString::number( BcknNum ) + "; STATUS=" + status + ";" );
-            doThink( "SYSBEACON_" + QString::number( BcknNum )
+            doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum )
                      + " EVENT STATUS=\"" + status + "\"" );
         } else {
             //doThink( "EVENT CHANGESTATE BCN_NUM=" + QString::number( BcknNum ) + "; STATUS=DELETED;" );
-            doThink( "SYSBEACON_" + QString::number( BcknNum )
+            doThink( "all", atomID, "SYSBEACON_" + QString::number( BcknNum )
                      + " EVENT STATUS=\"DELETED\"" );
         }
 
@@ -2591,7 +2646,7 @@ void QAtomix::DOweSyspacketsReq( ) {
                      "\"; VIA=\"" + packetptr->PVia +
                      "\"; MsgText=\"" + packetptr->Message + "\""); */
 
-            doThink( "LOAD PACKET EVENT_" + packetptr->TRX + " PORT_NUM=\"" + QString::number( packetptr->Port_Num ) +
+            doThink( "all", atomID, "LOAD PACKET EVENT_" + packetptr->TRX + " PORT_NUM=\"" + QString::number( packetptr->Port_Num ) +
                      "\" K=\"" + QString::number( packetptr->K ) +
                      "\" DATETIME=\"" + packetptr->DT +
                      "\" TO=\"" + packetptr->PTo +
@@ -2655,6 +2710,8 @@ void QAtomix::DOweSendMessage( int portNum, QString To, QString From, QString Vi
 //трид. в основном используется только для фоновой записи изменений в системную БД
 void QAtomix::run() {
 
+    int i;
+
     say( "QAtomix::run() start ");
     started = true;
 
@@ -2672,58 +2729,62 @@ void QAtomix::run() {
 
             var_saved = false; //если ничего не попадется для сохранения, то выйдем
 
-            //системные переменные
-            QSysVar *varptr;
-            varptr = SysVars->first;
+            //системные переменные если они вообще есть
+            if ( SysVars != NULL ) {
 
-            while ( varptr!=NULL ) {
+                QSysVar *varptr;
+                varptr = SysVars->first;
 
-                //say( "QAtomix::run() while ( varptr!=NULL ) ");
+                while ( varptr!=NULL ) {
 
-                //say( "QAtomix::run() sysvar " + varptr->name + "=" + varptr->value );
+                    //say( "QAtomix::run() while ( varptr!=NULL ) ");
 
-                if ( varptr->stored == false ) {
+                    //say( "QAtomix::run() sysvar " + varptr->name + "=" + varptr->value );
 
-                    var_saved = true;
+                    if ( varptr->stored == false ) {
 
-                    varptr->stored = true;
+                        var_saved = true;
 
-                    QSqlQuery query;
+                        varptr->stored = true;
 
-                    qDebug() << "QAtomix::run() save " << varptr->name << "=" << varptr->value;
-                    emit storeProgress( "Sysvar save " + varptr->name + "=" + varptr->value );
+                        QSqlQuery query;
+
+                        qDebug() << "QAtomix::run() save " << varptr->name << "=" << varptr->value;
+                        emit storeProgress( "Sysvar save " + varptr->name + "=" + varptr->value );
 
 
-                    query.prepare( "update vars set varval = (:p1) where varname = (:p2)" );
-                    query.bindValue( "p1", varptr->value );
-                    query.bindValue( "p2", varptr->name );
-                    query.exec();
+                        query.prepare( "update vars set varval = (:p1) where varname = (:p2)" );
+                        query.bindValue( "p1", varptr->value );
+                        query.bindValue( "p2", varptr->name );
+                        query.exec();
 
-                    if ( query.numRowsAffected() == 0 ) {
-                        QSqlQuery query2;
-                        query2.prepare( "insert into vars(varval, varname) "
-                                        "values((:p1),(:p2)) " );
-                        query2.bindValue( "p1", varptr->value );
-                        query2.bindValue( "p2", varptr->name );
+                        if ( query.numRowsAffected() == 0 ) {
+                            QSqlQuery query2;
+                            query2.prepare( "insert into vars(varval, varname) "
+                                            "values((:p1),(:p2)) " );
+                            query2.bindValue( "p1", varptr->value );
+                            query2.bindValue( "p2", varptr->name );
 
-                        query2.exec();
+                            query2.exec();
+                        }
+
                     }
 
-                }
+                    varptr = varptr->next;
 
-                varptr = varptr->next;
+                }
 
             }
 
             //это удаление портов нафих
-            if ( sysDBNeedDeleteSysPorts == true ) {
+            if (( sysDBNeedDeleteSysPorts == true )||(SysPorts != NULL)) {
 
                 say("sysDBNeedDeleteSysPorts == true");
 
                 while ( sysDBNeedDeleteSysPorts == true ) {
 
                     sysDBNeedDeleteSysPorts = false;
-                    int i;
+
                     for(i=0;i<256;i++) {
 
                         if ( this->SysPorts->port[ i ] == NULL ) {
@@ -2756,10 +2817,10 @@ void QAtomix::run() {
 
             }
 
+
             //это изменение параметров портов
+            if ( SysPorts != NULL ) {
 
-
-                int i;
                 for(i=0;i<256;i++) {
 
                     if ( this->SysPorts->port[ i ] != NULL ) {
@@ -2879,18 +2940,18 @@ void QAtomix::run() {
 
                 }
 
-
+            }
 
 
             //это удаление маяков нафих
-            if ( sysDBNeedDeleteSysBeacons == true ) {
+            if (( sysDBNeedDeleteSysBeacons == true )||( SysBeacons != NULL )) {
 
                 say("sysDBNeedDeleteSysBeacons == true");
 
                 while ( sysDBNeedDeleteSysBeacons == true ) {
 
                     sysDBNeedDeleteSysBeacons = false;
-                    int i;
+
                     for(i=0;i<256;i++) {
 
                         if ( this->SysBeacons->beacon[ i ] == NULL ) {
@@ -2914,7 +2975,7 @@ void QAtomix::run() {
 
             }
 
-
+            if ( SysBeacons != NULL ) {
 
                 for(i=0;i<256;i++) {
 
@@ -3002,7 +3063,12 @@ void QAtomix::run() {
 
                 }
 
+            }
 
+
+            //пакеты
+
+            if ( SysPackets != NULL ) {
 
                 QAPRSPacket *packetptr;
 
@@ -3040,6 +3106,8 @@ void QAtomix::run() {
                     packetptr = packetptr->next;
 
                 }
+
+            }
 
 
 

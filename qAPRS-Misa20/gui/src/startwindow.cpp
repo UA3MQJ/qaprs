@@ -193,6 +193,9 @@ void StartWindowImpl::goClick() {
 
     }
 
+    //!!!
+    allLoad();
+
 }
 
 void StartWindowImpl::allLoad() {

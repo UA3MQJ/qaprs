@@ -21,6 +21,10 @@
             на объект SysVars будет не NULL и можно будет сразу работать с ними на чтение. Иначе значение
             переменной можно будет получить только асинхронно через запрос значения.
 
+ 2011-06-21 запросы к другим атомам надо задерживать, пока не соединился с другими атомами.
+            выполнение ответов на запросы надо задерживать пока не загружены все данные.
+            для этого использовать очереди.
+
  */
 
 #ifndef QATOMIX_H
@@ -51,37 +55,27 @@ public:
 
     //переменные для работы storage сохраняющего данные на носитель
     bool started;
-    /*
-    bool sysDBVarModified;
-    bool sysDBNeedCreateSysVars;
-    bool sysDBNeedCreateSysPorts;
-    bool sysDBNeedDeleteSysPorts;
-    bool sysDBNeedSysportSetParam;
-    bool sysDBNeedCreateSysBeacons;
 
-    bool sysDBNeedSysbeacontSetParam;
-    bool sysDBNeedDeleteSysBeacons;
-
-    bool sysDBNeedSavePackets;
-
-    bool ReloadPackets;
-    */
     bool sysDBNeedDeleteSysPorts;
     bool sysDBNeedDeleteSysBeacons;
 
     //заменить на
     bool loadingMode; //режим подчиненного атома - в процессе синхронизации с основным атомом
 
-    //переменных атома
-    //bool needSysPorts;
+    bool connected; //признак того, что мы связаны с другими атомами
 
     int     uid;
+    QString atomID;
 
     void    setAtomName( QString sAtomName );
     void    setStorageType( int stp );
     QString atomName( ) { return vatomName; };
-    void    addAbSysVars(); //добавление атому способности иметь список своих переменных
     void    startSaveToStorage();
+
+    //добавление способностей атома
+    void    addAbStorage(); //добавление атому способности писать и читать в системную БД
+    void    addAbSysVars(); //добавление атому способности иметь список своих переменных
+
 
     //переменные и реализация связи атомов
     //кто-то будет сервер. наверное раньше всех рожденное ядро
@@ -97,8 +91,8 @@ public:
     // для передачи через tcp/ip используется перекодировка в UTF8
     QTextCodec   *sysDecoder16; //системный перекодировщик UTF16<->UTF16
 
-    //связь
-    void    doThink( QString thought ); //подумать
+    //связь ID_DEST>ID_SRC thought
+    void    doThink( QString ID_DEST, QString ID_SRC, QString thought ); //подумать
 
     int     iStorageType; // -1 - не сохранять никаких данных, 0 - SQLite
 
@@ -121,7 +115,7 @@ private:
 
     QString vatomName;
 
-    void    weThink( QString thought ); //это мы думаем (!!!самому не вызывать)
+    void    weThink( QString ID_DEST, QString ID_SRC, QString thought ); //это мы думаем (!!!самому не вызывать)
 
 signals:
 
@@ -284,7 +278,7 @@ private slots:
     //работа с системными переменными
     //
     void DOweSysvarSet( QString VarName, QString VarVal );
-    void DOweSysvarReq();
+    void DOweSysvarReq( QString ID_SRC );
 
     //работа с портами
     //
