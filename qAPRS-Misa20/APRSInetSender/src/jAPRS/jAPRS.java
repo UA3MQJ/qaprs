@@ -44,18 +44,19 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
   //<filter>p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/</filter>
     String APRS_SERVER = new String("russia.aprs2.net");
     String APRS_PORT   = new String("14580");
-    String APRS_USER   = new String("CALL");//UA3MQJ
-    String APRS_PASS   = new String("-1");//17572
+    String APRS_USER   = new String("CALL");//UA3MQJ //CALL
+    String APRS_PASS   = new String("-1");//17572 //-1
     //String APRS_FILTER = new String("p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/");
     String APRS_FILTER = new String("/");
 
-    String APRS_STATION_NAME = new String("STCALL");
+    String APRS_STATION_NAME = new String("STCALL"); //STCALL
     String APRS_STATION_SYM  = new String("/I");
 
     String lastPosition  = new String("? ?");
     String lastStatus    = new String("?");
 
     String log           = new String("");
+    String Messages      = new String("");
 
 
     SocketConnection sc = null;
@@ -86,6 +87,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private Command itemCommand7;
     private Command itemCommand8;
     private Command cancelCommand2;
+    private Command itemCommand9;
+    private Command exitCommand2;
+    private Command okCommand3;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -115,6 +119,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private TextField textField7;
     private TextField textField9;
     private TextField textField8;
+    private TextBox textBox1;
     private SimpleCancellableTask task;
     private SimpleCancellableTask task1;
     private SimpleCancellableTask task2;
@@ -219,7 +224,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                                     //if (textBox != null) { textBox.setString( log ); }
 
                                   int    recordID;
-                                  
+
                                   recordID = recordStore.addRecord(record, 0, record.length);
                                   log = log + "New record id = " + recordID + "\n";
 
@@ -229,7 +234,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                                     log = log + "Data in RMS - update\n";
                                     //if (textBox != null) { textBox.setString( log ); }
 
-                                  
+
                                   recordStore.setRecord( 1, record, 0, record.length );
 
 
@@ -255,9 +260,12 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
          System.gc();
 
+        getTextBox1();
+
         //запуск процесса
         th = new Thread( this );
         th.start();
+
     }//GEN-BEGIN:|0-initialize|2|
     //</editor-fold>//GEN-END:|0-initialize|2|
 
@@ -377,13 +385,17 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 // write post-action user code here
                 textField8.setString( APRS_STATION_NAME );
                 textField9.setString( "" );
-            }//GEN-BEGIN:|7-commandAction|21|124-preAction
-        } else if (displayable == form1) {
-            if (command == cancelCommand) {//GEN-END:|7-commandAction|21|124-preAction
+            } else if (command == itemCommand9) {//GEN-LINE:|7-commandAction|21|188-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|22|124-postAction
+                switchDisplayable(null, getTextBox1());//GEN-LINE:|7-commandAction|22|188-postAction
                 // write post-action user code here
-            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|23|122-preAction
+            }//GEN-BEGIN:|7-commandAction|23|124-preAction
+        } else if (displayable == form1) {
+            if (command == cancelCommand) {//GEN-END:|7-commandAction|23|124-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|24|124-postAction
+                // write post-action user code here
+            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|25|122-preAction
                 // write pre-action user code here
                 APRS_STATION_NAME = textField.getString().toUpperCase();
                 int sInd = choiceGroup.getSelectedIndex();
@@ -397,15 +409,15 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 }
                 screenUpdate();
 
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|24|122-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|26|122-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|25|140-preAction
+            }//GEN-BEGIN:|7-commandAction|27|140-preAction
         } else if (displayable == form2) {
-            if (command == cancelCommand1) {//GEN-END:|7-commandAction|25|140-preAction
+            if (command == cancelCommand1) {//GEN-END:|7-commandAction|27|140-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|26|140-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|28|140-postAction
                 // write post-action user code here
-            } else if (command == okCommand2) {//GEN-LINE:|7-commandAction|27|138-preAction
+            } else if (command == okCommand2) {//GEN-LINE:|7-commandAction|29|138-preAction
                 // write pre-action user code here
                 APRS_SERVER = textField2.getString();
                 APRS_PORT   = textField3.getString();
@@ -415,76 +427,86 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
 
 
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|28|138-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|30|138-postAction
                 // write post-action user code here
                 screenUpdate();
-            }//GEN-BEGIN:|7-commandAction|29|168-preAction
+            }//GEN-BEGIN:|7-commandAction|31|168-preAction
         } else if (displayable == form3) {
-            if (command == cancelCommand2) {//GEN-END:|7-commandAction|29|168-preAction
+            if (command == cancelCommand2) {//GEN-END:|7-commandAction|31|168-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|30|168-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|32|168-postAction
                 // write post-action user code here
-            } else if (command == itemCommand7) {//GEN-LINE:|7-commandAction|31|171-preAction
+            } else if (command == itemCommand7) {//GEN-LINE:|7-commandAction|33|171-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getWaitScreen2());//GEN-LINE:|7-commandAction|32|171-postAction
+                switchDisplayable(null, getWaitScreen2());//GEN-LINE:|7-commandAction|34|171-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|33|74-preAction
+            }//GEN-BEGIN:|7-commandAction|35|74-preAction
         } else if (displayable == list) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|33|74-preAction
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|35|74-preAction
                 // write pre-action user code here
-                listAction();//GEN-LINE:|7-commandAction|34|74-postAction
+                listAction();//GEN-LINE:|7-commandAction|36|74-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|35|152-preAction
+            }//GEN-BEGIN:|7-commandAction|37|152-preAction
         } else if (displayable == list1) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|35|152-preAction
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|37|152-preAction
                 // write pre-action user code here
-                list1Action();//GEN-LINE:|7-commandAction|36|152-postAction
+                list1Action();//GEN-LINE:|7-commandAction|38|152-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|37|38-preAction
+            }//GEN-BEGIN:|7-commandAction|39|38-preAction
         } else if (displayable == textBox) {
-            if (command == exitCommand1) {//GEN-END:|7-commandAction|37|38-preAction
+            if (command == exitCommand1) {//GEN-END:|7-commandAction|39|38-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|38|38-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|40|38-postAction
                 // write post-action user code here
-            } else if (command == okCommand) {//GEN-LINE:|7-commandAction|39|40-preAction
+            } else if (command == okCommand) {//GEN-LINE:|7-commandAction|41|40-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|40|40-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|42|40-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|41|65-preAction
+            }//GEN-BEGIN:|7-commandAction|43|193-preAction
+        } else if (displayable == textBox1) {
+            if (command == exitCommand2) {//GEN-END:|7-commandAction|43|193-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|44|193-postAction
+                // write post-action user code here
+            } else if (command == okCommand3) {//GEN-LINE:|7-commandAction|45|195-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|46|195-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|47|65-preAction
         } else if (displayable == waitScreen) {
-            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|41|65-preAction
+            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|47|65-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|42|65-postAction
+                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|48|65-postAction
                 // write post-action user code here
-            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|43|64-preAction
+            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|49|64-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|44|64-postAction
+                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|50|64-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|45|105-preAction
+            }//GEN-BEGIN:|7-commandAction|51|105-preAction
         } else if (displayable == waitScreen1) {
-            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|45|105-preAction
+            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|51|105-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|46|105-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|52|105-postAction
                 // write post-action user code here
-            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|47|104-preAction
+            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|53|104-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|48|104-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|54|104-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|49|177-preAction
+            }//GEN-BEGIN:|7-commandAction|55|177-preAction
         } else if (displayable == waitScreen2) {
-            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|49|177-preAction
+            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|55|177-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|50|177-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|56|177-postAction
                 // write post-action user code here
-            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|51|176-preAction
+            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|57|176-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|52|176-postAction
+                switchDisplayable(null, getTextBox1());//GEN-LINE:|7-commandAction|58|176-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|53|7-postCommandAction
-        }//GEN-END:|7-commandAction|53|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|59|7-postCommandAction
+        }//GEN-END:|7-commandAction|59|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|54|
-    //</editor-fold>//GEN-END:|7-commandAction|54|
+    }//GEN-BEGIN:|7-commandAction|60|
+    //</editor-fold>//GEN-END:|7-commandAction|60|
 
 
 
@@ -518,6 +540,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             form.addCommand(getItemCommand2());
             form.addCommand(getItemCommand3());
             form.addCommand(getItemCommand6());
+            form.addCommand(getItemCommand9());
             form.addCommand(getItemCommand4());
             form.addCommand(getItemCommand5());
             form.setCommandListener(this);//GEN-END:|14-getter|1|14-postInit
@@ -1381,6 +1404,17 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                     os.write(conn_data);
 
+
+                    Messages = destCall.toUpperCase() +'<' + APRS_STATION_NAME + ":\n" + textField9.getString() + "\n\n" + Messages;
+
+                    if ( Messages.length() > 1920 ) {
+
+                        Messages = Messages.substring(0, 1920);
+
+                    }
+
+                    textBox1.setString( "Messages:\n" + Messages );
+
                 }//GEN-BEGIN:|178-getter|2|178-postInit
             });//GEN-END:|178-getter|2|178-postInit
             // write post-init user code here
@@ -1463,6 +1497,71 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
         return textField14;
     }
     //</editor-fold>//GEN-END:|186-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand9 ">//GEN-BEGIN:|187-getter|0|187-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand9 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand9() {
+        if (itemCommand9 == null) {//GEN-END:|187-getter|0|187-preInit
+            // write pre-init user code here
+            itemCommand9 = new Command("Inbox", Command.ITEM, 0);//GEN-LINE:|187-getter|1|187-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|187-getter|2|
+        return itemCommand9;
+    }
+    //</editor-fold>//GEN-END:|187-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand2 ">//GEN-BEGIN:|192-getter|0|192-preInit
+    /**
+     * Returns an initiliazed instance of exitCommand2 component.
+     * @return the initialized component instance
+     */
+    public Command getExitCommand2() {
+        if (exitCommand2 == null) {//GEN-END:|192-getter|0|192-preInit
+            // write pre-init user code here
+            exitCommand2 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|192-getter|1|192-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|192-getter|2|
+        return exitCommand2;
+    }
+    //</editor-fold>//GEN-END:|192-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand3 ">//GEN-BEGIN:|194-getter|0|194-preInit
+    /**
+     * Returns an initiliazed instance of okCommand3 component.
+     * @return the initialized component instance
+     */
+    public Command getOkCommand3() {
+        if (okCommand3 == null) {//GEN-END:|194-getter|0|194-preInit
+            // write pre-init user code here
+            okCommand3 = new Command("Ok", Command.OK, 0);//GEN-LINE:|194-getter|1|194-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|194-getter|2|
+        return okCommand3;
+    }
+    //</editor-fold>//GEN-END:|194-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textBox1 ">//GEN-BEGIN:|190-getter|0|190-preInit
+    /**
+     * Returns an initiliazed instance of textBox1 component.
+     * @return the initialized component instance
+     */
+    public TextBox getTextBox1() {
+        if (textBox1 == null) {//GEN-END:|190-getter|0|190-preInit
+            // write pre-init user code here
+            textBox1 = new TextBox("textBox1", "", 2000, TextField.ANY | TextField.UNEDITABLE);//GEN-BEGIN:|190-getter|1|190-postInit
+            textBox1.addCommand(getExitCommand2());
+            textBox1.addCommand(getOkCommand3());
+            textBox1.setCommandListener(this);//GEN-END:|190-getter|1|190-postInit
+            // write post-init user code here
+            textBox1.setString( Messages );
+
+        }//GEN-BEGIN:|190-getter|2|
+        return textBox1;
+    }
+    //</editor-fold>//GEN-END:|190-getter|2|
 
     /**
      * Returns a display instance.
@@ -1599,6 +1698,38 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                         System.out.println("connectToServer - read: " + message);
 
+
+                        if ( message.indexOf( ':' ) > 0 ) {
+
+                            if (  message.indexOf( ':' ) == message.indexOf( "::" ) ) {
+
+                                //типичная мессага
+                                //UA5AA-14>APU25N,MB7UXN-14*,WIDE2-1,qAR,SM0RWO-14::DH8HP    :GA{08
+
+                                //String tst= "UA5AA-14>APU25N,MB7UXN-14*,WIDE2-1,qAR,SM0RWO-14::DH8HP    :GA{08";
+                                String tst= message;
+                                String MFrom = tst.substring(0, tst.indexOf('>'));
+                                String MTo = tst.substring(tst.indexOf("::")+2, tst.indexOf(" ",tst.indexOf("::")+2));
+                                String MMsg = tst.substring( 1 + tst.indexOf(":", tst.indexOf(" ",tst.indexOf("::")+2) ) );
+
+                                if ( (MFrom.length()!=0)&&(MTo.length()!=0)&&(MMsg.length()!=0) ) {
+
+                                    Messages = MTo +'<' + MFrom + ":\n" + MMsg + '\n' + Messages;
+
+                                    if ( Messages.length() > 1920 ) {
+
+                                        Messages = Messages.substring(0, 1920);
+
+                                    }
+
+                                    textBox1.setString( "Messages:\n" + Messages );
+                                }
+
+                            }
+
+                        }
+                        
+
                     } catch (Exception e) {
 
                         System.out.println("run is - Exception: " + e);
@@ -1623,8 +1754,12 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                 System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
 
-                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
-                //sc = (SocketConnection)Connector.open("socket://10.0.0.2:3128");
+                //это прямой доступ, когда на ПК разработчика прямой интернет
+                //соединяемся сразу с APRS сервером
+                //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+
+                //а это через прокси. соединяемся сначала с прокси сервером
+                sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                 sc.setSocketOption(SocketConnection.DELAY, 1);
                 sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -1637,13 +1772,25 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             os = sc.openOutputStream();
 
 
+            //INFO
+            //'\n' or '0x0A' (10 in decimal) -> This character is called "Line Feed" (LF).
+            //'\r' or '0x0D' (13 in decimal) -> This one is called "Carriage return" (CR).
+            //в HTTP запросах нормальные люди шлют 0D0A то есть \r\n а в конце \r\n\r\n
 
+            //выполняется только при соединении через прокси - соединение с APRS сервером
+            //прокси сервер без аутентификации
+            //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
+            //прокси сервер с аутентификацией
+            byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
 
-            //byte[] proxy_conn_data = ("CONNECT ukraine.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
-
-            //os.write(proxy_conn_data);
+            os.write(proxy_conn_data);
 
             //APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+            //это все тестовое будет
+            //APRS_USER = "UA3MQJ";
+            //APRS_PASS = "17572";
+            APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+
 
             byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
 
