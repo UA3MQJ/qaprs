@@ -90,6 +90,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private Command itemCommand9;
     private Command exitCommand2;
     private Command okCommand3;
+    private Command itemCommand10;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -468,10 +469,12 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 // write pre-action user code here
                 switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|44|193-postAction
                 // write post-action user code here
-            } else if (command == okCommand3) {//GEN-LINE:|7-commandAction|45|195-preAction
+            } else if (command == itemCommand10) {//GEN-LINE:|7-commandAction|45|200-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|46|195-postAction
+                switchDisplayable(null, getForm3());//GEN-LINE:|7-commandAction|46|200-postAction
                 // write post-action user code here
+                textField8.setString( APRS_STATION_NAME );
+                textField9.setString( "" );
             }//GEN-BEGIN:|7-commandAction|47|65-preAction
         } else if (displayable == waitScreen) {
             if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|47|65-preAction
@@ -1405,7 +1408,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                     os.write(conn_data);
 
 
-                    Messages = destCall.toUpperCase() +'<' + APRS_STATION_NAME + ":\n" + textField9.getString() + "\n\n" + Messages;
+                    Messages = destCall.toUpperCase() +'<' + APRS_STATION_NAME + ": " + textField9.getString() + "\n\n" + Messages;
 
                     if ( Messages.length() > 1920 ) {
 
@@ -1413,7 +1416,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                     }
 
-                    textBox1.setString( "Messages:\n" + Messages );
+                    textBox1.setString( Messages );
 
                 }//GEN-BEGIN:|178-getter|2|178-postInit
             });//GEN-END:|178-getter|2|178-postInit
@@ -1551,9 +1554,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     public TextBox getTextBox1() {
         if (textBox1 == null) {//GEN-END:|190-getter|0|190-preInit
             // write pre-init user code here
-            textBox1 = new TextBox("textBox1", "", 2000, TextField.ANY | TextField.UNEDITABLE);//GEN-BEGIN:|190-getter|1|190-postInit
+            textBox1 = new TextBox("Messages", "", 2000, TextField.ANY | TextField.UNEDITABLE);//GEN-BEGIN:|190-getter|1|190-postInit
             textBox1.addCommand(getExitCommand2());
-            textBox1.addCommand(getOkCommand3());
+            textBox1.addCommand(getItemCommand10());
             textBox1.setCommandListener(this);//GEN-END:|190-getter|1|190-postInit
             // write post-init user code here
             textBox1.setString( Messages );
@@ -1562,6 +1565,21 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
         return textBox1;
     }
     //</editor-fold>//GEN-END:|190-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand10 ">//GEN-BEGIN:|199-getter|0|199-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand10 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand10() {
+        if (itemCommand10 == null) {//GEN-END:|199-getter|0|199-preInit
+            // write pre-init user code here
+            itemCommand10 = new Command("Send", Command.ITEM, 0);//GEN-LINE:|199-getter|1|199-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|199-getter|2|
+        return itemCommand10;
+    }
+    //</editor-fold>//GEN-END:|199-getter|2|
 
     /**
      * Returns a display instance.
@@ -1705,16 +1723,16 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                                 //типичная мессага
                                 //UA5AA-14>APU25N,MB7UXN-14*,WIDE2-1,qAR,SM0RWO-14::DH8HP    :GA{08
-
-                                //String tst= "UA5AA-14>APU25N,MB7UXN-14*,WIDE2-1,qAR,SM0RWO-14::DH8HP    :GA{08";
+                                //String tst= "RV3DHC>APU25N,TCPIP*,qAC,T2RUSSIA::UA3MQJ-1 :No stations have been heard except via a digipeater";
                                 String tst= message;
                                 String MFrom = tst.substring(0, tst.indexOf('>'));
-                                String MTo = tst.substring(tst.indexOf("::")+2, tst.indexOf(" ",tst.indexOf("::")+2));
-                                String MMsg = tst.substring( 1 + tst.indexOf(":", tst.indexOf(" ",tst.indexOf("::")+2) ) );
+                                String MTo = tst.substring(tst.indexOf("::")+2, tst.indexOf(":",tst.indexOf("::")+2)).trim();
+                                String MMsg = tst.substring( 1 + tst.indexOf(":", tst.indexOf(":",tst.indexOf("::")+2) ) );
+
 
                                 if ( (MFrom.length()!=0)&&(MTo.length()!=0)&&(MMsg.length()!=0) ) {
 
-                                    Messages = MTo +'<' + MFrom + ":\n" + MMsg + '\n' + Messages;
+                                    Messages = MTo +'<' + MFrom + ": " + MMsg + '\n' + Messages;
 
                                     if ( Messages.length() > 1920 ) {
 
@@ -1722,7 +1740,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                                     }
 
-                                    textBox1.setString( "Messages:\n" + Messages );
+                                    textBox1.setString( Messages );
                                 }
 
                             }
@@ -1756,10 +1774,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                 //это прямой доступ, когда на ПК разработчика прямой интернет
                 //соединяемся сразу с APRS сервером
-                //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                 //а это через прокси. соединяемся сначала с прокси сервером
-                sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                 sc.setSocketOption(SocketConnection.DELAY, 1);
                 sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -1781,15 +1799,15 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             //прокси сервер без аутентификации
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
             //прокси сервер с аутентификацией
-            byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+            //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
 
-            os.write(proxy_conn_data);
+           // os.write(proxy_conn_data);
 
-            //APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+           // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
             //это все тестовое будет
             //APRS_USER = "UA3MQJ";
             //APRS_PASS = "17572";
-            APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+            //APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
 
 
             byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
