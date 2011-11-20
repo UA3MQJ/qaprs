@@ -1801,7 +1801,11 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             //прокси сервер с аутентификацией
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
 
+<<<<<<< .mine
+            //os.write(proxy_conn_data);
+=======
            // os.write(proxy_conn_data);
+>>>>>>> .r240
 
            // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
             //это все тестовое будет
