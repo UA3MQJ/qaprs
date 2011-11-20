@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 
+//изменен исходный код! 
 package jAPRS;
 
 import javax.microedition.midlet.*;
