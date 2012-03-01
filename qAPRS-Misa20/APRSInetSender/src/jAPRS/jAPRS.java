@@ -46,13 +46,15 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
   //<filter>p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/</filter>
     String APRS_SERVER = new String("russia.aprs2.net");
     String APRS_PORT   = new String("14580");
-    String APRS_USER   = new String("CALL");//UA3MQJ //CALL
-    String APRS_PASS   = new String("-1");//17572 //-1
+    String APRS_USER   = new String("UA3MQJ");//UA3MQJ //CALL
+    String APRS_PASS   = new String("17572");//17572 //-1
     //String APRS_FILTER = new String("p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/");
     String APRS_FILTER = new String("/");
 
     String APRS_STATION_NAME = new String("STCALL"); //STCALL
     String APRS_STATION_SYM  = new String("/I");
+
+    String APRS_BEACON_PERIOD  = new String("1800"); //1800 sec = 30 min
 
     String lastPosition  = new String("? ?");
     String lastStatus    = new String("?");
@@ -90,9 +92,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private Command itemCommand8;
     private Command cancelCommand2;
     private Command itemCommand9;
+    private Command itemCommand10;
     private Command exitCommand2;
     private Command okCommand3;
-    private Command itemCommand10;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -110,6 +112,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private ChoiceGroup choiceGroup;
     private TextField textField1;
     private TextField textField;
+    private TextField textField15;
     private Form form2;
     private TextField textField2;
     private TextField textField3;
@@ -187,13 +190,14 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                   DataInputStream dis = new DataInputStream(bais);
 
-                  APRS_SERVER       = dis.readUTF();
-                  APRS_PORT         = dis.readUTF();
-                  APRS_USER         = dis.readUTF();
-                  APRS_PASS         = dis.readUTF();
-                  APRS_FILTER       = dis.readUTF();
-                  APRS_STATION_NAME = dis.readUTF();
-                  APRS_STATION_SYM  = dis.readUTF();
+                  APRS_SERVER        = dis.readUTF();
+                  APRS_PORT          = dis.readUTF();
+                  APRS_USER          = dis.readUTF();
+                  APRS_PASS          = dis.readUTF();
+                  APRS_FILTER        = dis.readUTF();
+                  APRS_STATION_NAME  = dis.readUTF();
+                  APRS_STATION_SYM   = dis.readUTF();
+                  APRS_BEACON_PERIOD = dis.readUTF();
 
             } else {
                 System.out.println("Start - No data in RMS");
@@ -216,6 +220,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                               dos.writeUTF(APRS_FILTER);
                               dos.writeUTF(APRS_STATION_NAME);
                               dos.writeUTF(APRS_STATION_SYM);
+                              dos.writeUTF(APRS_BEACON_PERIOD);
 
 
                               byte[] record = baos.toByteArray();
@@ -346,6 +351,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 textField4.setString( APRS_USER );
                 textField5.setString( APRS_PASS );
                 textField6.setString( APRS_FILTER );
+                textField15.setString( APRS_BEACON_PERIOD );
 
             } else if (command == itemCommand1) {//GEN-LINE:|7-commandAction|9|25-preAction
                 // write pre-action user code here
@@ -353,6 +359,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 // write post-action user code here
                 textField.setString( APRS_STATION_NAME );
                 textField1.setString( APRS_STATION_SYM );
+                textField15.setString( APRS_BEACON_PERIOD );
                 if ( APRS_STATION_SYM.equals ("/I" ) ) {
                      choiceGroup.setSelectedFlags(new boolean[] { true, false, false, false, false, false });
                 } else if ( APRS_STATION_SYM.equals ("/[") ) {
@@ -401,6 +408,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|25|122-preAction
                 // write pre-action user code here
                 APRS_STATION_NAME = textField.getString().toUpperCase();
+                APRS_BEACON_PERIOD = textField15.getString().toUpperCase();
+
                 int sInd = choiceGroup.getSelectedIndex();
                 switch (sInd) {
                     case 0: APRS_STATION_SYM = "/I";break;
@@ -1015,7 +1024,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     public Form getForm1() {
         if (form1 == null) {//GEN-END:|110-getter|0|110-preInit
             // write pre-init user code here
-            form1 = new Form("Station Pars", new Item[] { getTextField(), getChoiceGroup(), getTextField1() });//GEN-BEGIN:|110-getter|1|110-postInit
+            form1 = new Form("Station Pars", new Item[] { getTextField(), getChoiceGroup(), getTextField1(), getTextField15() });//GEN-BEGIN:|110-getter|1|110-postInit
             form1.addCommand(getOkCommand1());
             form1.addCommand(getCancelCommand());
             form1.setCommandListener(this);//GEN-END:|110-getter|1|110-postInit
@@ -1583,6 +1592,21 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     }
     //</editor-fold>//GEN-END:|199-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField15 ">//GEN-BEGIN:|202-getter|0|202-preInit
+    /**
+     * Returns an initiliazed instance of textField15 component.
+     * @return the initialized component instance
+     */
+    public TextField getTextField15() {
+        if (textField15 == null) {//GEN-END:|202-getter|0|202-preInit
+            // write pre-init user code here
+            textField15 = new TextField("Beacon period:", null, 32, TextField.ANY);//GEN-LINE:|202-getter|1|202-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|202-getter|2|
+        return textField15;
+    }
+    //</editor-fold>//GEN-END:|202-getter|2|
+
     /**
      * Returns a display instance.
      * @return the display instance.
@@ -1612,6 +1636,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
               dos.writeUTF(APRS_FILTER);
               dos.writeUTF(APRS_STATION_NAME);
               dos.writeUTF(APRS_STATION_SYM);
+              dos.writeUTF(APRS_BEACON_PERIOD);
 
 
               byte[] record = baos.toByteArray();
@@ -1776,10 +1801,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                 //это прямой доступ, когда на ПК разработчика прямой интернет
                 //соединяемся сразу с APRS сервером
-                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                 //а это через прокси. соединяемся сначала с прокси сервером
-                //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                 sc.setSocketOption(SocketConnection.DELAY, 1);
                 sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -1801,9 +1826,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             //прокси сервер без аутентификации
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
             //прокси сервер с аутентификацией
-            //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+            byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
 
-           // os.write(proxy_conn_data);
+            os.write(proxy_conn_data);
 
            // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
             //это все тестовое будет

@@ -481,7 +481,7 @@
                     <Property name="commands" typeID="1C#CommandEventSource" value="A2:4_R1224_R124"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VStation Pars"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
-                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A3:4_R1304_R1124_R131"/>
+                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A4:4_R1304_R1124_R1314_R202"/>
                     <Component componentID="112" typeID="Cjavax.microedition.lcdui.ChoiceGroup">
                         <Property name="instanceName" typeID="Pjava.lang.String" value="VchoiceGroup"/>
                         <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
@@ -538,6 +538,14 @@
                         <Property name="instanceName" typeID="Pjava.lang.String" value="VtextField"/>
                         <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                         <Property name="label" typeID="Pjava.lang.String" value="VStation Name:"/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
+                        <Property name="maxSize" typeID="Pint" value="V32"/>
+                        <Property name="constraints" typeID="Pint" value="V0"/>
+                    </Component>
+                    <Component componentID="202" typeID="Cjavax.microedition.lcdui.TextField">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VtextField15"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="VBeacon period:"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="maxSize" typeID="Pint" value="V32"/>
                         <Property name="constraints" typeID="Pint" value="V0"/>
@@ -765,17 +773,17 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="110" descriptorID="componentNode110" x="408" y="154"/>
-        <Node componentID="190" descriptorID="componentNode190" x="246" y="693"/>
-        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
         <Node componentID="162" descriptorID="componentNode162" x="557" y="256"/>
-        <Node componentID="175" descriptorID="componentNode175" x="795" y="411"/>
         <Node componentID="103" descriptorID="componentNode103" x="707" y="-75"/>
-        <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
         <Node componentID="35" descriptorID="componentNode35" x="452" y="476"/>
+        <Node componentID="175" descriptorID="componentNode175" x="795" y="411"/>
+        <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
+        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
         <Node componentID="61" descriptorID="componentNode61" x="1117" y="779"/>
-        <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
+        <Node componentID="110" descriptorID="componentNode110" x="408" y="154"/>
         <Node componentID="14" descriptorID="componentNode14" x="206" y="258"/>
+        <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
+        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
         <Node componentID="151" descriptorID="componentNode151" x="65" y="480"/>
         <Node componentID="2" descriptorID="componentNode2" x="-12" y="26"/>
     </FlowScene>
