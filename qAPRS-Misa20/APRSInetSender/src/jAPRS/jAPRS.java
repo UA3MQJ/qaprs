@@ -9,6 +9,9 @@ package jAPRS;
 
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
+
+import javax.microedition.lcdui.Display;
+
 import javax.microedition.io.file.FileConnection;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +33,8 @@ import org.netbeans.microedition.util.SimpleCancellableTask;
 /**
  * @author user
  */
+
+
 public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
     private boolean midletPaused = false;
@@ -40,14 +45,18 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
     public Thread th;
 
+    Timer       timer = new Timer();
+    MyTimerTask ttask = new MyTimerTask();
+    
+
   //<SERVER1>aprswest.aprs2.net:14580</SERVER1>
   //<SERVER2>argentina.aprs2.net:14580</SERVER2>
   //<SERVER3>australia.aprs2.net:14580</SERVER3>
   //<filter>p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/</filter>
     String APRS_SERVER = new String("russia.aprs2.net");
     String APRS_PORT   = new String("14580");
-    String APRS_USER   = new String("UA3MQJ");//UA3MQJ //CALL
-    String APRS_PASS   = new String("17572");//17572 //-1
+    String APRS_USER   = new String("CALL");//UA3MQJ //CALL
+    String APRS_PASS   = new String("-1");//17572 //-1
     //String APRS_FILTER = new String("p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/");
     String APRS_FILTER = new String("/");
 
@@ -55,6 +64,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     String APRS_STATION_SYM  = new String("/I");
 
     String APRS_BEACON_PERIOD  = new String("1800"); //1800 sec = 30 min
+    public int    timerCounter = 1800; //обратный таймер
 
     String lastPosition  = new String("? ?");
     String lastStatus    = new String("?");
@@ -66,7 +76,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     SocketConnection sc = null;
     OutputStream     os = null;
     InputStream      is = null;
-    boolean          SRVConnected = false;
+    boolean          SRVConnected = false; //признак наличия соединения с сервером
+
+
 
 
 
@@ -103,6 +115,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private TextField textField13;
     private TextField textField10;
     private TextField textField11;
+    private TextField textField16;
     private TextBox textBox;
     private FileBrowser fileBrowser;
     private WaitScreen waitScreen;
@@ -136,7 +149,31 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
      */
     public jAPRS() {
 
-     }
+    }
+
+
+
+    class MyTimerTask extends TimerTask {
+        public void run(){
+            //System.out.println( "Передача координат по таймеру" );
+            //readFile();
+            timerCounter = timerCounter - 1;
+            System.out.println( timerCounter );
+
+            textField16.setString( Integer.toString( timerCounter ) );
+
+            if ( timerCounter == 0 ) {
+
+                System.out.println( "Передача координат по таймеру" );
+                readFile();
+
+                timerCounter =  Integer.parseInt(textField15.getString());
+
+
+            };
+
+        }
+    }
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
     //</editor-fold>//GEN-END:|methods|0|
@@ -198,6 +235,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                   APRS_STATION_NAME  = dis.readUTF();
                   APRS_STATION_SYM   = dis.readUTF();
                   APRS_BEACON_PERIOD = dis.readUTF();
+                  timerCounter = Integer.parseInt(APRS_BEACON_PERIOD);
 
             } else {
                 System.out.println("Start - No data in RMS");
@@ -409,6 +447,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 // write pre-action user code here
                 APRS_STATION_NAME = textField.getString().toUpperCase();
                 APRS_BEACON_PERIOD = textField15.getString().toUpperCase();
+                timerCounter =  Integer.parseInt(textField15.getString());
+                textField16.setString( Integer.toString( timerCounter ) );
 
                 int sInd = choiceGroup.getSelectedIndex();
                 switch (sInd) {
@@ -547,7 +587,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     public Form getForm() {
         if (form == null) {//GEN-END:|14-getter|0|14-preInit
             // write pre-init user code here
-            form = new Form("APRS Inet Sender", new Item[] { getSpacer2(), getTextField10(), getTextField12(), getTextField11(), getSpacer5(), getTextField13(), getTextField14() });//GEN-BEGIN:|14-getter|1|14-postInit
+            form = new Form("APRS Inet Sender", new Item[] { getSpacer2(), getTextField10(), getTextField12(), getTextField11(), getSpacer5(), getTextField13(), getTextField14(), getTextField16() });//GEN-BEGIN:|14-getter|1|14-postInit
             form.addCommand(getExitCommand());
             form.addCommand(getItemCommand());
             form.addCommand(getItemCommand1());
@@ -790,7 +830,15 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 public void execute() throws Exception {//GEN-END:|66-getter|1|66-execute
                     // write task-execution user code here
                     System.out.println("Send Position");
+                    //запуск таймера до следующего запуска
+                    if ( timerCounter>0 ) {
+                        System.out.println("Start timer");
+                        timer.schedule( ttask, 1000, 1000 );
+                    };
+
                     readFile();
+                    System.out.println("Position sended");
+
                 }//GEN-BEGIN:|66-getter|2|66-postInit
             });//GEN-END:|66-getter|2|66-postInit
             // write post-init user code here
@@ -1600,12 +1648,27 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     public TextField getTextField15() {
         if (textField15 == null) {//GEN-END:|202-getter|0|202-preInit
             // write pre-init user code here
-            textField15 = new TextField("Beacon period:", null, 32, TextField.ANY);//GEN-LINE:|202-getter|1|202-postInit
+            textField15 = new TextField("Beacon period(s):", null, 32, TextField.ANY);//GEN-LINE:|202-getter|1|202-postInit
             // write post-init user code here
         }//GEN-BEGIN:|202-getter|2|
         return textField15;
     }
     //</editor-fold>//GEN-END:|202-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField16 ">//GEN-BEGIN:|203-getter|0|203-preInit
+    /**
+     * Returns an initiliazed instance of textField16 component.
+     * @return the initialized component instance
+     */
+    public TextField getTextField16() {
+        if (textField16 == null) {//GEN-END:|203-getter|0|203-preInit
+            // write pre-init user code here
+            textField16 = new TextField("Beacon Timer(s):", null, 32, TextField.ANY | TextField.UNEDITABLE);//GEN-LINE:|203-getter|1|203-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|203-getter|2|
+        return textField16;
+    }
+    //</editor-fold>//GEN-END:|203-getter|2|
 
     /**
      * Returns a display instance.
@@ -1719,6 +1782,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
         
         textField13.setString( lastPosition );
         textField14.setString( lastStatus );
+        textField16.setString( Integer.toString( timerCounter ) );
 
     }
 
@@ -1801,10 +1865,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                 //это прямой доступ, когда на ПК разработчика прямой интернет
                 //соединяемся сразу с APRS сервером
-                //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                 //а это через прокси. соединяемся сначала с прокси сервером
-                sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                 sc.setSocketOption(SocketConnection.DELAY, 1);
                 sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -1826,9 +1890,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             //прокси сервер без аутентификации
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
             //прокси сервер с аутентификацией
-            byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+            //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
 
-            os.write(proxy_conn_data);
+            //os.write(proxy_conn_data);
 
            // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
             //это все тестовое будет
@@ -1859,6 +1923,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
     }
 
+//чтение координат из текстового файла
 private void readFile() {
 
         //switchDisplayable(null, getForm2());
@@ -1972,3 +2037,5 @@ private void readFile() {
 
 
 }
+
+
