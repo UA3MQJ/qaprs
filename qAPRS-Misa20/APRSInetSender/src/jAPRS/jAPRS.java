@@ -64,7 +64,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     String APRS_STATION_SYM  = new String("/I");
 
     String APRS_BEACON_PERIOD  = new String("1800"); //1800 sec = 30 min
-    public int    timerCounter = 1800; //обратный таймер
+    public int    timerTOP = 1800; //обратный таймер
+    public int    timerCounter = timerTOP; //обратный таймер
+    public boolean timerStarted = false;
 
     String lastPosition  = new String("? ?");
     String lastStatus    = new String("?");
@@ -107,6 +109,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     private Command itemCommand10;
     private Command exitCommand2;
     private Command okCommand3;
+    private Command okCommand4;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -157,20 +160,22 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
         public void run(){
             //System.out.println( "Передача координат по таймеру" );
             //readFile();
-            timerCounter = timerCounter - 1;
-            System.out.println( timerCounter );
+            if ( timerCounter > 0 ) {
 
-            textField16.setString( Integer.toString( timerCounter ) );
+                timerCounter = timerCounter - 1;
+                System.out.println( timerCounter );
 
-            if ( timerCounter == 0 ) {
+                textField16.setString( Integer.toString( timerCounter ) );
 
-                System.out.println( "Передача координат по таймеру" );
-                readFile();
+                if ( timerCounter == 0 ) {
 
-                timerCounter =  Integer.parseInt(textField15.getString());
+                    timerCounter =  timerTOP;
 
+                    System.out.println( "Передача координат по таймеру" );
+                    readFile();
 
-            };
+                }
+            }
 
         }
     }
@@ -236,6 +241,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                   APRS_STATION_SYM   = dis.readUTF();
                   APRS_BEACON_PERIOD = dis.readUTF();
                   timerCounter = Integer.parseInt(APRS_BEACON_PERIOD);
+                  timerTOP     = timerCounter;
 
             } else {
                 System.out.println("Start - No data in RMS");
@@ -448,6 +454,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 APRS_STATION_NAME = textField.getString().toUpperCase();
                 APRS_BEACON_PERIOD = textField15.getString().toUpperCase();
                 timerCounter =  Integer.parseInt(textField15.getString());
+                timerTOP     = timerCounter;
                 textField16.setString( Integer.toString( timerCounter ) );
 
                 int sInd = choiceGroup.getSelectedIndex();
@@ -561,6 +568,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
         // write post-action user code here
     }//GEN-BEGIN:|7-commandAction|60|
     //</editor-fold>//GEN-END:|7-commandAction|60|
+
 
 
 
@@ -830,14 +838,20 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                 public void execute() throws Exception {//GEN-END:|66-getter|1|66-execute
                     // write task-execution user code here
                     System.out.println("Send Position");
-                    //запуск таймера до следующего запуска
-                    if ( timerCounter>0 ) {
-                        System.out.println("Start timer");
-                        timer.schedule( ttask, 1000, 1000 );
-                    };
 
-                    readFile();
-                    System.out.println("Position sended");
+                    if (SRVConnected==true) {
+                        //запуск таймера до следующего запуска
+                        if (( timerCounter>0 )&(timerStarted==false)) {
+                            System.out.println("Start timer");
+                            timerStarted=true;
+                            timer.schedule( ttask, 1000, 1000 );
+                        };
+
+                        readFile();
+                        System.out.println("Position sended");
+                    } else {
+                        lastStatus = "No connection";
+                    }
 
                 }//GEN-BEGIN:|66-getter|2|66-postInit
             });//GEN-END:|66-getter|2|66-postInit
@@ -1005,27 +1019,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             task1.setExecutable(new org.netbeans.microedition.util.Executable() {
                 public void execute() throws Exception {//GEN-END:|106-getter|1|106-execute
                     // write task-execution user code here
-                    if ( SRVConnected == false ) {
-
-
                         connectToServer();
-                        SRVConnected = true;
-
-                    } else {
-
-                        SRVConnected = false;
-
-                        is.close();
-                        os.close();
-                        sc.close();
-
-                        is = null;
-                        os = null;
-                        sc = null;
-
-                    }
-                    screenUpdate();
-
                 }//GEN-BEGIN:|106-getter|2|106-postInit
             });//GEN-END:|106-getter|2|106-postInit
             // write post-init user code here
@@ -1670,6 +1664,23 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
     }
     //</editor-fold>//GEN-END:|203-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand4 ">//GEN-BEGIN:|205-getter|0|205-preInit
+    /**
+     * Returns an initiliazed instance of okCommand4 component.
+     * @return the initialized component instance
+     */
+    public Command getOkCommand4() {
+        if (okCommand4 == null) {//GEN-END:|205-getter|0|205-preInit
+            // write pre-init user code here
+            okCommand4 = new Command("Ok", Command.OK, 0);//GEN-LINE:|205-getter|1|205-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|205-getter|2|
+        return okCommand4;
+    }
+    //</editor-fold>//GEN-END:|205-getter|2|
+
+
+
     /**
      * Returns a display instance.
      * @return the display instance.
@@ -1683,7 +1694,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
      */
     public void exitMIDlet() {
 
- try {
+        timer.cancel();
+
+        try {
 
               //recordStore = RecordStore.openRecordStore(DBNAME, true);
 
@@ -1717,6 +1730,14 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
               }
 
               recordStore.closeRecordStore();
+
+              is.close();
+              os.close();
+              sc.close();
+
+              os = null;
+              is = null;
+              sc = null;
 
           } catch (Exception e) {
 
@@ -1854,10 +1875,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
         System.out.println("connectToServer");
 
-
-
         try {
-
 
             if ( sc == null ) {
 
@@ -1877,8 +1895,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
 
 
-            is  = sc.openInputStream();
-            os = sc.openOutputStream();
+                is  = sc.openInputStream();
+                os = sc.openOutputStream();
 
 
             //INFO
@@ -1891,7 +1909,6 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
             //прокси сервер с аутентификацией
             //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-
             //os.write(proxy_conn_data);
 
            // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
@@ -1905,19 +1922,39 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
             os.write(conn_data);
 
-            //th = new Thread( this );
-            //th.start();
+            lastStatus = "Connected";
+            SRVConnected = true;
+            screenUpdate();
 
             } else {
 
-                System.out.println("already connected");
+                System.out.println("already connected - disconnect");
+
+                timer.cancel();
+                timerStarted=true;
+                timerCounter=timerTOP;
+
+                is.close();
+                os.close();
+                sc.close();
+
+                os = null;
+                is = null;
+                sc = null;
+
+                SRVConnected = false;
+                lastStatus = "Disconnect";
+                screenUpdate();
 
             }
-
 
         } catch (Exception e) {
 
               System.out.println("connectToServer - Exception: " + e);
+              System.out.println("ошибка соединения");
+              SRVConnected = false;
+              lastStatus = "Connection error!" ;
+              screenUpdate();
 
         }
 
@@ -1926,9 +1963,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 //чтение координат из текстового файла
 private void readFile() {
 
-        //switchDisplayable(null, getForm2());
-
         try {
+
             FileConnection textFile = fileBrowser.getSelectedFile();
             getTextBox().setString("");
             InputStream fis = textFile.openInputStream();
@@ -1937,8 +1973,6 @@ private void readFile() {
             fis.close();
 
             String position = new String(b, 0, length);
-
-
 
             //до первого пробела - широта
             //до второго долгота
@@ -1995,28 +2029,24 @@ private void readFile() {
             //UA3MQJ>APUN25,TCPIP*: + MsgText
             //UA1CEC>APU25N,TCPIP*,qAC,T2RUSSIA:=5931.88N/03053.60E&10147 - inet {UIV32}
             //5931.88N 03053.60E Fly e135 - inet {QAPRSj}
+            System.out.println( packet );
 
             if (length > 0) {
-
-
-
 
                 //socket://host.com:80
                 //HttpConnection MyCon = (HttpConnection) Connector.open("socket://"+APRS_SERVER+":"+, Connector.READ_WRITE, true);
                 try{
                   //SocketConnection sc = (SocketConnection)
                   //  Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
-
                   //OutputStream os = null;
-
 
                   byte[] packet_data = packet.getBytes();
                   os.write(packet_data);
 
-                  //textBox1.setString( position + " \n packet:" + packet );
 
-                } catch (IOException x){
-                     x.printStackTrace();
+                } catch (IOException e){
+                     //x.printStackTrace();
+                    System.out.println("writeToServer - Exception: " + e);
                 }
 
             }
