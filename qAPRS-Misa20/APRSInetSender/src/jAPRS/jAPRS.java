@@ -30,12 +30,19 @@ import org.netbeans.microedition.lcdui.WaitScreen;
 import org.netbeans.microedition.lcdui.pda.FileBrowser;
 import org.netbeans.microedition.util.SimpleCancellableTask;
 
+
+import javax.microedition.media.*;
+import javax.microedition.media.control.ToneControl;
+import javax.microedition.media.control.VolumeControl;
+import javax.microedition.media.protocol.*;
+
+
 /**
  * @author user
  */
 
 
-public class jAPRS extends MIDlet implements Runnable, CommandListener {
+public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
     private boolean midletPaused = false;
 
@@ -160,6 +167,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
         public void run(){
             //System.out.println( "Передача координат по таймеру" );
             //readFile();
+
+            //(Display.getDisplay(this)).vibrate(время);
+
+
             if ( timerCounter > 0 ) {
 
                 timerCounter = timerCounter - 1;
@@ -196,6 +207,20 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
         log = log + "Initial\n";
         //if (textBox != null) { textBox.setString( log ); }
+
+
+        System.out.println("\n=========\n");
+        
+        String protocols [] = {
+            "http", "file", "socket", "datagram"
+        };
+        for(int j=0; j < protocols.length; j++) {
+            String cont_HTTP [] = Manager.getSupportedContentTypes(protocols[j]);
+            for(int i =0; i < cont_HTTP.length; i++) {
+                System.out.println("Protocol " +protocols[j]+ ": contentType is "+cont_HTTP[i]);
+            }
+        }
+
 
         boolean storeNotExist = true;
 
@@ -1827,7 +1852,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
                         String message = new String (data.toString());
 
                         System.out.println("connectToServer - read: " + message);
-
+                        //(Display.getDisplay(this)).vibrate(10);
 
                         if ( message.indexOf( ':' ) > 0 ) {
 
@@ -1873,6 +1898,43 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
         private void connectToServer() {
 
+            //try {
+            //   // Играть ноту C4 ("До") 4000 миллисекунд с громкостью 100 единиц (диапазон громкости от 0 до 100).
+            //   Manager.playTone(ToneControl.C4, 16000, 100);
+            //}
+            //catch(MediaException me) {
+            //}
+
+        try {
+
+         //Player player = Manager.createPlayer("file:///root1/photos/mus.mid");
+         //player.start();
+         //InputStream ins = getClass().getResourceAsStream( "file:///root1/photos/mus.mp3" );
+         //Player p = Manager.createPlayer(ins, "audio/MPEG" );
+         //p.start();
+         //InputStream ins = getClass().getResourceAsStream( "file:///root1/photos/mus.mid" );
+
+            //работает!!!
+            //Player p = Manager.createPlayer("file:///root1/photos/mus.mid"  );
+            //p.start();
+
+            //работает, если добавить папку в ресурсы проекта
+            //Player p = Manager.createPlayer(  getClass().getResourceAsStream( "/mus.mid" ), "audio/midi" );
+            //p.realize();
+            //p.prefetch();
+            //p.start();
+            InputStream ins = getClass().getResourceAsStream( "/mus.amr" );
+            Player p = Manager.createPlayer(ins, "audio/amr" );
+            p.realize();
+            p.prefetch();
+            p.start();
+        }
+        catch (Exception e)    {
+            System.out.println( "Unable to play media file!" + e );
+
+        }
+
+
         System.out.println("connectToServer");
 
         try {
@@ -1883,10 +1945,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
 
                 //это прямой доступ, когда на ПК разработчика прямой интернет
                 //соединяемся сразу с APRS сервером
-                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                 //а это через прокси. соединяемся сначала с прокси сервером
-                //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                 sc.setSocketOption(SocketConnection.DELAY, 1);
                 sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -1908,8 +1970,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener {
             //прокси сервер без аутентификации
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
             //прокси сервер с аутентификацией
-            //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-            //os.write(proxy_conn_data);
+            byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+            os.write(proxy_conn_data);
 
            // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
             //это все тестовое будет
