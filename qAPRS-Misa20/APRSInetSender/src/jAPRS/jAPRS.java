@@ -62,8 +62,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
   //<filter>p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/</filter>
     String APRS_SERVER = new String("russia.aprs2.net");
     String APRS_PORT   = new String("14580");
-    String APRS_USER   = new String("CALL");//UA3MQJ //CALL
-    String APRS_PASS   = new String("-1");//17572 //-1
+    String APRS_USER   = new String("UA3MQJ");//UA3MQJ //CALL
+    String APRS_PASS   = new String("17572");//17572 //-1
     //String APRS_FILTER = new String("p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/");
     String APRS_FILTER = new String("/");
 
@@ -113,10 +113,19 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private Command itemCommand8;
     private Command cancelCommand2;
     private Command itemCommand9;
+    private Command okCommand4;
     private Command itemCommand10;
     private Command exitCommand2;
     private Command okCommand3;
-    private Command okCommand4;
+    private Command itemCommand11;
+    private Command itemCommand12;
+    private Command itemCommand13;
+    private Command itemCommand14;
+    private Command itemCommand15;
+    private Command itemCommand16;
+    private Command itemCommand17;
+    private Command okCommand5;
+    private Command itemCommand18;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -142,13 +151,14 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private TextField textField4;
     private TextField textField5;
     private TextField textField6;
-    private List list1;
     private WaitScreen waitScreen2;
     private Form form3;
     private TextField textField7;
     private TextField textField9;
     private TextField textField8;
     private TextBox textBox1;
+    private Form form4;
+    private TextBox textBox2;
     private SimpleCancellableTask task;
     private SimpleCancellableTask task1;
     private SimpleCancellableTask task2;
@@ -206,11 +216,41 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 // Открываем хранилище данных
 
         log = log + "Initial\n";
+
+        //System.getProperty("CellID")
+
+        log = log + "platform=" + System.getProperty("microedition.platform")+"\n";
+
+        //javax.microedition.media.MediaException: error opening Audio device
+
+        if( System.getProperty("CellID") != null ) { log = log + "CellID="+System.getProperty("CellID").toString()+"\n";}
+
+        if( System.getProperty("CellID") != null ) { log = log + "CellID="+System.getProperty("CellID").toString()+"\n";}
+        if( System.getProperty("Cell-ID") != null ) { log = log + "Cell-ID="+System.getProperty("Cell-ID").toString()+"\n";}
+        if( System.getProperty("com.nokia.mid.cellid") != null ) { log = log + "nokCID="+System.getProperty("com.nokia.mid.cellid").toString()+"\n";}
+        if( System.getProperty("phone.cid") != null ) { log = log + "phoCID="+System.getProperty("phone.cid").toString()+"\n";}
+        if( System.getProperty("com.sonyericsson.net.cellid") != null ) { log = log + "soID="+System.getProperty("com.sonyericsson.net.cellid").toString()+"\n";}
+        if( System.getProperty("com.samsung.cellid") != null ) { log = log + "saID="+System.getProperty("com.samsung.cellid").toString()+"\n";}
+        if( System.getProperty("com.siemens.cellid") != null ) { log = log + "sillID="+System.getProperty("com.siemens.cellid").toString()+"\n";}
+        if( System.getProperty("cid") != null ) { log = log + "cid="+System.getProperty("cid").toString()+"\n";}
+
+        /* log = log + "CellID="+System.getProperty("CellID").toString()+"\n";
+        log = log + "Cell-ID="+System.getProperty("Cell-ID").toString()+"\n";
+        log = log + "com.nokia.mid.cellid="+System.getProperty("com.nokia.mid.cellid").toString()+"\n";
+        log = log + "phone.cid="+System.getProperty("phone.cid").toString()+"\n";
+        log = log + "SECellID="+System.getProperty("com.sonyericsson.net.cellid").toString()+"\n";
+        log = log + "SACellID="+System.getProperty("com.samsung.cellid").toString()+"\n";
+        log = log + "SECellID="+System.getProperty("com.sonyericsson.net.cellid").toString()+"\n";
+        log = log + "SIECellID="+System.getProperty("com.siemens.cellid").toString()+"\n";
+        log = log + "cid="+System.getProperty("cid").toString()+"\n";
+*/
+        
+
         //if (textBox != null) { textBox.setString( log ); }
 
 
         System.out.println("\n=========\n");
-        
+
         String protocols [] = {
             "http", "file", "socket", "datagram"
         };
@@ -405,15 +445,11 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|4|47-postAction
                 // write post-action user code here
                 screenUpdate();
-            }//GEN-BEGIN:|7-commandAction|5|19-preAction
+            }//GEN-BEGIN:|7-commandAction|5|23-preAction
         } else if (displayable == form) {
-            if (command == exitCommand) {//GEN-END:|7-commandAction|5|19-preAction
+            if (command == itemCommand) {//GEN-END:|7-commandAction|5|23-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getList1());//GEN-LINE:|7-commandAction|6|19-postAction
-                // write post-action user code here
-            } else if (command == itemCommand) {//GEN-LINE:|7-commandAction|7|23-preAction
-                // write pre-action user code here
-                switchDisplayable(null, getForm2());//GEN-LINE:|7-commandAction|8|23-postAction
+                switchDisplayable(null, getForm2());//GEN-LINE:|7-commandAction|6|23-postAction
                 // write post-action user code here
                 textField2.setString( APRS_SERVER );
                 textField3.setString( APRS_PORT );
@@ -422,9 +458,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 textField6.setString( APRS_FILTER );
                 textField15.setString( APRS_BEACON_PERIOD );
 
-            } else if (command == itemCommand1) {//GEN-LINE:|7-commandAction|9|25-preAction
+            } else if (command == itemCommand1) {//GEN-LINE:|7-commandAction|7|25-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm1());//GEN-LINE:|7-commandAction|10|25-postAction
+                switchDisplayable(null, getForm1());//GEN-LINE:|7-commandAction|8|25-postAction
                 // write post-action user code here
                 textField.setString( APRS_STATION_NAME );
                 textField1.setString( APRS_STATION_SYM );
@@ -442,39 +478,54 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 } else {
                      choiceGroup.setSelectedFlags(new boolean[] { false, false, false, false, false, true });
                 }
-            } else if (command == itemCommand2) {//GEN-LINE:|7-commandAction|11|27-preAction
+            } else if (command == itemCommand11) {//GEN-LINE:|7-commandAction|9|208-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getWaitScreen1());//GEN-LINE:|7-commandAction|12|27-postAction
+                switchDisplayable(null, getForm4());//GEN-LINE:|7-commandAction|10|208-postAction
                 // write post-action user code here
-            } else if (command == itemCommand3) {//GEN-LINE:|7-commandAction|13|29-preAction
+            } else if (command == itemCommand18) {//GEN-LINE:|7-commandAction|11|229-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|14|29-postAction
+                switchDisplayable(null, getTextBox2());//GEN-LINE:|7-commandAction|12|229-postAction
                 // write post-action user code here
-            } else if (command == itemCommand4) {//GEN-LINE:|7-commandAction|15|31-preAction
+                    if ( log.length() > 1000 ) {
+
+                        log = log.substring(0, 1000);
+
+                    }
+                    textBox1.setString( log );
+                if (textBox2 != null) { textBox2.setString( log ); }
+            } else if (command == itemCommand2) {//GEN-LINE:|7-commandAction|13|27-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getTextBox());//GEN-LINE:|7-commandAction|16|31-postAction
+                switchDisplayable(null, getWaitScreen1());//GEN-LINE:|7-commandAction|14|27-postAction
                 // write post-action user code here
-            } else if (command == itemCommand5) {//GEN-LINE:|7-commandAction|17|33-preAction
+            } else if (command == itemCommand3) {//GEN-LINE:|7-commandAction|15|29-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getList1());//GEN-LINE:|7-commandAction|18|33-postAction
+                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|16|29-postAction
                 // write post-action user code here
-            } else if (command == itemCommand6) {//GEN-LINE:|7-commandAction|19|160-preAction
+            } else if (command == itemCommand4) {//GEN-LINE:|7-commandAction|17|31-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm3());//GEN-LINE:|7-commandAction|20|160-postAction
+                switchDisplayable(null, getTextBox());//GEN-LINE:|7-commandAction|18|31-postAction
+                // write post-action user code here
+            } else if (command == itemCommand5) {//GEN-LINE:|7-commandAction|19|33-preAction
+                // write pre-action user code here
+                exitMIDlet();//GEN-LINE:|7-commandAction|20|33-postAction
+                // write post-action user code here
+            } else if (command == itemCommand6) {//GEN-LINE:|7-commandAction|21|160-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm3());//GEN-LINE:|7-commandAction|22|160-postAction
                 // write post-action user code here
                 textField8.setString( APRS_STATION_NAME );
                 textField9.setString( "" );
-            } else if (command == itemCommand9) {//GEN-LINE:|7-commandAction|21|188-preAction
+            } else if (command == itemCommand9) {//GEN-LINE:|7-commandAction|23|188-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getTextBox1());//GEN-LINE:|7-commandAction|22|188-postAction
+                switchDisplayable(null, getTextBox1());//GEN-LINE:|7-commandAction|24|188-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|23|124-preAction
+            }//GEN-BEGIN:|7-commandAction|25|124-preAction
         } else if (displayable == form1) {
-            if (command == cancelCommand) {//GEN-END:|7-commandAction|23|124-preAction
+            if (command == cancelCommand) {//GEN-END:|7-commandAction|25|124-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|24|124-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|26|124-postAction
                 // write post-action user code here
-            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|25|122-preAction
+            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|27|122-preAction
                 // write pre-action user code here
                 APRS_STATION_NAME = textField.getString().toUpperCase();
                 APRS_BEACON_PERIOD = textField15.getString().toUpperCase();
@@ -493,15 +544,15 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 }
                 screenUpdate();
 
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|26|122-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|28|122-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|27|140-preAction
+            }//GEN-BEGIN:|7-commandAction|29|140-preAction
         } else if (displayable == form2) {
-            if (command == cancelCommand1) {//GEN-END:|7-commandAction|27|140-preAction
+            if (command == cancelCommand1) {//GEN-END:|7-commandAction|29|140-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|28|140-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|30|140-postAction
                 // write post-action user code here
-            } else if (command == okCommand2) {//GEN-LINE:|7-commandAction|29|138-preAction
+            } else if (command == okCommand2) {//GEN-LINE:|7-commandAction|31|138-preAction
                 // write pre-action user code here
                 APRS_SERVER = textField2.getString();
                 APRS_PORT   = textField3.getString();
@@ -511,88 +562,156 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
 
 
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|30|138-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|32|138-postAction
                 // write post-action user code here
                 screenUpdate();
-            }//GEN-BEGIN:|7-commandAction|31|168-preAction
+            }//GEN-BEGIN:|7-commandAction|33|168-preAction
         } else if (displayable == form3) {
-            if (command == cancelCommand2) {//GEN-END:|7-commandAction|31|168-preAction
+            if (command == cancelCommand2) {//GEN-END:|7-commandAction|33|168-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|32|168-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|34|168-postAction
                 // write post-action user code here
-            } else if (command == itemCommand7) {//GEN-LINE:|7-commandAction|33|171-preAction
+            } else if (command == itemCommand7) {//GEN-LINE:|7-commandAction|35|171-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getWaitScreen2());//GEN-LINE:|7-commandAction|34|171-postAction
+                switchDisplayable(null, getWaitScreen2());//GEN-LINE:|7-commandAction|36|171-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|35|74-preAction
+            }//GEN-BEGIN:|7-commandAction|37|215-preAction
+        } else if (displayable == form4) {
+            if (command == itemCommand13) {//GEN-END:|7-commandAction|37|215-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|38|215-postAction
+                // write post-action user code here
+                try {
+                InputStream ins = getClass().getResourceAsStream( "/mus.amr" );
+                Player p = Manager.createPlayer(ins, "audio/amr" );
+                p.realize();
+                p.prefetch();
+                p.start();
+                }
+                catch (Exception e)    {
+                    log = "Unable to play amr media file!" + e + "\n" + log;
+                }
+
+            } else if (command == itemCommand14) {//GEN-LINE:|7-commandAction|39|217-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|40|217-postAction
+                // write post-action user code here
+                try {
+                InputStream ins = getClass().getResourceAsStream( "/mus.mid" );
+                Player p = Manager.createPlayer(ins, "audio/midi" );
+                p.realize();
+                p.prefetch();
+                p.start();
+                }
+                catch (Exception e)    {
+                    log = "Unable to play mid media file!" + e + "\n" + log;
+                }
+
+            } else if (command == itemCommand15) {//GEN-LINE:|7-commandAction|41|219-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|42|219-postAction
+                // write post-action user code here
+                try {
+                InputStream ins = getClass().getResourceAsStream( "/mus.mp3" );
+                Player p = Manager.createPlayer(ins, "audio/mpeg" );
+                p.realize();
+                p.prefetch();
+                p.start();
+                }
+                catch (Exception e)    {
+                    log = "Unable to play mp3 media file!" + e + "\n" + log;
+                }
+
+            } else if (command == itemCommand16) {//GEN-LINE:|7-commandAction|43|221-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|44|221-postAction
+                // write post-action user code here
+                try {
+                InputStream ins = getClass().getResourceAsStream( "/mus.wav" );
+                Player p = Manager.createPlayer(ins, "audio/x-wav" );
+                p.realize();
+                p.prefetch();
+                p.start();
+                }
+                catch (Exception e)    {
+                    log = "Unable to play wav media file!" + e + "\n" + log;
+                }
+
+            } else if (command == itemCommand17) {//GEN-LINE:|7-commandAction|45|223-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|46|223-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|47|74-preAction
         } else if (displayable == list) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|35|74-preAction
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|47|74-preAction
                 // write pre-action user code here
-                listAction();//GEN-LINE:|7-commandAction|36|74-postAction
+                listAction();//GEN-LINE:|7-commandAction|48|74-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|37|152-preAction
-        } else if (displayable == list1) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|37|152-preAction
-                // write pre-action user code here
-                list1Action();//GEN-LINE:|7-commandAction|38|152-postAction
-                // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|39|38-preAction
+            }//GEN-BEGIN:|7-commandAction|49|38-preAction
         } else if (displayable == textBox) {
-            if (command == exitCommand1) {//GEN-END:|7-commandAction|39|38-preAction
+            if (command == exitCommand1) {//GEN-END:|7-commandAction|49|38-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|40|38-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|50|38-postAction
                 // write post-action user code here
-            } else if (command == okCommand) {//GEN-LINE:|7-commandAction|41|40-preAction
+            } else if (command == okCommand) {//GEN-LINE:|7-commandAction|51|40-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|42|40-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|52|40-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|43|193-preAction
+            }//GEN-BEGIN:|7-commandAction|53|193-preAction
         } else if (displayable == textBox1) {
-            if (command == exitCommand2) {//GEN-END:|7-commandAction|43|193-preAction
+            if (command == exitCommand2) {//GEN-END:|7-commandAction|53|193-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|44|193-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|54|193-postAction
                 // write post-action user code here
-            } else if (command == itemCommand10) {//GEN-LINE:|7-commandAction|45|200-preAction
+            } else if (command == itemCommand10) {//GEN-LINE:|7-commandAction|55|200-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm3());//GEN-LINE:|7-commandAction|46|200-postAction
+                switchDisplayable(null, getForm3());//GEN-LINE:|7-commandAction|56|200-postAction
                 // write post-action user code here
                 textField8.setString( APRS_STATION_NAME );
                 textField9.setString( "" );
-            }//GEN-BEGIN:|7-commandAction|47|65-preAction
+            }//GEN-BEGIN:|7-commandAction|57|227-preAction
+        } else if (displayable == textBox2) {
+            if (command == okCommand5) {//GEN-END:|7-commandAction|57|227-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|58|227-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|59|65-preAction
         } else if (displayable == waitScreen) {
-            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|47|65-preAction
+            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|59|65-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|48|65-postAction
+                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|60|65-postAction
                 // write post-action user code here
-            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|49|64-preAction
+            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|61|64-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|50|64-postAction
+                switchDisplayable(null, getFileBrowser());//GEN-LINE:|7-commandAction|62|64-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|51|105-preAction
+            }//GEN-BEGIN:|7-commandAction|63|105-preAction
         } else if (displayable == waitScreen1) {
-            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|51|105-preAction
+            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|63|105-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|52|105-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|64|105-postAction
                 // write post-action user code here
-            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|53|104-preAction
+            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|65|104-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|54|104-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|66|104-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|55|177-preAction
+            }//GEN-BEGIN:|7-commandAction|67|177-preAction
         } else if (displayable == waitScreen2) {
-            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|55|177-preAction
+            if (command == WaitScreen.FAILURE_COMMAND) {//GEN-END:|7-commandAction|67|177-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|56|177-postAction
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|68|177-postAction
                 // write post-action user code here
-            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|57|176-preAction
+            } else if (command == WaitScreen.SUCCESS_COMMAND) {//GEN-LINE:|7-commandAction|69|176-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getTextBox1());//GEN-LINE:|7-commandAction|58|176-postAction
+                switchDisplayable(null, getTextBox1());//GEN-LINE:|7-commandAction|70|176-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|59|7-postCommandAction
-        }//GEN-END:|7-commandAction|59|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|71|7-postCommandAction
+        }//GEN-END:|7-commandAction|71|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|60|
-    //</editor-fold>//GEN-END:|7-commandAction|60|
+    }//GEN-BEGIN:|7-commandAction|72|
+    //</editor-fold>//GEN-END:|7-commandAction|72|
+
+
 
 
 
@@ -621,7 +740,6 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
         if (form == null) {//GEN-END:|14-getter|0|14-preInit
             // write pre-init user code here
             form = new Form("APRS Inet Sender", new Item[] { getSpacer2(), getTextField10(), getTextField12(), getTextField11(), getSpacer5(), getTextField13(), getTextField14(), getTextField16() });//GEN-BEGIN:|14-getter|1|14-postInit
-            form.addCommand(getExitCommand());
             form.addCommand(getItemCommand());
             form.addCommand(getItemCommand1());
             form.addCommand(getItemCommand2());
@@ -629,6 +747,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             form.addCommand(getItemCommand6());
             form.addCommand(getItemCommand9());
             form.addCommand(getItemCommand4());
+            form.addCommand(getItemCommand11());
+            form.addCommand(getItemCommand18());
             form.addCommand(getItemCommand5());
             form.setCommandListener(this);//GEN-END:|14-getter|1|14-postInit
             // write post-init user code here
@@ -1284,46 +1404,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
 
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: list1 ">//GEN-BEGIN:|151-getter|0|151-preInit
-    /**
-     * Returns an initiliazed instance of list1 component.
-     * @return the initialized component instance
-     */
-    public List getList1() {
-        if (list1 == null) {//GEN-END:|151-getter|0|151-preInit
-            // write pre-init user code here
-            list1 = new List("Exit?", Choice.IMPLICIT);//GEN-BEGIN:|151-getter|1|151-postInit
-            list1.append("Yes", null);
-            list1.append("No", null);
-            list1.setCommandListener(this);
-            list1.setSelectedFlags(new boolean[] { false, false });//GEN-END:|151-getter|1|151-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|151-getter|2|
-        return list1;
-    }
-    //</editor-fold>//GEN-END:|151-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Method: list1Action ">//GEN-BEGIN:|151-action|0|151-preAction
-    /**
-     * Performs an action assigned to the selected list element in the list1 component.
-     */
-    public void list1Action() {//GEN-END:|151-action|0|151-preAction
-        // enter pre-action user code here
-        String __selectedString = getList1().getString(getList1().getSelectedIndex());//GEN-BEGIN:|151-action|1|154-preAction
-        if (__selectedString != null) {
-            if (__selectedString.equals("Yes")) {//GEN-END:|151-action|1|154-preAction
-                // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|151-action|2|154-postAction
-                // write post-action user code here
-            } else if (__selectedString.equals("No")) {//GEN-LINE:|151-action|3|155-preAction
-                // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|151-action|4|155-postAction
-                // write post-action user code here
-            }//GEN-BEGIN:|151-action|5|151-postAction
-        }//GEN-END:|151-action|5|151-postAction
-        // enter post-action user code here
-    }//GEN-BEGIN:|151-action|6|
-    //</editor-fold>//GEN-END:|151-action|6|
+
+
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: cancelCommand2 ">//GEN-BEGIN:|167-getter|0|167-preInit
     /**
@@ -1704,6 +1787,179 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     }
     //</editor-fold>//GEN-END:|205-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand11 ">//GEN-BEGIN:|207-getter|0|207-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand11 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand11() {
+        if (itemCommand11 == null) {//GEN-END:|207-getter|0|207-preInit
+            // write pre-init user code here
+            itemCommand11 = new Command("SoundTest", Command.ITEM, 0);//GEN-LINE:|207-getter|1|207-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|207-getter|2|
+        return itemCommand11;
+    }
+    //</editor-fold>//GEN-END:|207-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand12 ">//GEN-BEGIN:|212-getter|0|212-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand12 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand12() {
+        if (itemCommand12 == null) {//GEN-END:|212-getter|0|212-preInit
+            // write pre-init user code here
+            itemCommand12 = new Command("Item", Command.ITEM, 0);//GEN-LINE:|212-getter|1|212-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|212-getter|2|
+        return itemCommand12;
+    }
+    //</editor-fold>//GEN-END:|212-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand13 ">//GEN-BEGIN:|214-getter|0|214-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand13 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand13() {
+        if (itemCommand13 == null) {//GEN-END:|214-getter|0|214-preInit
+            // write pre-init user code here
+            itemCommand13 = new Command("AMR", Command.ITEM, 0);//GEN-LINE:|214-getter|1|214-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|214-getter|2|
+        return itemCommand13;
+    }
+    //</editor-fold>//GEN-END:|214-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand14 ">//GEN-BEGIN:|216-getter|0|216-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand14 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand14() {
+        if (itemCommand14 == null) {//GEN-END:|216-getter|0|216-preInit
+            // write pre-init user code here
+            itemCommand14 = new Command("MID", Command.ITEM, 0);//GEN-LINE:|216-getter|1|216-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|216-getter|2|
+        return itemCommand14;
+    }
+    //</editor-fold>//GEN-END:|216-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand15 ">//GEN-BEGIN:|218-getter|0|218-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand15 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand15() {
+        if (itemCommand15 == null) {//GEN-END:|218-getter|0|218-preInit
+            // write pre-init user code here
+            itemCommand15 = new Command("MP3", Command.ITEM, 0);//GEN-LINE:|218-getter|1|218-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|218-getter|2|
+        return itemCommand15;
+    }
+    //</editor-fold>//GEN-END:|218-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand16 ">//GEN-BEGIN:|220-getter|0|220-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand16 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand16() {
+        if (itemCommand16 == null) {//GEN-END:|220-getter|0|220-preInit
+            // write pre-init user code here
+            itemCommand16 = new Command("WAV", Command.ITEM, 0);//GEN-LINE:|220-getter|1|220-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|220-getter|2|
+        return itemCommand16;
+    }
+    //</editor-fold>//GEN-END:|220-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand17 ">//GEN-BEGIN:|222-getter|0|222-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand17 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand17() {
+        if (itemCommand17 == null) {//GEN-END:|222-getter|0|222-preInit
+            // write pre-init user code here
+            itemCommand17 = new Command("Return", Command.ITEM, 0);//GEN-LINE:|222-getter|1|222-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|222-getter|2|
+        return itemCommand17;
+    }
+    //</editor-fold>//GEN-END:|222-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: form4 ">//GEN-BEGIN:|209-getter|0|209-preInit
+    /**
+     * Returns an initiliazed instance of form4 component.
+     * @return the initialized component instance
+     */
+    public Form getForm4() {
+        if (form4 == null) {//GEN-END:|209-getter|0|209-preInit
+            // write pre-init user code here
+            form4 = new Form("form4");//GEN-BEGIN:|209-getter|1|209-postInit
+            form4.addCommand(getItemCommand13());
+            form4.addCommand(getItemCommand14());
+            form4.addCommand(getItemCommand15());
+            form4.addCommand(getItemCommand16());
+            form4.addCommand(getItemCommand17());
+            form4.setCommandListener(this);//GEN-END:|209-getter|1|209-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|209-getter|2|
+        return form4;
+    }
+    //</editor-fold>//GEN-END:|209-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand5 ">//GEN-BEGIN:|226-getter|0|226-preInit
+    /**
+     * Returns an initiliazed instance of okCommand5 component.
+     * @return the initialized component instance
+     */
+    public Command getOkCommand5() {
+        if (okCommand5 == null) {//GEN-END:|226-getter|0|226-preInit
+            // write pre-init user code here
+            okCommand5 = new Command("Ok", Command.OK, 0);//GEN-LINE:|226-getter|1|226-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|226-getter|2|
+        return okCommand5;
+    }
+    //</editor-fold>//GEN-END:|226-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand18 ">//GEN-BEGIN:|228-getter|0|228-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand18 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand18() {
+        if (itemCommand18 == null) {//GEN-END:|228-getter|0|228-preInit
+            // write pre-init user code here
+            itemCommand18 = new Command("Log", Command.ITEM, 0);//GEN-LINE:|228-getter|1|228-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|228-getter|2|
+        return itemCommand18;
+    }
+    //</editor-fold>//GEN-END:|228-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textBox2 ">//GEN-BEGIN:|225-getter|0|225-preInit
+    /**
+     * Returns an initiliazed instance of textBox2 component.
+     * @return the initialized component instance
+     */
+    public TextBox getTextBox2() {
+        if (textBox2 == null) {//GEN-END:|225-getter|0|225-preInit
+            // write pre-init user code here
+            textBox2 = new TextBox("Log", null, 1000, TextField.ANY);//GEN-BEGIN:|225-getter|1|225-postInit
+            textBox2.addCommand(getOkCommand5());
+            textBox2.setCommandListener(this);//GEN-END:|225-getter|1|225-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|225-getter|2|
+        return textBox2;
+    }
+    //</editor-fold>//GEN-END:|225-getter|2|
+
 
 
     /**
@@ -1905,7 +2161,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             //catch(MediaException me) {
             //}
 
-        try {
+        //try {
 
          //Player player = Manager.createPlayer("file:///root1/photos/mus.mid");
          //player.start();
@@ -1923,16 +2179,17 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             //p.realize();
             //p.prefetch();
             //p.start();
-            InputStream ins = getClass().getResourceAsStream( "/mus.amr" );
-            Player p = Manager.createPlayer(ins, "audio/amr" );
-            p.realize();
-            p.prefetch();
-            p.start();
-        }
-        catch (Exception e)    {
-            System.out.println( "Unable to play media file!" + e );
+            //InputStream ins = getClass().getResourceAsStream( "/mus2.wav" );
+            //Player p = Manager.createPlayer(ins, "audio/x-wav" );
+            //p.realize();
+            //p.prefetch();
+            //p.start();
 
-        }
+        //}
+        //catch (Exception e)    {
+        //    System.out.println( "Unable to play media file!" + e );
+
+        //}
 
 
         System.out.println("connectToServer");
@@ -1945,10 +2202,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
                 //это прямой доступ, когда на ПК разработчика прямой интернет
                 //соединяемся сразу с APRS сервером
-                //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                 //а это через прокси. соединяемся сначала с прокси сервером
-                sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                 sc.setSocketOption(SocketConnection.DELAY, 1);
                 sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -1970,8 +2227,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             //прокси сервер без аутентификации
             //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
             //прокси сервер с аутентификацией
-            byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-            os.write(proxy_conn_data);
+            //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+            //os.write(proxy_conn_data);
 
            // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
             //это все тестовое будет
