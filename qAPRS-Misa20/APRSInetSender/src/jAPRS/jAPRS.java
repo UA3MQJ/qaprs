@@ -82,10 +82,12 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     String Messages      = new String("");
 
 
-    SocketConnection sc = null;
-    OutputStream     os = null;
-    InputStream      is = null;
-    boolean          SRVConnected = false; //признак наличия соединения с сервером
+    public SocketConnection sc = null;
+    public OutputStream     os = null;
+    public InputStream      is = null;
+    public boolean          SRVConnected = false; //признак наличия соединения с сервером
+    //String           connType = new String("0"); //тип соединения с сервером 0-TCP permanent 1-TCP temp 2-UDP TX Only
+    public int       connType = 0; //тип соединения с сервером 0-TCP permanent 1-TCP temp 2-UDP TX Only
 
 
 
@@ -114,18 +116,18 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private Command cancelCommand2;
     private Command itemCommand9;
     private Command okCommand4;
+    private Command itemCommand11;
     private Command itemCommand10;
     private Command exitCommand2;
     private Command okCommand3;
-    private Command itemCommand11;
-    private Command itemCommand12;
-    private Command itemCommand13;
-    private Command itemCommand14;
-    private Command itemCommand15;
     private Command itemCommand16;
     private Command itemCommand17;
-    private Command okCommand5;
+    private Command itemCommand14;
+    private Command itemCommand15;
+    private Command itemCommand12;
+    private Command itemCommand13;
     private Command itemCommand18;
+    private Command okCommand5;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -151,6 +153,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private TextField textField4;
     private TextField textField5;
     private TextField textField6;
+    private ChoiceGroup choiceGroup1;
     private WaitScreen waitScreen2;
     private Form form3;
     private TextField textField7;
@@ -244,7 +247,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
         log = log + "SIECellID="+System.getProperty("com.siemens.cellid").toString()+"\n";
         log = log + "cid="+System.getProperty("cid").toString()+"\n";
 */
-        
+
 
         //if (textBox != null) { textBox.setString( log ); }
 
@@ -305,6 +308,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                   APRS_STATION_NAME  = dis.readUTF();
                   APRS_STATION_SYM   = dis.readUTF();
                   APRS_BEACON_PERIOD = dis.readUTF();
+                  connType           = Integer.parseInt(dis.readUTF());
+
                   timerCounter = Integer.parseInt(APRS_BEACON_PERIOD);
                   timerTOP     = timerCounter;
 
@@ -330,6 +335,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                               dos.writeUTF(APRS_STATION_NAME);
                               dos.writeUTF(APRS_STATION_SYM);
                               dos.writeUTF(APRS_BEACON_PERIOD);
+                              dos.writeUTF(Integer.toString(connType));
 
 
                               byte[] record = baos.toByteArray();
@@ -559,8 +565,14 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 APRS_USER   = textField4.getString().toUpperCase();
                 APRS_PASS   = textField5.getString();
                 APRS_FILTER = textField6.getString();
+                connType = choiceGroup1.getSelectedIndex();
+                System.out.println("connType="+connType);
+                System.out.println(choiceGroup1.getSelectedIndex());
 
-
+                //если оказется, что соединение уже установлено, а тип сменили, то разорвать
+                if ((SRVConnected==true)&(connType!=0)) {
+                      closeConnection();
+                }
 
                 switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|32|138-postAction
                 // write post-action user code here
@@ -981,22 +993,34 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             task = new SimpleCancellableTask();//GEN-BEGIN:|66-getter|1|66-execute
             task.setExecutable(new org.netbeans.microedition.util.Executable() {
                 public void execute() throws Exception {//GEN-END:|66-getter|1|66-execute
-                    // write task-execution user code here
-                    System.out.println("Send Position");
 
+                System.out.println("Send Position Task");
+
+                if (connType==0) {
+                    System.out.println("(connType==0)");
                     if (SRVConnected==true) {
-                        //запуск таймера до следующего запуска
-                        if (( timerCounter>0 )&(timerStarted==false)) {
-                            System.out.println("Start timer");
-                            timerStarted=true;
-                            timer.schedule( ttask, 1000, 1000 );
-                        };
+                            //запуск таймера до следующего запуска
+                            if (( timerCounter>0 )&(timerStarted==false)) {
+                                System.out.println("Start timer");
+                                timerStarted=true;
+                                timer.schedule( ttask, 1000, 1000 );
+                            };
 
+                            readFile();
+                            System.out.println("Position sended");
+                        } else {
+                            lastStatus = "No connection";
+                        }
+                }
+
+                if (connType==1) {
+                    System.out.println("(connType==1)");
+                        System.out.println("connect, send, disconnect");
+                        connectToServer();
                         readFile();
-                        System.out.println("Position sended");
-                    } else {
-                        lastStatus = "No connection";
-                    }
+                        closeConnection();
+                        System.out.println("connect, send, disconnect - complete");
+                }
 
                 }//GEN-BEGIN:|66-getter|2|66-postInit
             });//GEN-END:|66-getter|2|66-postInit
@@ -1164,7 +1188,9 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             task1.setExecutable(new org.netbeans.microedition.util.Executable() {
                 public void execute() throws Exception {//GEN-END:|106-getter|1|106-execute
                     // write task-execution user code here
+                        System.out.println( "Соединение с сервером в TASK" );
                         connectToServer();
+                        System.out.println( "Соединение с сервером в TASK - выполнено" );
                 }//GEN-BEGIN:|106-getter|2|106-postInit
             });//GEN-END:|106-getter|2|106-postInit
             // write post-init user code here
@@ -1173,20 +1199,20 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     }
     //</editor-fold>//GEN-END:|106-getter|3|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand1 ">//GEN-BEGIN:|121-getter|0|121-preInit
-    /**
-     * Returns an initiliazed instance of okCommand1 component.
-     * @return the initialized component instance
-     */
-    public Command getOkCommand1() {
-        if (okCommand1 == null) {//GEN-END:|121-getter|0|121-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand1 ">//GEN-BEGIN:|121-getter|0|121-preInit
+/**
+ * Returns an initiliazed instance of okCommand1 component.
+ * @return the initialized component instance
+ */
+public Command getOkCommand1() {
+    if (okCommand1 == null) {//GEN-END:|121-getter|0|121-preInit
             // write pre-init user code here
-            okCommand1 = new Command("Ok", Command.OK, 0);//GEN-LINE:|121-getter|1|121-postInit
+        okCommand1 = new Command("Ok", Command.OK, 0);//GEN-LINE:|121-getter|1|121-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|121-getter|2|
-        return okCommand1;
-    }
-    //</editor-fold>//GEN-END:|121-getter|2|
+    }//GEN-BEGIN:|121-getter|2|
+    return okCommand1;
+}
+//</editor-fold>//GEN-END:|121-getter|2|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: cancelCommand ">//GEN-BEGIN:|123-getter|0|123-preInit
     /**
@@ -1315,11 +1341,18 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     public Form getForm2() {
         if (form2 == null) {//GEN-END:|136-getter|0|136-preInit
             // write pre-init user code here
-            form2 = new Form("Connection Pars", new Item[] { getTextField2(), getTextField3(), getTextField4(), getTextField5(), getTextField6() });//GEN-BEGIN:|136-getter|1|136-postInit
+            form2 = new Form("Connection Pars", new Item[] { getTextField2(), getTextField3(), getTextField4(), getTextField5(), getTextField6(), getChoiceGroup1() });//GEN-BEGIN:|136-getter|1|136-postInit
             form2.addCommand(getOkCommand2());
             form2.addCommand(getCancelCommand1());
             form2.setCommandListener(this);//GEN-END:|136-getter|1|136-postInit
             // write post-init user code here
+                if ( connType == 0 ) {
+                     choiceGroup1.setSelectedFlags(new boolean[] { true, false, false });
+                } else if ( connType == 1 ) {
+                     choiceGroup1.setSelectedFlags(new boolean[] { false, true, false });
+                } else  {
+                     choiceGroup1.setSelectedFlags(new boolean[] { false, false, true });
+                }
         }//GEN-BEGIN:|136-getter|2|
         return form2;
     }
@@ -1960,6 +1993,25 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     }
     //</editor-fold>//GEN-END:|225-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: choiceGroup1 ">//GEN-BEGIN:|232-getter|0|232-preInit
+    /**
+     * Returns an initiliazed instance of choiceGroup1 component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getChoiceGroup1() {
+        if (choiceGroup1 == null) {//GEN-END:|232-getter|0|232-preInit
+            // write pre-init user code here
+            choiceGroup1 = new ChoiceGroup("Conn. type", Choice.EXCLUSIVE);//GEN-BEGIN:|232-getter|1|232-postInit
+            choiceGroup1.append("TCP Permanent", null);
+            choiceGroup1.append("TCP Temporary", null);
+            choiceGroup1.append("UDP TX Only", null);
+            choiceGroup1.setSelectedFlags(new boolean[] { true, false, false });//GEN-END:|232-getter|1|232-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|232-getter|2|
+        return choiceGroup1;
+    }
+    //</editor-fold>//GEN-END:|232-getter|2|
+
 
 
     /**
@@ -1994,6 +2046,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
               dos.writeUTF(APRS_STATION_NAME);
               dos.writeUTF(APRS_STATION_SYM);
               dos.writeUTF(APRS_BEACON_PERIOD);
+              dos.writeUTF(Integer.toString(connType));
 
 
               byte[] record = baos.toByteArray();
@@ -2012,13 +2065,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
               recordStore.closeRecordStore();
 
-              is.close();
-              os.close();
-              sc.close();
-
-              os = null;
-              is = null;
-              sc = null;
+              closeConnection();
 
           } catch (Exception e) {
 
@@ -2093,7 +2140,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
         while(true) {
             //System.out.println("thread run...");
         //    screenUpdate();
-            if (( sc != null )&(is != null)&(os != null)) {
+            if ((connType==0)&( sc != null )&(is != null)&(os != null)) {
                 StringBuffer data = new StringBuffer();
                 byte[] buf = new byte[1024];
 
@@ -2154,126 +2201,125 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
         private void connectToServer() {
 
-            //try {
-            //   // Играть ноту C4 ("До") 4000 миллисекунд с громкостью 100 единиц (диапазон громкости от 0 до 100).
-            //   Manager.playTone(ToneControl.C4, 16000, 100);
-            //}
-            //catch(MediaException me) {
-            //}
-
-        //try {
-
-         //Player player = Manager.createPlayer("file:///root1/photos/mus.mid");
-         //player.start();
-         //InputStream ins = getClass().getResourceAsStream( "file:///root1/photos/mus.mp3" );
-         //Player p = Manager.createPlayer(ins, "audio/MPEG" );
-         //p.start();
-         //InputStream ins = getClass().getResourceAsStream( "file:///root1/photos/mus.mid" );
-
-            //работает!!!
-            //Player p = Manager.createPlayer("file:///root1/photos/mus.mid"  );
-            //p.start();
-
-            //работает, если добавить папку в ресурсы проекта
-            //Player p = Manager.createPlayer(  getClass().getResourceAsStream( "/mus.mid" ), "audio/midi" );
-            //p.realize();
-            //p.prefetch();
-            //p.start();
-            //InputStream ins = getClass().getResourceAsStream( "/mus2.wav" );
-            //Player p = Manager.createPlayer(ins, "audio/x-wav" );
-            //p.realize();
-            //p.prefetch();
-            //p.start();
-
-        //}
-        //catch (Exception e)    {
-        //    System.out.println( "Unable to play media file!" + e );
-
-        //}
-
-
         System.out.println("connectToServer");
 
         try {
 
             if ( sc == null ) {
 
-                System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
+                //если тип соединения 0
+                if ((connType==0)) {
 
-                //это прямой доступ, когда на ПК разработчика прямой интернет
-                //соединяемся сразу с APRS сервером
-                sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                    System.out.println("connType==0");
+                    System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
 
-                //а это через прокси. соединяемся сначала с прокси сервером
-                //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                    //это прямой доступ, когда на ПК разработчика прямой интернет
+                    //соединяемся сразу с APRS сервером
+                    //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
-                sc.setSocketOption(SocketConnection.DELAY, 1);
-                sc.setSocketOption(SocketConnection.LINGER, 5);
-                sc.setSocketOption(SocketConnection.RCVBUF, 8192);
-                sc.setSocketOption(SocketConnection.SNDBUF, 2048);
+                    //а это через прокси. соединяемся сначала с прокси сервером
+                    sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
-
-
-                is  = sc.openInputStream();
-                os = sc.openOutputStream();
-
-
-            //INFO
-            //'\n' or '0x0A' (10 in decimal) -> This character is called "Line Feed" (LF).
-            //'\r' or '0x0D' (13 in decimal) -> This one is called "Carriage return" (CR).
-            //в HTTP запросах нормальные люди шлют 0D0A то есть \r\n а в конце \r\n\r\n
-
-            //выполняется только при соединении через прокси - соединение с APRS сервером
-            //прокси сервер без аутентификации
-            //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
-            //прокси сервер с аутентификацией
-            //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-            //os.write(proxy_conn_data);
-
-           // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
-            //это все тестовое будет
-            //APRS_USER = "UA3MQJ";
-            //APRS_PASS = "17572";
-            //APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+                    sc.setSocketOption(SocketConnection.DELAY, 1);
+                    sc.setSocketOption(SocketConnection.LINGER, 5);
+                    sc.setSocketOption(SocketConnection.RCVBUF, 8192);
+                    sc.setSocketOption(SocketConnection.SNDBUF, 2048);
 
 
-            byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
 
-            os.write(conn_data);
+                    is = sc.openInputStream();
+                    os = sc.openOutputStream();
 
-            lastStatus = "Connected";
-            SRVConnected = true;
-            screenUpdate();
+
+                    //INFO
+                    //'\n' or '0x0A' (10 in decimal) -> This character is called "Line Feed" (LF).
+                    //'\r' or '0x0D' (13 in decimal) -> This one is called "Carriage return" (CR).
+                    //в HTTP запросах нормальные люди шлют 0D0A то есть \r\n а в конце \r\n\r\n
+
+                    //выполняется только при соединении через прокси - соединение с APRS сервером
+                    //прокси сервер без аутентификации
+                    //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
+                    //прокси сервер с аутентификацией
+                    byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+                    os.write(proxy_conn_data);
+                    System.out.println(proxy_conn_data);
+
+                    // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+                    //это все тестовое будет
+                    //APRS_USER = "UA3MQJ";
+                    //APRS_PASS = "17572";
+                    //APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+
+
+                    byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
+
+                    os.write(conn_data);
+                    System.out.println(conn_data);
+
+
+                    lastStatus = "Connected";
+                    SRVConnected = true;
+                    screenUpdate();
+
+                }
+
+                if ((connType==1)) {
+
+                        System.out.println("connType==1");
+                        System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
+                    
+
+                        //это прямой доступ, когда на ПК разработчика прямой интернет
+                        //соединяемся сразу с APRS сервером
+                        //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+
+                        //а это через прокси. соединяемся сначала с прокси сервером
+                        sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+
+                        sc.setSocketOption(SocketConnection.DELAY, 1);
+                        sc.setSocketOption(SocketConnection.LINGER, 5);
+                        sc.setSocketOption(SocketConnection.RCVBUF, 8192);
+                        sc.setSocketOption(SocketConnection.SNDBUF, 2048);
+
+                        os = sc.openOutputStream();
+
+                        //выполняется только при соединении через прокси - соединение с APRS сервером
+                        //прокси сервер без аутентификации
+                        //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
+                        //прокси сервер с аутентификацией
+                        byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+                        os.write(proxy_conn_data);
+                        System.out.println(proxy_conn_data);
+
+
+                        try{
+                            os = sc.openOutputStream();
+                            //byte[] data = "Hello from a socket!".getBytes();
+                            byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
+
+                            os.write(conn_data);
+                            System.out.println(conn_data);
+
+                            SRVConnected = true;
+
+                        } catch (IOException e){
+                         System.out.println("run is - Exception: " + e);
+                        }
+
+
+                }
+                
 
             } else {
 
-                System.out.println("already connected - disconnect");
-
-                timer.cancel();
-                timerStarted=true;
-                timerCounter=timerTOP;
-
-                is.close();
-                os.close();
-                sc.close();
-
-                os = null;
-                is = null;
-                sc = null;
-
-                SRVConnected = false;
-                lastStatus = "Disconnect";
-                screenUpdate();
+                //если уже есть соединение, то рассоединиться
+                closeConnection();
 
             }
 
         } catch (Exception e) {
 
-              System.out.println("connectToServer - Exception: " + e);
-              System.out.println("ошибка соединения");
-              SRVConnected = false;
-              lastStatus = "Connection error!" ;
-              screenUpdate();
+              closeConnection();
 
         }
 
@@ -2360,7 +2406,20 @@ private void readFile() {
                   //OutputStream os = null;
 
                   byte[] packet_data = packet.getBytes();
-                  os.write(packet_data);
+
+                  //если постоянное соединение, то посылаем только если есть соединение
+                  if (connType==0) {
+                    if (SRVConnected==true) {
+                        os.write(packet_data);
+                    }
+                  }
+
+                  //если устанавливается соединение только на момент отправки
+                  if (connType==1) {
+                      if (SRVConnected==true) {
+                        os.write(packet_data);
+                      }
+                  }
 
 
                 } catch (IOException e){
@@ -2384,6 +2443,35 @@ private void readFile() {
         return (value < 10) ? "0" + valStr: valStr;
      }
 
+
+     private void closeConnection() {
+
+        try {
+
+            if ( sc != null ) { sc.close(); };
+            if ( is != null ) { is.close(); };
+            if ( os != null ) { os.close(); };
+
+
+            os = null;
+            is = null;
+            sc = null;
+
+            SRVConnected = false;
+            lastStatus = "Disconnect";
+            screenUpdate();
+
+        } catch (Exception e) {
+
+              System.out.println("connectToServer - Exception: " + e);
+              System.out.println("ошибка рассоединения");
+              SRVConnected = false;
+              lastStatus = "DisConnection error!" ;
+              screenUpdate();
+
+        }
+
+     }
 
 }
 
