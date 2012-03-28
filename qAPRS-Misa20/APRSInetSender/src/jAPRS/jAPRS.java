@@ -60,26 +60,27 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
   //<SERVER2>argentina.aprs2.net:14580</SERVER2>
   //<SERVER3>australia.aprs2.net:14580</SERVER3>
   //<filter>p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/</filter>
-    String APRS_SERVER = new String("russia.aprs2.net");
-    String APRS_PORT   = new String("14580");
-    String APRS_USER   = new String("UA3MQJ");//UA3MQJ //CALL
-    String APRS_PASS   = new String("17572");//17572 //-1
+    String APRS_SERVER       = new String("russia.aprs2.net");
+    String APRS_PORT         = new String("14580");
+    String APRS_UDP_PORT     = new String("8080");
+    String APRS_USER         = new String("UA3MQJ");//UA3MQJ //CALL
+    String APRS_PASS         = new String("17572");//17572 //-1
     //String APRS_FILTER = new String("p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/");
-    String APRS_FILTER = new String("/");
+    String APRS_FILTER       = new String("/");
 
     String APRS_STATION_NAME = new String("STCALL"); //STCALL
     String APRS_STATION_SYM  = new String("/I");
 
-    String APRS_BEACON_PERIOD  = new String("1800"); //1800 sec = 30 min
-    public int    timerTOP = 1800; //обратный таймер
+    String APRS_BEACON_PERIOD= new String("1800"); //1800 sec = 30 min
+    public int    timerTOP   = 1800; //обратный таймер
     public int    timerCounter = timerTOP; //обратный таймер
     public boolean timerStarted = false;
 
-    String lastPosition  = new String("? ?");
-    String lastStatus    = new String("?");
+    String lastPosition      = new String("? ?");
+    String lastStatus        = new String("?");
 
-    String log           = new String("");
-    String Messages      = new String("");
+    String log               = new String("");
+    String Messages          = new String("");
 
 
     public SocketConnection sc = null;
@@ -154,6 +155,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private TextField textField5;
     private TextField textField6;
     private ChoiceGroup choiceGroup1;
+    private TextField textField17;
     private WaitScreen waitScreen2;
     private Form form3;
     private TextField textField7;
@@ -196,7 +198,16 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                     timerCounter =  timerTOP;
 
                     System.out.println( "Передача координат по таймеру" );
-                    readFile();
+                    
+                    if (connType==1) {
+                        readFile();
+                    }
+
+                    if (connType==1) {
+                            connectToServer();
+                            readFile();
+                            closeConnection();
+                    }
 
                 }
             }
@@ -309,6 +320,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                   APRS_STATION_SYM   = dis.readUTF();
                   APRS_BEACON_PERIOD = dis.readUTF();
                   connType           = Integer.parseInt(dis.readUTF());
+                  APRS_UDP_PORT      = dis.readUTF();
+
+                  System.out.println("APRS_PORT="+APRS_PORT);
+                  System.out.println("APRS_UDP_PORT="+APRS_UDP_PORT);
 
                   timerCounter = Integer.parseInt(APRS_BEACON_PERIOD);
                   timerTOP     = timerCounter;
@@ -320,13 +335,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
                 try {
 
-                              //recordStore = RecordStore.openRecordStore(DBNAME, true);
-
                               ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
                               DataOutputStream dos = new DataOutputStream(baos);
 
-                              //dos.writeUTF(stringForWrite);
                               dos.writeUTF(APRS_SERVER);
                               dos.writeUTF(APRS_PORT);
                               dos.writeUTF(APRS_USER);
@@ -336,7 +348,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                               dos.writeUTF(APRS_STATION_SYM);
                               dos.writeUTF(APRS_BEACON_PERIOD);
                               dos.writeUTF(Integer.toString(connType));
-
+                              dos.writeUTF(APRS_UDP_PORT);
 
                               byte[] record = baos.toByteArray();
 
@@ -459,10 +471,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 // write post-action user code here
                 textField2.setString( APRS_SERVER );
                 textField3.setString( APRS_PORT );
+                textField17.setString( APRS_UDP_PORT );
                 textField4.setString( APRS_USER );
                 textField5.setString( APRS_PASS );
                 textField6.setString( APRS_FILTER );
-                textField15.setString( APRS_BEACON_PERIOD );
 
             } else if (command == itemCommand1) {//GEN-LINE:|7-commandAction|7|25-preAction
                 // write pre-action user code here
@@ -560,12 +572,13 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 // write post-action user code here
             } else if (command == okCommand2) {//GEN-LINE:|7-commandAction|31|138-preAction
                 // write pre-action user code here
-                APRS_SERVER = textField2.getString();
-                APRS_PORT   = textField3.getString();
-                APRS_USER   = textField4.getString().toUpperCase();
-                APRS_PASS   = textField5.getString();
-                APRS_FILTER = textField6.getString();
-                connType = choiceGroup1.getSelectedIndex();
+                APRS_SERVER   = textField2.getString();
+                APRS_PORT     = textField3.getString();
+                APRS_USER     = textField4.getString().toUpperCase();
+                APRS_PASS     = textField5.getString();
+                APRS_FILTER   = textField6.getString();
+                connType      = choiceGroup1.getSelectedIndex();
+                APRS_UDP_PORT = textField17.getString();
                 System.out.println("connType="+connType);
                 System.out.println(choiceGroup1.getSelectedIndex());
 
@@ -1008,19 +1021,37 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
                             readFile();
                             System.out.println("Position sended");
-                        } else {
+                    } else {
                             lastStatus = "No connection";
-                        }
+                    }
                 }
 
                 if (connType==1) {
                     System.out.println("(connType==1)");
-                        System.out.println("connect, send, disconnect");
                         connectToServer();
                         readFile();
                         closeConnection();
-                        System.out.println("connect, send, disconnect - complete");
+                        //запуск таймера до следующего запуска
+                        if (( timerCounter>0 )&(timerStarted==false)) {
+                            System.out.println("Start timer");
+                            timerStarted=true;
+                            timer.schedule( ttask, 1000, 1000 );
+                        };
                 }
+
+                if (connType==2) {
+                    System.out.println("(connType==2)");
+                        connectToServer();
+                        readFile();
+                        closeConnection();
+                        //запуск таймера до следующего запуска
+                        if (( timerCounter>0 )&(timerStarted==false)) {
+                            System.out.println("Start timer");
+                            timerStarted=true;
+                            timer.schedule( ttask, 1000, 1000 );
+                        };
+                }
+
 
                 }//GEN-BEGIN:|66-getter|2|66-postInit
             });//GEN-END:|66-getter|2|66-postInit
@@ -1199,20 +1230,20 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     }
     //</editor-fold>//GEN-END:|106-getter|3|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand1 ">//GEN-BEGIN:|121-getter|0|121-preInit
-/**
- * Returns an initiliazed instance of okCommand1 component.
- * @return the initialized component instance
- */
-public Command getOkCommand1() {
-    if (okCommand1 == null) {//GEN-END:|121-getter|0|121-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand1 ">//GEN-BEGIN:|121-getter|0|121-preInit
+    /**
+     * Returns an initiliazed instance of okCommand1 component.
+     * @return the initialized component instance
+     */
+    public Command getOkCommand1() {
+        if (okCommand1 == null) {//GEN-END:|121-getter|0|121-preInit
             // write pre-init user code here
-        okCommand1 = new Command("Ok", Command.OK, 0);//GEN-LINE:|121-getter|1|121-postInit
+            okCommand1 = new Command("Ok", Command.OK, 0);//GEN-LINE:|121-getter|1|121-postInit
             // write post-init user code here
-    }//GEN-BEGIN:|121-getter|2|
-    return okCommand1;
-}
-//</editor-fold>//GEN-END:|121-getter|2|
+        }//GEN-BEGIN:|121-getter|2|
+        return okCommand1;
+    }
+    //</editor-fold>//GEN-END:|121-getter|2|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: cancelCommand ">//GEN-BEGIN:|123-getter|0|123-preInit
     /**
@@ -1341,7 +1372,7 @@ public Command getOkCommand1() {
     public Form getForm2() {
         if (form2 == null) {//GEN-END:|136-getter|0|136-preInit
             // write pre-init user code here
-            form2 = new Form("Connection Pars", new Item[] { getTextField2(), getTextField3(), getTextField4(), getTextField5(), getTextField6(), getChoiceGroup1() });//GEN-BEGIN:|136-getter|1|136-postInit
+            form2 = new Form("Connection Pars", new Item[] { getTextField2(), getTextField3(), getTextField17(), getTextField4(), getTextField5(), getTextField6(), getChoiceGroup1() });//GEN-BEGIN:|136-getter|1|136-postInit
             form2.addCommand(getOkCommand2());
             form2.addCommand(getCancelCommand1());
             form2.setCommandListener(this);//GEN-END:|136-getter|1|136-postInit
@@ -1381,7 +1412,7 @@ public Command getOkCommand1() {
     public TextField getTextField3() {
         if (textField3 == null) {//GEN-END:|145-getter|0|145-preInit
             // write pre-init user code here
-            textField3 = new TextField("APRS Port:", null, 32, TextField.ANY);//GEN-LINE:|145-getter|1|145-postInit
+            textField3 = new TextField("APRS TCP Port:", null, 32, TextField.ANY);//GEN-LINE:|145-getter|1|145-postInit
             // write post-init user code here
         }//GEN-BEGIN:|145-getter|2|
         return textField3;
@@ -1620,35 +1651,35 @@ public Command getOkCommand1() {
     }
     //</editor-fold>//GEN-END:|178-getter|3|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField10 ">//GEN-BEGIN:|182-getter|0|182-preInit
-    /**
-     * Returns an initiliazed instance of textField10 component.
-     * @return the initialized component instance
-     */
-    public TextField getTextField10() {
-        if (textField10 == null) {//GEN-END:|182-getter|0|182-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField10 ">//GEN-BEGIN:|182-getter|0|182-preInit
+/**
+ * Returns an initiliazed instance of textField10 component.
+ * @return the initialized component instance
+ */
+public TextField getTextField10() {
+    if (textField10 == null) {//GEN-END:|182-getter|0|182-preInit
             // write pre-init user code here
-            textField10 = new TextField("Server Info:", null, 128, TextField.ANY | TextField.UNEDITABLE);//GEN-LINE:|182-getter|1|182-postInit
+        textField10 = new TextField("Server Info:", null, 128, TextField.ANY | TextField.UNEDITABLE);//GEN-LINE:|182-getter|1|182-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|182-getter|2|
-        return textField10;
-    }
-    //</editor-fold>//GEN-END:|182-getter|2|
+    }//GEN-BEGIN:|182-getter|2|
+    return textField10;
+}
+//</editor-fold>//GEN-END:|182-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField11 ">//GEN-BEGIN:|183-getter|0|183-preInit
-    /**
-     * Returns an initiliazed instance of textField11 component.
-     * @return the initialized component instance
-     */
-    public TextField getTextField11() {
-        if (textField11 == null) {//GEN-END:|183-getter|0|183-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField11 ">//GEN-BEGIN:|183-getter|0|183-preInit
+/**
+ * Returns an initiliazed instance of textField11 component.
+ * @return the initialized component instance
+ */
+public TextField getTextField11() {
+    if (textField11 == null) {//GEN-END:|183-getter|0|183-preInit
             // write pre-init user code here
-            textField11 = new TextField("Station Info:", null, 128, TextField.ANY | TextField.UNEDITABLE);//GEN-LINE:|183-getter|1|183-postInit
+        textField11 = new TextField("Station Info:", null, 128, TextField.ANY | TextField.UNEDITABLE);//GEN-LINE:|183-getter|1|183-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|183-getter|2|
-        return textField11;
-    }
-    //</editor-fold>//GEN-END:|183-getter|2|
+    }//GEN-BEGIN:|183-getter|2|
+    return textField11;
+}
+//</editor-fold>//GEN-END:|183-getter|2|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField12 ">//GEN-BEGIN:|184-getter|0|184-preInit
     /**
@@ -2012,6 +2043,21 @@ public Command getOkCommand1() {
     }
     //</editor-fold>//GEN-END:|232-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField17 ">//GEN-BEGIN:|236-getter|0|236-preInit
+    /**
+     * Returns an initiliazed instance of textField17 component.
+     * @return the initialized component instance
+     */
+    public TextField getTextField17() {
+        if (textField17 == null) {//GEN-END:|236-getter|0|236-preInit
+            // write pre-init user code here
+            textField17 = new TextField("UDP&HTTP Post Port:", null, 32, TextField.ANY);//GEN-LINE:|236-getter|1|236-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|236-getter|2|
+        return textField17;
+    }
+    //</editor-fold>//GEN-END:|236-getter|2|
+
 
 
     /**
@@ -2031,13 +2077,10 @@ public Command getOkCommand1() {
 
         try {
 
-              //recordStore = RecordStore.openRecordStore(DBNAME, true);
-
               ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
               DataOutputStream dos = new DataOutputStream(baos);
 
-              //dos.writeUTF(stringForWrite);
               dos.writeUTF(APRS_SERVER);
               dos.writeUTF(APRS_PORT);
               dos.writeUTF(APRS_USER);
@@ -2047,7 +2090,7 @@ public Command getOkCommand1() {
               dos.writeUTF(APRS_STATION_SYM);
               dos.writeUTF(APRS_BEACON_PERIOD);
               dos.writeUTF(Integer.toString(connType));
-
+              dos.writeUTF(APRS_UDP_PORT);
 
               byte[] record = baos.toByteArray();
 
@@ -2215,10 +2258,10 @@ public Command getOkCommand1() {
 
                     //это прямой доступ, когда на ПК разработчика прямой интернет
                     //соединяемся сразу с APRS сервером
-                    //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                    sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                     //а это через прокси. соединяемся сначала с прокси сервером
-                    sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                    //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                     sc.setSocketOption(SocketConnection.DELAY, 1);
                     sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -2240,9 +2283,9 @@ public Command getOkCommand1() {
                     //прокси сервер без аутентификации
                     //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
                     //прокси сервер с аутентификацией
-                    byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-                    os.write(proxy_conn_data);
-                    System.out.println(proxy_conn_data);
+                    //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+                    //os.write(proxy_conn_data);
+                    //System.out.println(proxy_conn_data);
 
                     // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
                     //это все тестовое будет
@@ -2254,8 +2297,6 @@ public Command getOkCommand1() {
                     byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
 
                     os.write(conn_data);
-                    System.out.println(conn_data);
-
 
                     lastStatus = "Connected";
                     SRVConnected = true;
@@ -2271,10 +2312,10 @@ public Command getOkCommand1() {
 
                         //это прямой доступ, когда на ПК разработчика прямой интернет
                         //соединяемся сразу с APRS сервером
-                        //sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                        sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
 
                         //а это через прокси. соединяемся сначала с прокси сервером
-                        sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                        //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
 
                         sc.setSocketOption(SocketConnection.DELAY, 1);
                         sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -2287,24 +2328,61 @@ public Command getOkCommand1() {
                         //прокси сервер без аутентификации
                         //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
                         //прокси сервер с аутентификацией
-                        byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-                        os.write(proxy_conn_data);
-                        System.out.println(proxy_conn_data);
+                        //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+                        //os.write(proxy_conn_data);
+                        //System.out.println(proxy_conn_data);
 
 
-                        try{
-                            os = sc.openOutputStream();
-                            //byte[] data = "Hello from a socket!".getBytes();
-                            byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
+                        
+                        
+                        //byte[] data = "Hello from a socket!".getBytes();
+                        byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
 
-                            os.write(conn_data);
-                            System.out.println(conn_data);
+                        os.write(conn_data);
 
-                            SRVConnected = true;
+                        SRVConnected = true;
 
-                        } catch (IOException e){
-                         System.out.println("run is - Exception: " + e);
-                        }
+ 
+                }
+
+                if ((connType==2)) {
+
+                        System.out.println("connType==2");
+                        System.out.println("http://"+APRS_SERVER+":"+APRS_UDP_PORT);
+
+
+                        //это прямой доступ, когда на ПК разработчика прямой интернет
+                        //соединяемся сразу с APRS сервером
+                        sc = (SocketConnection)Connector.open("http://"+APRS_SERVER+":"+APRS_UDP_PORT);
+
+                        //sc.setRequestMethod(HttpConnection.POST);
+                        //а это через прокси. соединяемся сначала с прокси сервером
+                        //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+
+                        sc.setSocketOption(SocketConnection.DELAY, 1);
+                        sc.setSocketOption(SocketConnection.LINGER, 5);
+                        sc.setSocketOption(SocketConnection.RCVBUF, 8192);
+                        sc.setSocketOption(SocketConnection.SNDBUF, 2048);
+
+                        os = sc.openOutputStream();
+
+                        //выполняется только при соединении через прокси - соединение с APRS сервером
+                        //прокси сервер без аутентификации
+                        //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
+                        //прокси сервер с аутентификацией
+                        //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+                        //os.write(proxy_conn_data);
+                        //System.out.println(proxy_conn_data);
+
+
+
+
+                        //byte[] data = "Hello from a socket!".getBytes();
+                        byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
+
+                        os.write(conn_data);
+
+                        SRVConnected = true;
 
 
                 }
@@ -2417,6 +2495,15 @@ private void readFile() {
                   //если устанавливается соединение только на момент отправки
                   if (connType==1) {
                       if (SRVConnected==true) {
+                        os.write(packet_data);
+                      }
+                  }
+
+                  //если отправка UDP
+                  if (connType==2) {
+                      System.out.println("отправка UDP");
+                      if (SRVConnected==true) {
+                        System.out.println("SRVConnected==true send UDP");
                         os.write(packet_data);
                       }
                   }
