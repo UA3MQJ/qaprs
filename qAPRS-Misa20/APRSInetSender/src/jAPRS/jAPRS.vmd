@@ -257,7 +257,7 @@
                 <Component componentID="14" typeID="Cjavax.microedition.lcdui.Form">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="Vform"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                    <Property name="commands" typeID="1C#CommandEventSource" value="A10:3_R233_R253_R273_R294_R1604_R1883_R314_R2084_R2293_R33"/>
+                    <Property name="commands" typeID="1C#CommandEventSource" value="A9:3_R233_R253_R273_R294_R1604_R1883_R314_R2293_R33"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VAPRS Inet Sender"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
                     <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A8:3_R964_R1824_R1844_R1834_R1014_R1854_R1864_R203"/>
@@ -341,7 +341,7 @@
                         <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                         <Property name="label" typeID="Pjava.lang.String" value="VComment:"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
-                        <Property name="maxSize" typeID="Pint" value="V128"/>
+                        <Property name="maxSize" typeID="Pint" value="V256"/>
                         <Property name="constraints" typeID="Pint" value="V131072"/>
                     </Component>
                     <Component componentID="184" typeID="Cjavax.microedition.lcdui.TextField">
@@ -392,15 +392,6 @@
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="maxSize" typeID="Pint" value="V32"/>
                         <Property name="constraints" typeID="Pint" value="V131072"/>
-                    </Component>
-                    <Component componentID="208" typeID="C#CommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R210"/>
-                        <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R14"/>
-                        <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R207"/>
-                        <Component componentID="210" typeID="C#SwitchDisplayableEventHandler">
-                            <Property name="eventSource" typeID="C#EventSource" value="R208"/>
-                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R209"/>
-                        </Component>
                     </Component>
                     <Component componentID="229" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R230"/>
@@ -634,7 +625,7 @@
                     <Property name="commands" typeID="1C#CommandEventSource" value="A2:4_R1384_R140"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VConnection Pars"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
-                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A7:4_R1444_R1454_R2364_R1464_R1474_R1484_R232"/>
+                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A6:4_R1444_R1454_R1464_R1474_R1484_R232"/>
                     <Component componentID="138" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R141"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R136"/>
@@ -699,10 +690,7 @@
                         <Property name="label" typeID="Pjava.lang.String" value="VConn. type"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="choiceType" typeID="Pint" value="V1"/>
-                        <Property name="elements" typeID="1C#ChoiceElement" value="A3:4_R2334_R2344_R235"/>
-                        <Component componentID="235" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VUDP TX Only"/>
-                        </Component>
+                        <Property name="elements" typeID="1C#ChoiceElement" value="A2:4_R2334_R234"/>
                         <Component componentID="234" typeID="C#ChoiceElement">
                             <Property name="string" typeID="Pjava.lang.String" value="VTCP Temporary"/>
                         </Component>
@@ -710,14 +698,6 @@
                             <Property name="string" typeID="Pjava.lang.String" value="VTCP Permanent"/>
                             <Property name="selected" typeID="Pboolean" value="Vtrue"/>
                         </Component>
-                    </Component>
-                    <Component componentID="236" typeID="Cjavax.microedition.lcdui.TextField">
-                        <Property name="instanceName" typeID="Pjava.lang.String" value="VtextField17"/>
-                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                        <Property name="label" typeID="Pjava.lang.String" value="VUDP&amp;HTTP Post Port:"/>
-                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
-                        <Property name="maxSize" typeID="Pint" value="V32"/>
-                        <Property name="constraints" typeID="Pint" value="V0"/>
                     </Component>
                 </Component>
                 <Component componentID="175" typeID="Corg.netbeans.microedition.lcdui.WaitScreen">
@@ -892,19 +872,19 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
         <Node componentID="110" descriptorID="componentNode110" x="408" y="154"/>
-        <Node componentID="103" descriptorID="componentNode103" x="707" y="-75"/>
-        <Node componentID="225" descriptorID="componentNode225" x="-3" y="563"/>
-        <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
-        <Node componentID="162" descriptorID="componentNode162" x="557" y="243"/>
         <Node componentID="14" descriptorID="componentNode14" x="206" y="258"/>
+        <Node componentID="209" descriptorID="componentNode209" x="23" y="276"/>
+        <Node componentID="162" descriptorID="componentNode162" x="557" y="243"/>
+        <Node componentID="61" descriptorID="componentNode61" x="1117" y="779"/>
         <Node componentID="175" descriptorID="componentNode175" x="795" y="411"/>
         <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
-        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
-        <Node componentID="35" descriptorID="componentNode35" x="452" y="476"/>
+        <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
         <Node componentID="2" descriptorID="componentNode2" x="-12" y="26"/>
-        <Node componentID="209" descriptorID="componentNode209" x="23" y="276"/>
-        <Node componentID="61" descriptorID="componentNode61" x="1117" y="779"/>
+        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
+        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
+        <Node componentID="225" descriptorID="componentNode225" x="-3" y="563"/>
+        <Node componentID="35" descriptorID="componentNode35" x="452" y="476"/>
+        <Node componentID="103" descriptorID="componentNode103" x="707" y="-75"/>
     </FlowScene>
 </VisualDesign>
