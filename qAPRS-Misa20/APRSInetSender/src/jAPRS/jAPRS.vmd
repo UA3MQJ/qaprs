@@ -257,7 +257,7 @@
                 <Component componentID="14" typeID="Cjavax.microedition.lcdui.Form">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="Vform"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                    <Property name="commands" typeID="1C#CommandEventSource" value="A9:3_R233_R253_R273_R294_R1604_R1883_R314_R2293_R33"/>
+                    <Property name="commands" typeID="1C#CommandEventSource" value="A8:3_R233_R253_R273_R294_R1604_R1883_R313_R33"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VAPRS Inet Sender"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
                     <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A8:3_R964_R1824_R1844_R1834_R1014_R1854_R1864_R203"/>
@@ -392,15 +392,6 @@
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="maxSize" typeID="Pint" value="V32"/>
                         <Property name="constraints" typeID="Pint" value="V131072"/>
-                    </Component>
-                    <Component componentID="229" typeID="C#CommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R230"/>
-                        <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R14"/>
-                        <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R228"/>
-                        <Component componentID="230" typeID="C#SwitchDisplayableEventHandler">
-                            <Property name="eventSource" typeID="C#EventSource" value="R229"/>
-                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R225"/>
-                        </Component>
                     </Component>
                 </Component>
                 <Component componentID="35" typeID="Cjavax.microedition.lcdui.TextBox">
@@ -872,19 +863,19 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="110" descriptorID="componentNode110" x="408" y="154"/>
-        <Node componentID="14" descriptorID="componentNode14" x="206" y="258"/>
-        <Node componentID="209" descriptorID="componentNode209" x="23" y="276"/>
-        <Node componentID="162" descriptorID="componentNode162" x="557" y="243"/>
         <Node componentID="61" descriptorID="componentNode61" x="1117" y="779"/>
-        <Node componentID="175" descriptorID="componentNode175" x="795" y="411"/>
-        <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
+        <Node componentID="209" descriptorID="componentNode209" x="23" y="276"/>
         <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
-        <Node componentID="2" descriptorID="componentNode2" x="-12" y="26"/>
-        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
-        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
-        <Node componentID="225" descriptorID="componentNode225" x="-3" y="563"/>
+        <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
+        <Node componentID="162" descriptorID="componentNode162" x="557" y="243"/>
         <Node componentID="35" descriptorID="componentNode35" x="452" y="476"/>
+        <Node componentID="225" descriptorID="componentNode225" x="-3" y="563"/>
+        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
+        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
         <Node componentID="103" descriptorID="componentNode103" x="707" y="-75"/>
+        <Node componentID="2" descriptorID="componentNode2" x="-12" y="26"/>
+        <Node componentID="110" descriptorID="componentNode110" x="408" y="154"/>
+        <Node componentID="175" descriptorID="componentNode175" x="795" y="411"/>
+        <Node componentID="14" descriptorID="componentNode14" x="206" y="258"/>
     </FlowScene>
 </VisualDesign>
