@@ -75,6 +75,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     public int    timerTOP   = 1800; //обратный таймер
     public int    timerCounter = timerTOP; //обратный таймер
     public boolean timerStarted = false;
+    public int cnTimeoutTop  = 120; //таймер активности сетевого соединения. если от сервера 2 минуты нет признаков жизни - disconnect
+    public int cnTimeout     = cnTimeoutTop; //таймер активности сетевого соединения.
 
     String lastPosition      = new String("? ?");
     String lastStatus        = new String("?");
@@ -90,6 +92,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     //String           connType = new String("0"); //тип соединения с сервером 0-TCP permanent 1-TCP temp 2-UDP TX Only
     public int       connType = 0; //тип соединения с сервером 0-TCP permanent 1-TCP temp 2-UDP TX Only
 
+    public int       useProxy = 1; //при отладке приходится работать через прокси
 
 
 
@@ -179,18 +182,33 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
     class MyTimerTask extends TimerTask {
         public void run(){
-            //System.out.println( "Передача координат по таймеру" );
+           
+
+            System.out.println( "timer tick" );
             //readFile();
 
             //(Display.getDisplay(this)).vibrate(время);
 
+            if ((SRVConnected==true)&(connType==0)) {
 
-            if ( timerCounter > 0 ) {
+                cnTimeout = cnTimeout - 1;
+                System.out.println( "perm conn alive timer " + cnTimeout );
+                if (cnTimeout==0) {
+                    System.out.println( "disconnect" );
+                    closeConnection();
+                }
+
+            }
+            
+
+
+            if (( timerCounter > 0 )&(timerStarted==true)) {
 
                 timerCounter = timerCounter - 1;
                 System.out.println( timerCounter );
 
-                textField16.setString( Integer.toString( timerCounter ) );
+                textField16.setString( Integer.toString( (int)(timerCounter/60) )+"m"+Integer.toString( timerCounter-(((int)(timerCounter/60))*60) )+"s" );
+
 
                 if ( timerCounter == 0 ) {
 
@@ -198,14 +216,16 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
                     System.out.println( "Передача координат по таймеру" );
                     
-                    if (connType==1) {
-                        readFile();
+                    if ((connType==0)&(SRVConnected==true)) {
+                            String pck = oreadFile();
+                            System.out.println("отправка по таймеру(connType==0) => " + pck);
+                            sendMode0(pck);
                     }
 
                     if (connType==1) {
-                            connectToServer();
-                            readFile();
-                            closeConnection();
+                            String pck = oreadFile();
+                            System.out.println("отправка по таймеру(connType==0) => " + pck);
+                            sendMode1(pck);
                     }
 
                 }
@@ -388,9 +408,12 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
         getTextBox1();
 
-        //запуск процесса
+        //запуск процесса чтения данных из сокета, вроде
         th = new Thread( this );
         th.start();
+
+        //запуск ежесекундного таймера
+        timer.schedule( ttask, 1000, 1000 );
 
     }//GEN-BEGIN:|0-initialize|2|
     //</editor-fold>//GEN-END:|0-initialize|2|
@@ -525,7 +548,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 APRS_BEACON_PERIOD = textField15.getString().toUpperCase();
                 timerCounter =  Integer.parseInt(textField15.getString());
                 timerTOP     = timerCounter;
-                textField16.setString( Integer.toString( timerCounter ) );
+                textField16.setString( Integer.toString( (int)(timerCounter/60) )+"m"+Integer.toString( timerCounter-(((int)(timerCounter/60))*60) )+"s" );
+
 
                 int sInd = choiceGroup.getSelectedIndex();
                 switch (sInd) {
@@ -561,6 +585,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 //если оказется, что соединение уже установлено, а тип сменили, то разорвать
                 if ((SRVConnected==true)&(connType!=0)) {
                       closeConnection();
+                      timerStarted=false;
                 }
 
                 switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|28|138-postAction
@@ -709,8 +734,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             }//GEN-BEGIN:|7-commandAction|67|7-postCommandAction
         }//GEN-END:|7-commandAction|67|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|68|176-postAction
-    //</editor-fold>//GEN-END:|7-commandAction|68|176-postAction
+    }//GEN-BEGIN:|7-commandAction|68|
+    //</editor-fold>//GEN-END:|7-commandAction|68|
 
 
 
@@ -986,16 +1011,18 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 System.out.println("Send Position Task");
 
                 if (connType==0) {
-                    System.out.println("(connType==0)");
+                    System.out.println("ручная отправка(connType==0)");
                     if (SRVConnected==true) {
+                            //readFile();
+                            String pck = oreadFile();
+                            System.out.println("ручная отправка(connType==0) => " + pck);
+                            sendMode0(pck);
+
                             //запуск таймера до следующего запуска
                             if (( timerCounter>0 )&(timerStarted==false)) {
                                 System.out.println("Start timer");
                                 timerStarted=true;
-                                timer.schedule( ttask, 1000, 1000 );
                             };
-
-                            readFile();
                             System.out.println("Position sended");
                     } else {
                             lastStatus = "No connection";
@@ -1003,29 +1030,21 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                 }
 
                 if (connType==1) {
-                    System.out.println("(connType==1)");
-                        connectToServer();
-                        readFile();
-                        closeConnection();
-                        //запуск таймера до следующего запуска
-                        if (( timerCounter>0 )&(timerStarted==false)) {
-                            System.out.println("Start timer");
-                            timerStarted=true;
-                            timer.schedule( ttask, 1000, 1000 );
-                        };
+                    System.out.println("ручная отправка(connType==1)");
+
+                    String pck = oreadFile();
+                    System.out.println("ручная отправка(connType==1) => " + pck);
+                    sendMode1(pck);
+
+                    //запуск таймера до следующего запуска
+                    if (( timerCounter>0 )&(timerStarted==false)) {
+                        System.out.println("Start timer");
+                        timerStarted=true;
+                    }
                 }
 
                 if (connType==2) {
-                    System.out.println("(connType==2)");
-                        connectToServer();
-                        readFile();
-                        closeConnection();
-                        //запуск таймера до следующего запуска
-                        if (( timerCounter>0 )&(timerStarted==false)) {
-                            System.out.println("Start timer");
-                            timerStarted=true;
-                            timer.schedule( ttask, 1000, 1000 );
-                        };
+
                 }
 
 
@@ -1772,35 +1791,35 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     }
     //</editor-fold>//GEN-END:|190-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand10 ">//GEN-BEGIN:|199-getter|0|199-preInit
-/**
- * Returns an initiliazed instance of itemCommand10 component.
- * @return the initialized component instance
- */
-public Command getItemCommand10() {
-    if (itemCommand10 == null) {//GEN-END:|199-getter|0|199-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand10 ">//GEN-BEGIN:|199-getter|0|199-preInit
+    /**
+     * Returns an initiliazed instance of itemCommand10 component.
+     * @return the initialized component instance
+     */
+    public Command getItemCommand10() {
+        if (itemCommand10 == null) {//GEN-END:|199-getter|0|199-preInit
             // write pre-init user code here
-        itemCommand10 = new Command("Send", Command.ITEM, 0);//GEN-LINE:|199-getter|1|199-postInit
+            itemCommand10 = new Command("Send", Command.ITEM, 0);//GEN-LINE:|199-getter|1|199-postInit
             // write post-init user code here
-    }//GEN-BEGIN:|199-getter|2|
-    return itemCommand10;
-}
-//</editor-fold>//GEN-END:|199-getter|2|
+        }//GEN-BEGIN:|199-getter|2|
+        return itemCommand10;
+    }
+    //</editor-fold>//GEN-END:|199-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField15 ">//GEN-BEGIN:|202-getter|0|202-preInit
-/**
- * Returns an initiliazed instance of textField15 component.
- * @return the initialized component instance
- */
-public TextField getTextField15() {
-    if (textField15 == null) {//GEN-END:|202-getter|0|202-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField15 ">//GEN-BEGIN:|202-getter|0|202-preInit
+    /**
+     * Returns an initiliazed instance of textField15 component.
+     * @return the initialized component instance
+     */
+    public TextField getTextField15() {
+        if (textField15 == null) {//GEN-END:|202-getter|0|202-preInit
             // write pre-init user code here
-        textField15 = new TextField("Beacon period(s):", null, 32, TextField.ANY);//GEN-LINE:|202-getter|1|202-postInit
+            textField15 = new TextField("Beacon period(s):", null, 32, TextField.ANY);//GEN-LINE:|202-getter|1|202-postInit
             // write post-init user code here
-    }//GEN-BEGIN:|202-getter|2|
-    return textField15;
-}
-//</editor-fold>//GEN-END:|202-getter|2|
+        }//GEN-BEGIN:|202-getter|2|
+        return textField15;
+    }
+    //</editor-fold>//GEN-END:|202-getter|2|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField16 ">//GEN-BEGIN:|203-getter|0|203-preInit
     /**
@@ -1907,56 +1926,56 @@ public TextField getTextField15() {
     }
     //</editor-fold>//GEN-END:|218-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand16 ">//GEN-BEGIN:|220-getter|0|220-preInit
-    /**
-     * Returns an initiliazed instance of itemCommand16 component.
-     * @return the initialized component instance
-     */
-    public Command getItemCommand16() {
-        if (itemCommand16 == null) {//GEN-END:|220-getter|0|220-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand16 ">//GEN-BEGIN:|220-getter|0|220-preInit
+/**
+ * Returns an initiliazed instance of itemCommand16 component.
+ * @return the initialized component instance
+ */
+public Command getItemCommand16() {
+    if (itemCommand16 == null) {//GEN-END:|220-getter|0|220-preInit
             // write pre-init user code here
-            itemCommand16 = new Command("WAV", Command.ITEM, 0);//GEN-LINE:|220-getter|1|220-postInit
+        itemCommand16 = new Command("WAV", Command.ITEM, 0);//GEN-LINE:|220-getter|1|220-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|220-getter|2|
-        return itemCommand16;
-    }
-    //</editor-fold>//GEN-END:|220-getter|2|
+    }//GEN-BEGIN:|220-getter|2|
+    return itemCommand16;
+}
+//</editor-fold>//GEN-END:|220-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand17 ">//GEN-BEGIN:|222-getter|0|222-preInit
-    /**
-     * Returns an initiliazed instance of itemCommand17 component.
-     * @return the initialized component instance
-     */
-    public Command getItemCommand17() {
-        if (itemCommand17 == null) {//GEN-END:|222-getter|0|222-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand17 ">//GEN-BEGIN:|222-getter|0|222-preInit
+/**
+ * Returns an initiliazed instance of itemCommand17 component.
+ * @return the initialized component instance
+ */
+public Command getItemCommand17() {
+    if (itemCommand17 == null) {//GEN-END:|222-getter|0|222-preInit
             // write pre-init user code here
-            itemCommand17 = new Command("Return", Command.ITEM, 0);//GEN-LINE:|222-getter|1|222-postInit
+        itemCommand17 = new Command("Return", Command.ITEM, 0);//GEN-LINE:|222-getter|1|222-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|222-getter|2|
-        return itemCommand17;
-    }
-    //</editor-fold>//GEN-END:|222-getter|2|
+    }//GEN-BEGIN:|222-getter|2|
+    return itemCommand17;
+}
+//</editor-fold>//GEN-END:|222-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: form4 ">//GEN-BEGIN:|209-getter|0|209-preInit
-    /**
-     * Returns an initiliazed instance of form4 component.
-     * @return the initialized component instance
-     */
-    public Form getForm4() {
-        if (form4 == null) {//GEN-END:|209-getter|0|209-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: form4 ">//GEN-BEGIN:|209-getter|0|209-preInit
+/**
+ * Returns an initiliazed instance of form4 component.
+ * @return the initialized component instance
+ */
+public Form getForm4() {
+    if (form4 == null) {//GEN-END:|209-getter|0|209-preInit
             // write pre-init user code here
-            form4 = new Form("form4");//GEN-BEGIN:|209-getter|1|209-postInit
-            form4.addCommand(getItemCommand13());
-            form4.addCommand(getItemCommand14());
-            form4.addCommand(getItemCommand15());
-            form4.addCommand(getItemCommand16());
-            form4.addCommand(getItemCommand17());
-            form4.setCommandListener(this);//GEN-END:|209-getter|1|209-postInit
+        form4 = new Form("form4");//GEN-BEGIN:|209-getter|1|209-postInit
+        form4.addCommand(getItemCommand13());
+        form4.addCommand(getItemCommand14());
+        form4.addCommand(getItemCommand15());
+        form4.addCommand(getItemCommand16());
+        form4.addCommand(getItemCommand17());
+        form4.setCommandListener(this);//GEN-END:|209-getter|1|209-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|209-getter|2|
-        return form4;
-    }
-    //</editor-fold>//GEN-END:|209-getter|2|
+    }//GEN-BEGIN:|209-getter|2|
+    return form4;
+}
+//</editor-fold>//GEN-END:|209-getter|2|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand5 ">//GEN-BEGIN:|226-getter|0|226-preInit
     /**
@@ -2141,7 +2160,7 @@ public TextField getTextField15() {
         
         textField13.setString( lastPosition );
         textField14.setString( lastStatus );
-        textField16.setString( Integer.toString( timerCounter ) );
+        textField16.setString( Integer.toString( (int)(timerCounter/60) )+"m"+Integer.toString( timerCounter-(((int)(timerCounter/60))*60) )+"s" );
 
     }
 
@@ -2150,7 +2169,8 @@ public TextField getTextField15() {
         while(true) {
             //System.out.println("thread run...");
         //    screenUpdate();
-            if ((connType==0)&( sc != null )&(is != null)&(os != null)) {
+            if ((SRVConnected==true)) {
+                System.out.println("thread run...");
                 StringBuffer data = new StringBuffer();
                 byte[] buf = new byte[1024];
 
@@ -2164,8 +2184,12 @@ public TextField getTextField15() {
 
                         String message = new String (data.toString());
 
-                        System.out.println("connectToServer - read: " + message);
+                        System.out.println("run - read: " + message);
                         //(Display.getDisplay(this)).vibrate(10);
+
+                        //if (message.indexOf("#")==1) {
+                            cnTimeout = cnTimeoutTop; //сброс таймаута соединения с сервером
+                        //}
 
                         if ( message.indexOf( ':' ) > 0 ) {
 
@@ -2215,20 +2239,33 @@ public TextField getTextField15() {
 
         try {
 
-            if ( sc == null ) {
+            if ( sc != null ) {
+                sc.close();
+                sc = null;
+            }
+            if ( is != null ) {
+                is.close();
+                is = null;
+            }
+            if ( os != null ) {
+                os.close();
+                os = null;
+            }
 
-                //если тип соединения 0
-                if ((connType==0)) {
 
-                    System.out.println("connType==0");
-                    System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
 
-                    //это прямой доступ, когда на ПК разработчика прямой интернет
-                    //соединяемся сразу с APRS сервером
-                    sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
-
-                    //а это через прокси. соединяемся сначала с прокси сервером
-                    //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                    if (useProxy==0) {
+                        //это прямой доступ, когда на ПК разработчика прямой интернет
+                        //соединяемся сразу с APRS сервером
+                        sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+                        System.out.println("connType==0");
+                        System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
+                    } else {
+                        //а это через прокси. соединяемся сначала с прокси сервером
+                        sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+                        System.out.println("connType==0");
+                        System.out.println("socket://10.0.0.39:3128");
+                    }
 
                     sc.setSocketOption(SocketConnection.DELAY, 1);
                     sc.setSocketOption(SocketConnection.LINGER, 5);
@@ -2246,12 +2283,14 @@ public TextField getTextField15() {
                     //'\r' or '0x0D' (13 in decimal) -> This one is called "Carriage return" (CR).
                     //в HTTP запросах нормальные люди шлют 0D0A то есть \r\n а в конце \r\n\r\n
 
-                    //выполняется только при соединении через прокси - соединение с APRS сервером
-                    //прокси сервер без аутентификации
-                    //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
-                    //прокси сервер с аутентификацией
-                    //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-                    //os.write(proxy_conn_data);
+                    if (useProxy==1) {
+                        //выполняется только при соединении через прокси - соединение с APRS сервером
+                        //прокси сервер без аутентификации
+                        //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
+                        //прокси сервер с аутентификацией
+                        byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+                        os.write(proxy_conn_data);
+                    }
 
                     // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
                     //это все тестовое будет
@@ -2264,102 +2303,50 @@ public TextField getTextField15() {
 
                     os.write(conn_data);
 
+                StringBuffer data = new StringBuffer();
+                byte[] buf = new byte[1024];
+
+                    try {
+
+                        int count = is.read(buf);
+                        //if( count == -1 ) { break; }
+                        for(int i = 0; i < count; i++) {
+                                   data.append((char) buf[i]);
+                        }
+
+                        String message = new String (data.toString());
+
+                        System.out.println("connectToServer - read: " + message);
+
+                    } catch (Exception e) {
+
+                        System.out.println("connectToServer is - Exception: " + e);
+
+                    }
+
+                    try {
+
+                        int count = is.read(buf);
+                        //if( count == -1 ) { break; }
+                        for(int i = 0; i < count; i++) {
+                                   data.append((char) buf[i]);
+                        }
+
+                        String message = new String (data.toString());
+
+                        System.out.println("connectToServer - read: " + message);
+
+                    } catch (Exception e) {
+
+                        System.out.println("connectToServer is - Exception: " + e);
+
+                    }
+
                     lastStatus = "Connected";
                     SRVConnected = true;
                     screenUpdate();
+                    System.out.println("permanent connected");
 
-                }
-
-                if ((connType==1)) {
-
-                        System.out.println("connType==1");
-                        System.out.println("socket://"+APRS_SERVER+":"+APRS_PORT);
-                    
-
-                        //это прямой доступ, когда на ПК разработчика прямой интернет
-                        //соединяемся сразу с APRS сервером
-                        sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
-
-                        //а это через прокси. соединяемся сначала с прокси сервером
-                        //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
-
-                        sc.setSocketOption(SocketConnection.DELAY, 1);
-                        sc.setSocketOption(SocketConnection.LINGER, 5);
-                        sc.setSocketOption(SocketConnection.RCVBUF, 8192);
-                        sc.setSocketOption(SocketConnection.SNDBUF, 2048);
-
-                        os = sc.openOutputStream();
-
-                        //выполняется только при соединении через прокси - соединение с APRS сервером
-                        //прокси сервер без аутентификации
-                        //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
-                        //прокси сервер с аутентификацией
-                        //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-                        //os.write(proxy_conn_data);
-                        //System.out.println(proxy_conn_data);
-
-
-                        
-                        
-                        //byte[] data = "Hello from a socket!".getBytes();
-                        byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
-
-                        os.write(conn_data);
-
-                        SRVConnected = true;
-
- 
-                }
-
-                if ((connType==2)) {
-
-                        System.out.println("connType==2");
-                        System.out.println("http://"+APRS_SERVER+":"+APRS_UDP_PORT);
-
-
-                        //это прямой доступ, когда на ПК разработчика прямой интернет
-                        //соединяемся сразу с APRS сервером
-                        sc = (SocketConnection)Connector.open("http://"+APRS_SERVER+":"+APRS_UDP_PORT);
-
-                        //sc.setRequestMethod(HttpConnection.POST);
-                        //а это через прокси. соединяемся сначала с прокси сервером
-                        //sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
-
-                        sc.setSocketOption(SocketConnection.DELAY, 1);
-                        sc.setSocketOption(SocketConnection.LINGER, 5);
-                        sc.setSocketOption(SocketConnection.RCVBUF, 8192);
-                        sc.setSocketOption(SocketConnection.SNDBUF, 2048);
-
-                        os = sc.openOutputStream();
-
-                        //выполняется только при соединении через прокси - соединение с APRS сервером
-                        //прокси сервер без аутентификации
-                        //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
-                        //прокси сервер с аутентификацией
-                        //byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
-                        //os.write(proxy_conn_data);
-                        //System.out.println(proxy_conn_data);
-
-
-
-
-                        //byte[] data = "Hello from a socket!".getBytes();
-                        byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
-
-                        os.write(conn_data);
-
-                        SRVConnected = true;
-
-
-                }
-                
-
-            } else {
-
-                //если уже есть соединение, то рассоединиться
-                closeConnection();
-
-            }
 
         } catch (Exception e) {
 
@@ -2373,7 +2360,244 @@ public TextField getTextField15() {
 
     }
 
-//чтение координат из текстового файла
+//отправка в режиме permanent
+public void sendMode0( String tPacket ) {
+    System.out.println("sendMode0");
+
+    try {
+        //отправка пакета
+        byte[] packet_data = tPacket.getBytes();
+        os.write(packet_data);
+        System.out.println("os.write packet ...");
+        //lastStatus = "cnExc: " + e;
+        screenUpdate();
+
+    } catch (Exception e) {
+
+        System.out.println("cnExc: " + e);
+        lastStatus = "cnExc: " + e;
+        screenUpdate();
+
+    }
+
+}
+
+//отправка в режиме Temporary
+public void sendMode1( String tPacket ) {
+    System.out.println("sendMode1");
+
+    try {
+
+        if ( sc != null ) {
+                sc.close();
+                sc = null;
+        }
+        if ( is != null ) {
+                is.close();
+                is = null;
+        }
+        if ( os != null ) {
+                os.close();
+                os = null;
+        }
+
+        if (useProxy==0) {
+            //это прямой доступ, когда на ПК разработчика прямой интернет
+            //соединяемся сразу с APRS сервером
+            System.out.println("direct internet connection");
+            sc = (SocketConnection)Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
+        } else {
+            //а это через прокси. соединяемся сначала с прокси сервером
+            System.out.println("internet connection via proxy");
+            sc = (SocketConnection)Connector.open("socket://10.0.0.39:3128");
+        }
+
+        sc.setSocketOption(SocketConnection.DELAY, 1);
+        sc.setSocketOption(SocketConnection.LINGER, 5);
+        sc.setSocketOption(SocketConnection.RCVBUF, 8192);
+        sc.setSocketOption(SocketConnection.SNDBUF, 2048);
+
+
+
+        is = sc.openInputStream();
+        os = sc.openOutputStream();
+
+
+                    //INFO
+                    //'\n' or '0x0A' (10 in decimal) -> This character is called "Line Feed" (LF).
+                    //'\r' or '0x0D' (13 in decimal) -> This one is called "Carriage return" (CR).
+                    //в HTTP запросах нормальные люди шлют 0D0A то есть \r\n а в конце \r\n\r\n
+
+        if (useProxy==1) {
+            //выполняется только при соединении через прокси - соединение с APRS сервером
+            //прокси сервер без аутентификации
+            //byte[] proxy_conn_data = ("CONNECT russia.aprs2.net:14580  HTTP/1.1\n\n").getBytes();
+            //прокси сервер с аутентификацией
+            System.out.println("CONNECT");
+            byte[] proxy_conn_data = ("CONNECT "+APRS_SERVER+":"+APRS_PORT+" HTTP/1.1\r\nAuthorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\nProxy-Authorization: Basic Ym9sc2hha292X2F2OmZydGtrZg==\r\n\r\n").getBytes();
+            os.write(proxy_conn_data);
+        }
+
+                    // APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+                    //это все тестовое будет
+                    //APRS_USER = "UA3MQJ";
+                    //APRS_PASS = "17572";
+                    //APRS_FILTER = "p/ISS/R/U/LY/YL/ES/EU/EW/ER/4X/4Z/";
+
+        //аутентификация на aprs сервере
+        byte[] conn_data = ("user " + APRS_USER + " pass " + APRS_PASS + " vers QAPRS_JPos v1 filter " + APRS_FILTER + "\n").getBytes();
+        os.write(conn_data);
+        System.out.println("os.write user ...");
+
+        //отправка пакета
+        byte[] packet_data = tPacket.getBytes();
+        os.write(packet_data);
+        System.out.println("os.write packet ...");
+
+        
+        StringBuffer data = new StringBuffer();
+                byte[] buf = new byte[1024];
+
+                    try {
+
+                        int count = is.read(buf);
+                        //if( count == -1 ) { break; }
+                        for(int i = 0; i < count; i++) {
+                                   data.append((char) buf[i]);
+                        }
+
+                        String message = new String (data.toString());
+
+                        System.out.println("sendMode1 - read: " + message);
+
+                    } catch (Exception e) {
+
+                        System.out.println("sendMode1 is - Exception: " + e);
+
+                    }
+
+                    try {
+
+                        int count = is.read(buf);
+                        //if( count == -1 ) { break; }
+                        for(int i = 0; i < count; i++) {
+                                   data.append((char) buf[i]);
+                        }
+
+                        String message = new String (data.toString());
+
+                        System.out.println("sendMode1 - read: " + message);
+
+                    } catch (Exception e) {
+
+                        System.out.println("sendMode1 is - Exception: " + e);
+
+                    }
+
+        os.close();
+        sc.close();
+        System.out.println("os.sc close");
+
+        os = null;
+        sc = null;
+
+
+
+    } catch (Exception e) {
+
+        System.out.println("cnExc: " + e);
+        lastStatus = "cnExc: " + e;
+        screenUpdate();
+
+    }
+
+}
+
+//чтение координат из текстового файла возвращает строку-пакет
+private String oreadFile() {
+
+        try {
+
+            FileConnection textFile = fileBrowser.getSelectedFile();
+            getTextBox().setString("");
+            InputStream fis = textFile.openInputStream();
+            byte[] b = new byte[1024];
+            int length = fis.read(b, 0, 1024);
+            fis.close();
+
+            String position = new String(b, 0, length);
+
+            //до первого пробела - широта
+            //до второго долгота
+            //а после - текст маяка
+            int space1 = position.indexOf(" ");
+            String Lat = position.substring(0, space1 );
+            int space2 = position.indexOf(" ", space1 +1);
+            String Lng = position.substring(space1+1, position.indexOf(" ", space1+1));
+            String Msg = position.substring(space2+1);
+
+            lastPosition = Lat + " " + Lng;
+            lastStatus   = Msg;
+
+            int LngR = Integer.parseInt( Lng.substring(7, 9) );
+            int LatR = Integer.parseInt( Lat.substring(6, 8) );
+
+            Random r = new Random();
+
+            //удаление одной лишней точки
+            Lat = Lat.substring(0, 2)+Lat.substring(3);
+            Lng = Lng.substring(0, 3)+Lng.substring(4);
+
+            //случайное изменение координат в небольших пределах, чтобы обойти проверку на дубли на aprsfi
+            LngR = LngR +  (int)(r.nextFloat()*3);
+            LatR = LatR +  (int)(r.nextFloat()*3);
+
+            if ( LngR > 99 ) LngR = 99;
+            if ( LatR > 99 ) LatR = 99;
+
+            Lat = Lat.substring(0, 5)+numberToString(LatR)+Lat.substring(7, 8);
+            Lng = Lng.substring(0, 6)+numberToString(LngR)+Lng.substring(8, 9);
+
+            Date date = new Date();
+
+            TimeZone defaultZone = TimeZone.getTimeZone("GMT-2");
+
+            int offs = defaultZone.getRawOffset();
+
+            Calendar calendar = Calendar.getInstance(defaultZone);
+            calendar.setTime(date);
+            StringBuffer sb = new StringBuffer();
+
+            sb.append('/');
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            sb.append(numberToString(day));
+            int hour = calendar.get(Calendar.HOUR_OF_DAY) + 1;
+            sb.append(numberToString(hour));
+            int minute = calendar.get(Calendar.MINUTE) + 1;
+            sb.append(numberToString(minute));
+            sb.append('z');
+
+            String packet = APRS_STATION_NAME+">"+APRSCALL+",TCPIP*:"+sb+Lat+APRS_STATION_SYM.charAt(0)+Lng+APRS_STATION_SYM.charAt(1)+Msg+'\n'+'\r';
+
+            //UA3MQJ>APUN25,TCPIP*: + MsgText
+            //UA1CEC>APU25N,TCPIP*,qAC,T2RUSSIA:=5931.88N/03053.60E&10147 - inet {UIV32}
+            //5931.88N 03053.60E Fly e135 - inet {QAPRSj}
+            System.out.println( "oreadFile=>" + packet );
+
+            if (length > 0) {
+                return packet;
+            } else {
+               return "";
+            }
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return "";
+        }
+
+}
+
 private void readFile() {
 
         try {
@@ -2448,7 +2672,7 @@ private void readFile() {
 
                 //socket://host.com:80
                 //HttpConnection MyCon = (HttpConnection) Connector.open("socket://"+APRS_SERVER+":"+, Connector.READ_WRITE, true);
-                try{
+                //try{
                   //SocketConnection sc = (SocketConnection)
                   //  Connector.open("socket://"+APRS_SERVER+":"+APRS_PORT);
                   //OutputStream os = null;
@@ -2458,15 +2682,22 @@ private void readFile() {
                   //если постоянное соединение, то посылаем только если есть соединение
                   if (connType==0) {
                     if (SRVConnected==true) {
-                        os.write(packet_data);
+                        try{
+                            os.write(packet_data);
+                        } catch (IOException e){
+                            System.out.println("connType==0 writeToServer - Exception: " + e);
+                        }
                     }
                   }
 
                   //если устанавливается соединение только на момент отправки
                   if (connType==1) {
-                      if (SRVConnected==true) {
-                        os.write(packet_data);
-                      }
+                      System.out.println("отправка connType==1");
+                        try{
+                            os.write(packet_data);
+                        } catch (IOException e){
+                            System.out.println("connType==1 writeToServer - Exception: " + e);
+                        }
                   }
 
                   //если отправка UDP
@@ -2474,15 +2705,19 @@ private void readFile() {
                       System.out.println("отправка UDP");
                       if (SRVConnected==true) {
                         System.out.println("SRVConnected==true send UDP");
-                        os.write(packet_data);
+                        try{
+                            os.write(packet_data);
+                        } catch (IOException e){
+                            System.out.println("connType==2 writeToServer - Exception: " + e);
+                        }
                       }
                   }
 
 
-                } catch (IOException e){
+                //} catch (IOException e){
                      //x.printStackTrace();
-                    System.out.println("writeToServer - Exception: " + e);
-                }
+                //    System.out.println("writeToServer - Exception: " + e);
+                //}
 
             }
 
@@ -2504,6 +2739,7 @@ private void readFile() {
      private void closeConnection() {
 
         try {
+            SRVConnected = false;
 
             if ( sc != null ) { sc.close(); };
             if ( is != null ) { is.close(); };
@@ -2513,16 +2749,16 @@ private void readFile() {
             os = null;
             is = null;
             sc = null;
-
-            SRVConnected = false;
+            
             lastStatus = "Disconnect";
             screenUpdate();
 
         } catch (Exception e) {
 
+              SRVConnected = false;
               System.out.println("connectToServer - Exception: " + e);
               System.out.println("ошибка рассоединения");
-              SRVConnected = false;
+              
               lastStatus = "DisConnection error!" ;
               screenUpdate();
 
