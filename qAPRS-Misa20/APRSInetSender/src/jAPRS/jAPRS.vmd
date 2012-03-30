@@ -388,7 +388,7 @@
                     <Component componentID="203" typeID="Cjavax.microedition.lcdui.TextField">
                         <Property name="instanceName" typeID="Pjava.lang.String" value="VtextField16"/>
                         <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                        <Property name="label" typeID="Pjava.lang.String" value="VBeacon Timer(s):"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="VBeacon Timer:"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="maxSize" typeID="Pint" value="V32"/>
                         <Property name="constraints" typeID="Pint" value="V131072"/>
@@ -397,21 +397,12 @@
                 <Component componentID="35" typeID="Cjavax.microedition.lcdui.TextBox">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VtextBox"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                    <Property name="commands" typeID="1C#CommandEventSource" value="A2:3_R383_R40"/>
+                    <Property name="commands" typeID="1C#CommandEventSource" value="A1:3_R40"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VHelp"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
                     <Property name="string" typeID="Pjava.lang.String" value="VПрограмма предназначена для отправки своего местоположения в нужный момент по заданным заранее координатам.&#10;Выберите текстовый файл в вашей файловой системе. Формат файла:&#10;Широта Долгота Комментарий маяка.&#10;Пример: 58.01.83N 038.51.13E Fly e135 - inet &quot;At home&quot;{jAPRS}&#10;&#10;The program is designed to send its location at the right time to pre-set coordinates.&#10;Select the text file on your file system. File Format:&#10;Latitude Longitude Comments lighthouse.&#10;Example: 58.01.83N 038.51.13E Fly e135 - inet &quot;At home&quot;{jAPRS}"/>
                     <Property name="maxSize" typeID="Pint" value="V1000"/>
                     <Property name="constraints" typeID="Pint" value="V131072"/>
-                    <Component componentID="38" typeID="C#CommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R59"/>
-                        <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R35"/>
-                        <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R37"/>
-                        <Component componentID="59" typeID="C#SwitchDisplayableEventHandler">
-                            <Property name="eventSource" typeID="C#EventSource" value="R38"/>
-                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R14"/>
-                        </Component>
-                    </Component>
                     <Component componentID="40" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R60"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R35"/>
@@ -604,7 +595,7 @@
                     <Component componentID="202" typeID="Cjavax.microedition.lcdui.TextField">
                         <Property name="instanceName" typeID="Pjava.lang.String" value="VtextField15"/>
                         <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                        <Property name="label" typeID="Pjava.lang.String" value="VBeacon period(s):"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="VBeacon period(min):"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="maxSize" typeID="Pint" value="V32"/>
                         <Property name="constraints" typeID="Pint" value="V0"/>
@@ -616,7 +607,7 @@
                     <Property name="commands" typeID="1C#CommandEventSource" value="A2:4_R1384_R140"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VConnection Pars"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
-                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A6:4_R1444_R1454_R1464_R1474_R1484_R232"/>
+                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A5:4_R1444_R1454_R1464_R1474_R148"/>
                     <Component componentID="138" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R141"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R136"/>
@@ -674,21 +665,6 @@
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
                         <Property name="maxSize" typeID="Pint" value="V32"/>
                         <Property name="constraints" typeID="Pint" value="V0"/>
-                    </Component>
-                    <Component componentID="232" typeID="Cjavax.microedition.lcdui.ChoiceGroup">
-                        <Property name="instanceName" typeID="Pjava.lang.String" value="VchoiceGroup1"/>
-                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                        <Property name="label" typeID="Pjava.lang.String" value="VConn. type"/>
-                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R17"/>
-                        <Property name="choiceType" typeID="Pint" value="V1"/>
-                        <Property name="elements" typeID="1C#ChoiceElement" value="A2:4_R2334_R234"/>
-                        <Component componentID="234" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VTCP Temporary"/>
-                        </Component>
-                        <Component componentID="233" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VTCP Permanent"/>
-                            <Property name="selected" typeID="Pboolean" value="Vtrue"/>
-                        </Component>
                     </Component>
                 </Component>
                 <Component componentID="175" typeID="Corg.netbeans.microedition.lcdui.WaitScreen">
@@ -863,19 +839,19 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
-        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
-        <Node componentID="61" descriptorID="componentNode61" x="1117" y="779"/>
-        <Node componentID="14" descriptorID="componentNode14" x="206" y="258"/>
-        <Node componentID="35" descriptorID="componentNode35" x="452" y="476"/>
-        <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
         <Node componentID="209" descriptorID="componentNode209" x="23" y="276"/>
-        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
-        <Node componentID="103" descriptorID="componentNode103" x="707" y="-75"/>
         <Node componentID="175" descriptorID="componentNode175" x="795" y="411"/>
+        <Node componentID="190" descriptorID="componentNode190" x="247" y="693"/>
+        <Node componentID="103" descriptorID="componentNode103" x="707" y="-75"/>
         <Node componentID="110" descriptorID="componentNode110" x="408" y="154"/>
-        <Node componentID="162" descriptorID="componentNode162" x="557" y="243"/>
-        <Node componentID="225" descriptorID="componentNode225" x="-3" y="563"/>
+        <Node componentID="73" descriptorID="componentNode73" x="929" y="658"/>
         <Node componentID="2" descriptorID="componentNode2" x="-12" y="26"/>
+        <Node componentID="14" descriptorID="componentNode14" x="206" y="258"/>
+        <Node componentID="162" descriptorID="componentNode162" x="557" y="243"/>
+        <Node componentID="35" descriptorID="componentNode35" x="452" y="476"/>
+        <Node componentID="225" descriptorID="componentNode225" x="-3" y="563"/>
+        <Node componentID="136" descriptorID="componentNode136" x="557" y="56"/>
+        <Node componentID="43" descriptorID="componentNode43" x="666" y="562"/>
+        <Node componentID="61" descriptorID="componentNode61" x="1117" y="779"/>
     </FlowScene>
 </VisualDesign>
