@@ -34,6 +34,10 @@ import javax.microedition.media.control.ToneControl;
 import javax.microedition.media.control.VolumeControl;
 import javax.microedition.media.protocol.*;
 
+import javax.microedition.location.*;
+import javax.microedition.location.LocationException;
+
+
 
 /**
  * @author user
@@ -713,8 +717,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             }//GEN-BEGIN:|7-commandAction|65|7-postCommandAction
         }//GEN-END:|7-commandAction|65|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|66|176-postAction
-    //</editor-fold>//GEN-END:|7-commandAction|66|176-postAction
+    }//GEN-BEGIN:|7-commandAction|66|
+    //</editor-fold>//GEN-END:|7-commandAction|66|
 
 
 
@@ -2099,8 +2103,31 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
         textField11.setString( APRS_STATION_NAME + " (" + APRS_STATION_SYM + ")"  );
         textField12.setString( APRS_USER + "/" + APRS_PASS  );
 
-        
-        textField13.setString( lastPosition );
+        if ( isLocationSupported() ) {
+            textField13.setString( "GPS "+lastPosition );
+
+                 try {
+                     
+                     Criteria cr = new Criteria();
+                     cr.setHorizontalAccuracy(500);
+                     LocationProvider lp = LocationProvider.getInstance(cr);
+                     Location l = lp.getLocation(10);
+                     QualifiedCoordinates qc = l.getQualifiedCoordinates();
+                     System.out.println("Latitude: " + qc.getLatitude() + "\n" + "Longitude: " + qc.getLongitude() + "\n" + "Altitude: " +  qc.getAltitude() + "\n");
+
+                      
+                     //Criteria cr = new Criteria();
+                     //cr.setHorizontalAccuracy(500);
+                     //LocationProvider lp = LocationProvider.getInstance(cr);
+
+                 } catch (Exception e) {
+                   // not able to retrive location information
+                   
+                 }
+
+        } else {
+            textField13.setString( lastPosition );
+        }
         textField14.setString( lastStatus );
         textField16.setString( Integer.toString( (int)(timerCounter/60) )+"m"+Integer.toString( timerCounter-(((int)(timerCounter/60))*60) )+"s" );
 
@@ -2735,6 +2762,16 @@ private void readFile() {
 
         }
 
+     }
+
+    public boolean isLocationSupported() {
+         boolean isItTrue = true;
+             try {
+                 Class.forName("javax.microedition.location.Location");
+             } catch (Exception e) {
+                 isItTrue = false;
+             }
+         return isItTrue;
      }
 
 }
