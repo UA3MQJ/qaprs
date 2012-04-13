@@ -34,8 +34,8 @@ import javax.microedition.media.control.ToneControl;
 import javax.microedition.media.control.VolumeControl;
 import javax.microedition.media.protocol.*;
 
-import javax.microedition.location.*;
-import javax.microedition.location.LocationException;
+//import javax.microedition.location.*;
+//import javax.microedition.location.LocationException;
 
 
 
@@ -99,7 +99,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     //String           connType = new String("0"); //тип соединения с сервером 0-TCP permanent 1-TCP temp 2-UDP TX Only
     public int       connType = 0; //тип соединения с сервером 0-TCP permanent 1-TCP temp 2-UDP TX Only
 
-    public int       useProxy = 0; //при отладке на работе приходится работать через прокси
+    public int       useProxy = 0; //при отладке на работе приходится работать через прокси = 1
 
 
 
@@ -137,10 +137,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private Command itemCommand15;
     private Command itemCommand12;
     private Command itemCommand13;
+    private Command okCommand6;
+    private Command itemCommand19;
     private Command itemCommand18;
     private Command okCommand5;
-    private Command itemCommand19;
-    private Command okCommand6;
     private Form form;
     private Spacer spacer5;
     private Spacer spacer2;
@@ -173,12 +173,12 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     private TextField textField8;
     private TextBox textBox1;
     private Form form4;
-    private TextBox textBox2;
     private Form form5;
     private TextField textField17;
+    private TextField textField20;
     private TextField textField18;
     private TextField textField19;
-    private TextField textField20;
+    private TextBox textBox2;
     private SimpleCancellableTask task;
     private SimpleCancellableTask task1;
     private SimpleCancellableTask task2;
@@ -241,6 +241,10 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
                     //если соединение установлено, то просто отправка, если нет
                     String pck = oreadFile( lastPositionFile );
+                    if ( lastObjectsFile.length()>0 ) {
+                        pck += oreadFile( lastObjectsFile );
+                    }
+
                     if (SRVConnected==true) {
                         sendPacketMode0(pck);
                     } else {
@@ -252,6 +256,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             }
 
         }
+
     }
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -1030,6 +1035,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                     System.out.println("ручная отправка");
 
                     String pck = oreadFile( fileBrowser.getSelectedFileURL() );
+
+                    System.out.println("String pck =" +pck+"=");
 
                     if (SRVConnected==true) {
                         sendPacketMode0(pck);
@@ -2250,7 +2257,8 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
             //textField13.setString( lastPosition );
 
                  try {
-                     
+
+                     /*
                      Criteria cr = new Criteria();
                      cr.setHorizontalAccuracy(500);
                      LocationProvider lp = LocationProvider.getInstance(cr);
@@ -2261,7 +2269,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                      textField18.setString( Double.toString( qc.getLatitude() ) );
                      textField19.setString( Double.toString( qc.getLongitude() ) );
                      textField20.setString( Double.toString( qc.getAltitude() ) );
-
+*/
                       
                      //Criteria cr = new Criteria();
                      //cr.setHorizontalAccuracy(500);
@@ -2517,7 +2525,7 @@ public void sendPacketMode0( String tPacket ) {
         //отправка пакета
         byte[] packet_data = tPacket.getBytes();
         os.write(packet_data);
-        System.out.println("os.write packet ...");
+        System.out.println("os.write packet %"+tPacket+"%");
         //lastStatus = "cnExc: " + e;
         screenUpdate();
 
@@ -2601,7 +2609,7 @@ public void sendPacketMode1( String tPacket ) {
         //отправка пакета
         byte[] packet_data = tPacket.getBytes();
         os.write(packet_data);
-        System.out.println("os.write packet ...");
+        System.out.println("os.write packet %"+tPacket+"%");
 
         /*
         StringBuffer data = new StringBuffer();
@@ -2690,7 +2698,7 @@ private String oreadFile( String fileName ) {
 
                 lastObjectsFile = fileName;
 
-                System.out.println( "oreadFile=>" + position );
+                //System.out.println( "oreadFile=>" + position );
 
                 do {
                     position = position.substring( position.indexOf("\r") + 2 );
@@ -2701,7 +2709,7 @@ private String oreadFile( String fileName ) {
                         tstr = position.substring(0, position.indexOf("\r") );
                     }
                     
-                    System.out.println( "OBJECT STRING =" + tstr + ";" );
+                    //System.out.println( "OBJECT STRING =" + tstr + ";" );
 
                     int tCntr = 0;
 
@@ -2731,13 +2739,13 @@ private String oreadFile( String fileName ) {
 
                     ObjCall += "         ";
                     ObjCall = ObjCall.substring(0, 9);
-
+/*
                     System.out.println( "ObjCall=" + ObjCall + ";" );
                     System.out.println( "ObjSym=" + ObjSym + ";" );
                     System.out.println( "ObjLat=" + ObjLat + ";" );
                     System.out.println( "ObjLng=" + ObjLng + ";" );
                     System.out.println( "ObjComment=" + ObjComment + ";" );
-
+*/
                     Date date = new Date();
 
                     TimeZone defaultZone = TimeZone.getTimeZone("GMT-2");
@@ -2748,7 +2756,7 @@ private String oreadFile( String fileName ) {
                     calendar.setTime(date);
                     StringBuffer sb = new StringBuffer();
 
-                    sb.append('/');
+                    
                     int day = calendar.get(Calendar.DAY_OF_MONTH);
                     sb.append(numberToString(day));
                     int hour = calendar.get(Calendar.HOUR_OF_DAY) + 1;
@@ -2758,8 +2766,8 @@ private String oreadFile( String fileName ) {
                     sb.append(numberToString(minute));
                     sb.append('z');
 
-                    packet += ";" + ObjCall+"*"+sb+ObjLat+ObjSym.charAt(0)+ObjLng+ObjSym.charAt(1)+ObjComment+'\n'+'\r';
-                    System.out.println( "SEND packet " + packet );
+                    packet += ";" + ObjCall+"*"+sb+ObjLat+ObjSym.charAt(0)+ObjLng+ObjSym.charAt(1)+' '+ObjComment+'\n'+'\r'+'\n'+'\r';
+//                    System.out.println( "SEND packet " + packet );
 
                 } while (  position.indexOf("\r") > 0 );
 
@@ -2824,12 +2832,12 @@ private String oreadFile( String fileName ) {
                 sb.append('z');
 
                 //String packet = APRS_STATION_NAME+">"+APRSCALL+",TCPIP*:"+sb+Lat+APRS_STATION_SYM.charAt(0)+Lng+APRS_STATION_SYM.charAt(1)+Msg+'\n'+'\r';
-                packet = APRS_STATION_NAME+">"+APRSCALL+",TCPIP*:"+sb+Lat+APRS_STATION_SYM.charAt(0)+Lng+APRS_STATION_SYM.charAt(1)+Msg+'\n'+'\r';
+                packet = APRS_STATION_NAME+">"+APRSCALL+",TCPIP*:"+sb+Lat+APRS_STATION_SYM.charAt(0)+Lng+APRS_STATION_SYM.charAt(1)+Msg+'\n'+'\r'+'\n'+'\r';
 
                 //UA3MQJ>APUN25,TCPIP*: + MsgText
                 //UA1CEC>APU25N,TCPIP*,qAC,T2RUSSIA:=5931.88N/03053.60E&10147 - inet {UIV32}
                 //5931.88N 03053.60E Fly e135 - inet {QAPRSj}
-                System.out.println( "oreadFile=>" + packet );
+                //System.out.println( "oreadFile=>" + packet );
 
                 if (length > 0) {
                     return packet;

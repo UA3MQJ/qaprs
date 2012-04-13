@@ -1,5 +1,5 @@
 MIDlet-1: jAPRSSenderMIDlet,,jAPRS.jAPRS
-MIDlet-Jar-Size: 76194
+MIDlet-Jar-Size: 74780
 MIDlet-Jar-URL: APRSInetSender.jar
 MIDlet-Name: APRSInetSender
 MIDlet-Vendor: Vendor
