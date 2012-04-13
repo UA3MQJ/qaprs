@@ -34,8 +34,8 @@ import javax.microedition.media.control.ToneControl;
 import javax.microedition.media.control.VolumeControl;
 import javax.microedition.media.protocol.*;
 
-//import javax.microedition.location.*;
-//import javax.microedition.location.LocationException;
+import javax.microedition.location.*;
+import javax.microedition.location.LocationException;
 
 
 
@@ -196,7 +196,6 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
     class MyTimerTask extends TimerTask {
         public void run(){
            
-
             System.out.println( "timer tick" );
             //readFile();
 
@@ -278,38 +277,6 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
         //System.getProperty("CellID")
 
         log = log + "platform=" + System.getProperty("microedition.platform")+"\n";
-
-        //javax.microedition.media.MediaException: error opening Audio device
-        log = log + "Cell information:\n";
-
-        if( System.getProperty("CellID") != null ) { log = log + "CellID="+System.getProperty("CellID").toString()+"\n";}
-
-        if( System.getProperty("CellID") != null ) { log = log + "CellID="+System.getProperty("CellID").toString()+"\n";}
-        if( System.getProperty("Cell-ID") != null ) { log = log + "Cell-ID="+System.getProperty("Cell-ID").toString()+"\n";}
-        if( System.getProperty("com.nokia.mid.cellid") != null ) { log = log + "nokCID="+System.getProperty("com.nokia.mid.cellid").toString()+"\n";}
-        if( System.getProperty("phone.cid") != null ) { log = log + "phoCID="+System.getProperty("phone.cid").toString()+"\n";}
-        if( System.getProperty("com.sonyericsson.net.cellid") != null ) { log = log + "soID="+System.getProperty("com.sonyericsson.net.cellid").toString()+"\n";}
-        if( System.getProperty("com.samsung.cellid") != null ) { log = log + "saID="+System.getProperty("com.samsung.cellid").toString()+"\n";}
-        if( System.getProperty("com.siemens.cellid") != null ) { log = log + "sillID="+System.getProperty("com.siemens.cellid").toString()+"\n";}
-        if( System.getProperty("cid") != null ) { log = log + "cid="+System.getProperty("cid").toString()+"\n";}
-
-
-        //if (textBox != null) { textBox.setString( log ); }
-
-
-        System.out.println("\n=========\n");
-        //log = log + "Protocols:\n";
-
-        String protocols [] = {
-            "http", "file", "socket", "datagram"
-        };
-        for(int j=0; j < protocols.length; j++) {
-            String cont_HTTP [] = Manager.getSupportedContentTypes(protocols[j]);
-            for(int i =0; i < cont_HTTP.length; i++) {
-                System.out.println("Protocol " +protocols[j]+ ": contentType is "+cont_HTTP[i]);
-                //log = log + "Protocol " +protocols[j]+ ": contentType is "+cont_HTTP[i]+"\n";
-            }
-        }
 
 
         boolean storeNotExist = true;
@@ -2237,7 +2204,7 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
     public void screenUpdate() {
 
-        System.out.println("screenUpdate();");
+       // System.out.println("screenUpdate();");
 
         //if (textBox != null) {
 //
@@ -2258,18 +2225,18 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
 
                  try {
 
-                     /*
+                     
                      Criteria cr = new Criteria();
                      cr.setHorizontalAccuracy(500);
                      LocationProvider lp = LocationProvider.getInstance(cr);
                      Location l = lp.getLocation(10);
                      QualifiedCoordinates qc = l.getQualifiedCoordinates();
                      //System.out.println("Latitude: " + qc.getLatitude() + "\n" + "Longitude: " + qc.getLongitude() + "\n" + "Altitude: " +  qc.getAltitude() + "\n");
-                     textField17.setString( "Supported" );
-                     textField18.setString( Double.toString( qc.getLatitude() ) );
-                     textField19.setString( Double.toString( qc.getLongitude() ) );
-                     textField20.setString( Double.toString( qc.getAltitude() ) );
-*/
+                     if (textField17!=null) { textField17.setString( "Supported" ); }
+                     if (textField18!=null) { textField18.setString( Double.toString( qc.getLatitude() ) ); }
+                     if (textField19!=null) { textField19.setString( Double.toString( qc.getLongitude() ) ); }
+                     if (textField20!=null) { textField20.setString( Double.toString( qc.getAltitude() ) ); }
+
                       
                      //Criteria cr = new Criteria();
                      //cr.setHorizontalAccuracy(500);
@@ -2281,15 +2248,18 @@ public class jAPRS extends MIDlet implements Runnable, CommandListener  {
                  }
 
         } else {
-            //textField13.setString( lastPosition );
-            textField17.setString( "NOT Supported" );
-            textField18.setString( "?" );
-            textField19.setString( "?" );
-            textField20.setString( "?" );
+
+            if (textField17!=null) {textField17.setString( "NOT Supported" );}
+            if (textField18!=null) {textField18.setString( "?" );}
+            if (textField19!=null) {textField19.setString( "?" );}
+            if (textField20!=null) {textField20.setString( "?" );}
 
         }
+
+        
         textField14.setString( lastStatus );
         textField16.setString( Integer.toString( (int)(timerCounter/60) )+"m"+Integer.toString( timerCounter-(((int)(timerCounter/60))*60) )+"s" );
+
 
     }
 
