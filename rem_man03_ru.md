@@ -1,0 +1,35 @@
+# 3 Настройка маяков #
+<br />
+
+В данной версии ядра выдача маяков выделена в отдельную подсистему. Маяк не привязан к порту. Порт является просто параметром у маяка. На каждый порт может быть назначено несколько маяков.
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list.PNG <br />
+
+Каждый маяк имеет свои настройки о используемом позывном, символе, периоде, тексте и адресу Unproto.
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list2.PNG <br />
+
+Для добавления маяка необходимо нажать кнопку "Create Beacon".
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list_add.PNG <br />
+
+Выбрать порт, через который будет передаваться маяк.
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list_add2.PNG <br />
+
+Выбрать символ маяка
+
+http://qaprs.googlecode.com/svn/wiki/beacon_list_add3.PNG <br />
+
+А так же остальные параметры маяка.
+
+
+У созданных маяков есть возможность менять параметры "Edit Beacon Parameters".
+
+Нажатием кнопки "Delete Beacon " маяк может быть удален.
+
+В нижней части окна расположены кнопки управления всеми маяками сразу: можно включить сразу все маяки - "Switch ON All Beacons" или все сразу выключить - "Switch OFF All Beacons".
+
+Кнопки "Send All Beacons" и "Send Beacon" пока не работают.
+
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [Приложение 1. Комплект файлов для работы программы](http://code.google.com/p/qaprs/wiki/rem_man_pr1_ru)

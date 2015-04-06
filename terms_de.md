@@ -1,0 +1,41 @@
+# List of used terms and acronyms #
+<br />
+
+
+[RU](http://code.google.com/p/qaprs/wiki/terms_ru)|[EN](http://code.google.com/p/qaprs/wiki/terms_en)|DE
+
+
+APRS - Automatic Position Reporting System; Variante von Packet Radio, bei der viele Funkgeräte zu einem Netzwerk zusammen wachsen, dessen einzige zentrale Komponente eine Datenbank mit den Positionen der Funkstationen ist.
+
+[AGW](http://www.sv2agw.com/) - _package kernel SV2AGW_.
+
+AXIP - Standard AX.25 packet on the network TCP / IP (see [RFC1226](http://qaprs.googlecode.com/files/rfc1226.txt)).
+
+Internet APRS Server - _a server on the Internet, through which can exchange messages, send and receive packets APRS, for them there is an accumulation of data. As a rule all the world's APRS server combined with each other and the communication received from IGATE on one of the servers, gets all the other server_.
+
+CALL - _callsign of HAM radiostation_
+
+Digipeater (DIGI) - digital repeater of packets
+
+GPS - Global Positioning System
+
+GATE - _the bridge for transfer APRS of packets on other bands_
+
+IGATE - _the bridge for transfer APRS packets on Internet APRS Server_
+
+SID - _number from 0 to 15, added to the station callsign (eg UA3MQJ-4). Used to identify a number of stations under one call sign. Also at SID in the standard APRS can determine the type and purpose of the station (mobile station, GATE, etc.). If the SID is not specified, it is considered that it is equal to zero (see AX.25)_.
+
+TNC - _controller to operate the modem and the transmitter connects to your computer
+KISS TNC - TNC supporting mode_ [KISS](http://qaprs.googlecode.com/files/kiss.txt)
+
+DB - _database, usually used to access structured query language SQL_
+
+modem - _a device for modulation / demodulation signal for a particular protocol (eg Packet)_
+
+APRS packet - _an information packet, corresponding protocol APRS (a beacon, communication, etc.), regardless of transport protocol transmission_.
+
+AX.25 packet - für Amateur-Datenfunk modifiziertes X.25-Protokoll; _a packet of information, appropriate communication protocol AX.25 Packet Transport - protolok and environment, used for packet APRS (for example, AX.25 packet can be transmitted over the air or on the network tcp / ip or in text form server Internet APRS )_. [AX.25](http://qaprs.googlecode.com/files/AX25.2.2.pdf)
+
+Transport - _protocol and the environment used for transfer of APRS packet (for example AX.25 packet can be transferred on a radio channel either on a network tcp/ip or in a text kind to server Internet APRS)_.
+
+[Back to content](http://code.google.com/p/qaprs/wiki/content_en)

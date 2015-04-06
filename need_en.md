@@ -1,0 +1,15 @@
+# Justification of the need to develop #
+<br />
+
+
+[RU](http://code.google.com/p/qaprs/wiki/need_ru)|EN
+
+In order to perfect myself in the field of programming protocol packet networks, and to consolidate skills of development of cross-platform products based on c + + and qt, I decided to make my own UI-View software equivalent and its additional functionality, provided by different plug-ins.
+
+Why APRS? There are several reasons. APRS Protocol  is open and fairly easy to implement the standard. AX.25 packet protocol is traditionally used for its operations  as a simple and open standard (unlike, for example, PACTOR and Winlink). Sometimes APRS uses BPSK modulation, which is even easier to implement than packet AX.25. When the APRS protocol uses the transport in the form of AX.25 packet, it does not use all its capabilities, but only one type of packages (without acknowledgment and connection setup). The simplifies the implementation of their own modulators / demodulators packages, and provides the experience of AX.25  protocol itself , which can subsequently be used in the development of full packaged applications.
+
+The work of the system can be achieved without using additional equipment such as packet modems and controllers. A sound card can be used as a modem. It allows any wireless enthusiast, who works with digital modes, to try and to work with a network of APRS without additional financial investment. You can also enter  the APRS network without having any transceiving equipment through the Internet APRS server, but this is only part of the system. Hams much more interesting to use as a transport for APRS packets not leased Internet connection, a radio channel on the amateur bands.
+
+The project will enable better understanding of APRS the protocol itself , developing practicall skills in dealing with network protocols, the development of modules for working with hardware devices (sound cards, serial ports). In recent years, a lot of innovations in the field of network services have appeared, which can be itegrirovat network APRS, to supplement the functionality of the network, thus to develop capabilities and scope of the protocol, to attract additional users.
+
+[Back to content](http://code.google.com/p/qaprs/wiki/content_en)

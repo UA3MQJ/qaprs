@@ -1,0 +1,30 @@
+﻿= Problem =
+
+[RU](http://code.google.com/p/qaprs/wiki/tz_ru)|EN
+
+To develop a system for APRS networking.
+
+The system must operate correctly in the multi-port configurations, provide a convenient interface to configure all the functional parts of the product: the parameters of ports, the parameters of retransmission packets, the parameters of the routing packets between the ports, etc.
+
+Functional blocks of the system must be separated in different modules: the main module - the core system, additional modules - a graphic interface for displaying cards, postage and other systems.
+
+To use the system it’s  enough to run a kernel module. The kernel must provide the following functionality of regardless of the running of additional modules :
+
+  * work with the physical port, packet drivers kernel (eg AGW), network ports (AXIP, APRS Internet Server), with the implementation of the transmit and receive UI packet protocol AX25, which is sufficient for the protocol APRS (but not sufficient for a full package AX25) ;
+  * maintaining a list of ports: the establishment, modification of parameters, removal;
+  * all steps for configuring the kernel should not require the restart and, if  it’s possible, without breaking the joints, where it’s necessary;
+  * support of remote configuration;
+  * logging of all received packets;
+  * logging of all stations heard;
+  * maintaining a list of messages;
+  * response to requests APRS (PING, DX, etc.) as well as confirmation of the admission of messages (messages with ID);
+  * relaying APRS packets on the port and between ports ;
+  * issuing APRS beacon station with its coordinates, the text of the lighthouse, a symbol interval, with the possibility of a unique setting for all of the above parameters separately for each port (the port on the HF and VHF may differ both in a symbol of the station and in the beacon interval).
+
+> # Analysis of TK #
+
+The implement of the requirements will be used C++  language and graphics library QT4. In addition to the possibility of developing cross-platform graphic product, this library also provides many other classes that facilitate the development of portable software: classes for working with files, arrays and strings, to work with the network, databases, etc.
+
+For convenience and kernel configuration for storage options, it is decided to keep all the settings in the database. The types of database SQLite (possibly later if MySQL will be large amounts of data). This type of database  is selected because the additional server databases is not required  all functions work with sql are built into the client-side, the entire database is placed in a single file database is ported to another platform. Information about connecting to the database (the name of the file name, the type of database)is store .ini file.
+
+[Back to content](http://code.google.com/p/qaprs/wiki/content_en)

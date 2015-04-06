@@ -1,0 +1,15 @@
+# 2.6 Настройка порта VASka #
+<br />
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [2.5 Настройка порта FLDigi](http://code.google.com/p/qaprs/wiki/rem_man02_05_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [3 Настройка маяков](http://code.google.com/p/qaprs/wiki/rem_man03_ru)
+
+Порт для работу через модем программы VAska. Проект VAska является нашей разработкой. Обсуждение проекта происходит на сайте [radioscanner.ru](http://www.radioscanner.ru/forum/topic36131-26.html#msg652000). Проект находится в стадии разработки, используется протокол родственный bpsk.
+
+http://qaprs.googlecode.com/svn/wiki/port_vaska.PNG <br />
+
+**Важно!** Ядро qaprs использует порт 5000 для связи с графической частью. Тот же порт используется по умолчанию для связи в модемом VAska. Чтобы не нарушить работоспособность системы qaprs-VAska в порте необходимо выбрать отличный от 5000 номер порта, например 5001. Тот же номер вводится в настройках программы VAska.
+
+http://qaprs.googlecode.com/svn/wiki/port_vaska2.PNG <br />
+
+Параметр Mode выбирает формат передаваемых сообщений. Если выбран режим bin, тогда сообщения передаются в виде AX пакетов. Если выбран текстовый режим, тогда сообщения передаются в текстовом виде в том же формате, в котором идет обмен с APRS серверами Internet.
+
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [2.5 Настройка порта FLDigi](http://code.google.com/p/qaprs/wiki/rem_man02_05_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [3 Настройка маяков](http://code.google.com/p/qaprs/wiki/rem_man03_ru)

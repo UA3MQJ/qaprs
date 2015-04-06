@@ -1,0 +1,27 @@
+# 2.5 Настройка порта FLDigi #
+<br />
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [2.4 Настройка порта KISS](http://code.google.com/p/qaprs/wiki/rem_man02_04_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [2.6 Настройка порта VAska](http://code.google.com/p/qaprs/wiki/rem_man02_06_ru) | [3 Настройка маяков](http://code.google.com/p/qaprs/wiki/rem_man03_ru)
+
+FLDigi - программа для работы цифровыми видами связи.
+Среди всех поддерживаемых видов, есть и такие, которые поддерживают все символы (!@#$%^& и т. д.), включая и системные типа перевода строки.
+А это значит, что этими видами можно работать в APRS.
+
+Список видов связи, которыми можно экспериментально попробовать поработать в APRS:
+
+  * DominoEX (4, 5, 8, 11, 16, 22);
+
+  * MFSK (4, 8, 11, 16, 22, 31, 32, 64);
+
+  * Olivia (8/250, 8/500, 16/500, 8/1000, 32/1000);
+
+  * BPSK (31, 63, 125, 250);
+
+  * THOR (4, 5, 8, 11, 16, 22);
+
+Данные виды связи, возможно, смогут быть полезны с сложных условиях (полевых, при малых мощностях). По сравнению со стандартным пакетом данные виды связи имеют несомненные преимущества (иногда в ущерб скорости).
+
+Тестировалось с версией 3.12.5.
+
+http://qaprs.googlecode.com/svn/wiki/port_fldigi.PNG <br />
+
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [2.4 Настройка порта KISS](http://code.google.com/p/qaprs/wiki/rem_man02_04_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [2.6 Настройка порта VAska](http://code.google.com/p/qaprs/wiki/rem_man02_06_ru) | [3 Настройка маяков](http://code.google.com/p/qaprs/wiki/rem_man03_ru)

@@ -1,0 +1,13 @@
+# 2.1 Настройка порта Internet #
+<br />
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [2.2 Настройка порта AXIP](http://code.google.com/p/qaprs/wiki/rem_man02_02_ru) | [3 Настройка маяков](http://code.google.com/p/qaprs/wiki/rem_man03_ru)
+
+APRS Internet Server Connection - порт соединения с APRS Internet сервером. Порт хранит 3 адреса серверов и, при потере соединения с первым, пытается установить соединение со следующим. Время пересодинения 30с.
+
+Для соединения с сервером необходимо указать логин-позывной и пароль. Если доступ только для получения данных с сервера, то можно указать пароль -1. В поле фильтр указывается нужный фильтр (без слова filter). Как показала практика - к одному серверу нельзя подключится дважды с одним именем и паролем. Но к разным можно.
+
+Соединяться с серверами можно как напрямую, так и через просежуточные сервера (PROXY). При необходимости, может быть указано имя и пароль для proxy-сервера.
+
+http://qaprs.googlecode.com/svn/wiki/port_inet.PNG <br />
+
+[2 Настройка портов](http://code.google.com/p/qaprs/wiki/rem_man02_ru) | [Вернуться к содержанию](http://code.google.com/p/qaprs/wiki/content_ru) | [2.2 Настройка порта AXIP](http://code.google.com/p/qaprs/wiki/rem_man02_02_ru) | [3 Настройка маяков](http://code.google.com/p/qaprs/wiki/rem_man03_ru)
