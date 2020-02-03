@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>521</height>
+    <width>447</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,6 +74,12 @@
          </item>
          <item>
           <widget class="QComboBox" name="portTypeBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>140</width>

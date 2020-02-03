@@ -1,10 +1,11 @@
-TEMPLATE = app
+#TEMPLATE = app
 QT = gui \
+    widgets \
     core \
     sql \
     network
-CONFIG += qt \
-    warn_on \
+CONFIG += c++11
+DEFINES += QT_DEPRECATED_WARNINGS
 DESTDIR = bin
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -17,13 +18,15 @@ INCLUDEPATH += . \
     include
 FORMS = ui/mainwindow.ui \
     ui/portoption.ui
-HEADERS = include/mainwindowimpl.h \
+HEADERS = \
+    include/mainwindow.h \
     include/portoption.h \
     include/qaprsports.h \
     include/qaprscore.h \
     include/qaprspacket.h
-SOURCES = src/mainwindowimpl.cpp \
+SOURCES = \
     src/main.cpp \
+    src/mainwindow.cpp \
     src/portoption.cpp \
     src/qaprsports.cpp \
     src/qaprscore.cpp \

@@ -39,7 +39,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
         TSID = TCall.right(TCall.length()-TCall.indexOf("-")-1).toInt();
         TSID = TSID & 15;
         ToCall = ToCall.left(ToCall.indexOf("-"));
-    };
+    }
     ToCall = ToCall.leftJustified(6, ' ');
 
     TSID = (TSID) + 112; //112 = 01110000
@@ -53,11 +53,11 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
 
     do {
         int subindex, subindex2, nextindex;
-        //всего один позывной или несколько
+        //РІСЃРµРіРѕ РѕРґРёРЅ РїРѕР·С‹РІРЅРѕР№ РёР»Рё РЅРµСЃРєРѕР»СЊРєРѕ
         subindex  = (FCall.indexOf(",")==-1)?(FCall.length()-1):(FCall.indexOf(",")-1);
         nextindex = subindex;
-        //есть ли ssid? в любом случае от 0 до subindex2 хранится только позывной
-        //если ssid не указан, то совпадают
+        //РµСЃС‚СЊ Р»Рё ssid? РІ Р»СЋР±РѕРј СЃР»СѓС‡Р°Рµ РѕС‚ 0 РґРѕ subindex2 С…СЂР°РЅРёС‚СЃСЏ С‚РѕР»СЊРєРѕ РїРѕР·С‹РІРЅРѕР№
+        //РµСЃР»Рё ssid РЅРµ СѓРєР°Р·Р°РЅ, С‚Рѕ СЃРѕРІРїР°РґР°СЋС‚
         // UA3MQJ-13,WIDE
         // 0    ^  ^^-nextindex
         //      |  +--subindex
@@ -99,7 +99,7 @@ QAPRSAXUIPacket::QAPRSAXUIPacket( QString To, QString From, QString MsgText ) {
     //add control byte
     this->append(3); // 0011 - U-Frame
     //add PID byte
-    this->append(240); // 11110000 - протокол 3-го уровня не используется
+    this->append(240); // 11110000 - РїСЂРѕС‚РѕРєРѕР» 3-РіРѕ СѓСЂРѕРІРЅСЏ РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
     //add text of message
     this->append(MsgText);
     //add enter
@@ -127,7 +127,7 @@ QAPRSAXUIPacket::~QAPRSAXUIPacket( ) {
 
 ///////AXIP///////////////////////////////////////////
 QAPRSAXIPPacket::QAPRSAXIPPacket( QObject *parent) {
-
+    Q_UNUSED(parent)
 }
 
 QAPRSAXIPPacket::QAPRSAXIPPacket( QString To, QString From, QString MsgText ) {
@@ -145,7 +145,7 @@ QAPRSAXIPPacket::~QAPRSAXIPPacket( ) {
 }
 //////AGW///////////////////////////////////////////////////////////////
 QAPRSAGWPacket::QAPRSAGWPacket( QObject *parent) {
-
+    Q_UNUSED(parent)
 }
 
 QAPRSAGWPacket::QAPRSAGWPacket( QString To, QString From, QString MsgText ) {
@@ -179,7 +179,7 @@ QAPRSAGWPacket::~QAPRSAGWPacket( ) {
 }
 //////AGWRX (Packet to AGW client)///////////////////////////////////////////////////////////////
 QAPRSAGWRXPacket::QAPRSAGWRXPacket( QObject *parent) {
-
+    Q_UNUSED(parent)
 }
 
 QAPRSAGWRXPacket::QAPRSAGWRXPacket( QString To, QString From, QString MsgText ) {

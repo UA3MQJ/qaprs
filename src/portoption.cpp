@@ -67,7 +67,7 @@ void PortoptionDialog::saveButtonClick() {
                         } else {
                             query.exec( "insert into port_param_values (port_num, par_code, par_value) "
                                         "values("+portNumEdit->text()+",11,'F')");
-                        };
+                        }
                         query.exec( "insert into port_param_values (port_num, par_code, par_value) "
                                     "values("+portNumEdit->text()+",12,'"+KISSCommEXITEdit->text()+"')");
 
@@ -88,7 +88,7 @@ void PortoptionDialog::saveButtonClick() {
                         query.exec( "insert into port_param_values (port_num, par_code, par_value) "
                                     "values("+portNumEdit->text()+",3,'"+AXIPTXPortBox->text()+"')");
                         break;
-    };
+    }
 
     if (portBeaconIntervalEdit->text()=="") portBeaconIntervalEdit->setText("-1");
 
@@ -158,6 +158,6 @@ void PortoptionDialog::KISSEasySetup(int index) {
                  KISSComm4Edit->setText("");
                  KISSCommEXITEdit->setText("192,255,192,13");
                  break;
-    };
-}
+    }
+};
 

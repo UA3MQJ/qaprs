@@ -7,8 +7,9 @@
 
 
 
-QAPRSCore::QAPRSCore( QObject *parent )        
+QAPRSCore::QAPRSCore( QObject *parent )
 {
+    Q_UNUSED( parent )
     fileLog.setFileName( "./general.log" );
     fileLog.open( QIODevice::Append );
     outLog.setDevice( &fileLog );
@@ -18,7 +19,7 @@ QAPRSCore::QAPRSCore( QObject *parent )
     outPacketLog.setDevice( &filePacketLog );
 
     for(int i=0;i<256;i++)
-        Port[i]=NULL;
+        Port[i]=nullptr;
 
     tcpServer = new QTcpServer(this);
 
@@ -50,18 +51,18 @@ void QAPRSCore::tcpServerDisconnect () {
     //tcpServerConnection->disconnect();
     //tcpServerConnection->deleteLater();
 
-    tcpServer->listen(QHostAddress::QHostAddress("127.0.0.1"), 8001);
+    tcpServer->listen(QHostAddress::LocalHost, 8001);
 
 }
 
 void QAPRSCore::tcpServerRead () {
     //read data from AGW Core Emulator Client
 
-    //АХТУНГ!!! клиенты шлют и по несколько пакетов за раз!!!!!
-    QByteArray datagram; //ну или же ядро долго чухает, что приходят еще датаграммы
-    QByteArray mesg; //и получается что в прочитанных данных может быть и больше одного пакета !
-    //та же проблема и с реконнектами ui к ядру, наверное: идут сразу две комманды
-    //так же на эту тему надо проверить все порты!!!
+    //РђРҐРўРЈРќР“!!! РєР»РёРµРЅС‚С‹ С€Р»СЋС‚ Рё РїРѕ РЅРµСЃРєРѕР»СЊРєРѕ РїР°РєРµС‚РѕРІ Р·Р° СЂР°Р·!!!!!
+    QByteArray datagram; //РЅСѓ РёР»Рё Р¶Рµ СЏРґСЂРѕ РґРѕР»РіРѕ С‡СѓС…Р°РµС‚, С‡С‚Рѕ РїСЂРёС…РѕРґСЏС‚ РµС‰Рµ РґР°С‚Р°РіСЂР°РјРјС‹
+    QByteArray mesg; //Рё РїРѕР»СѓС‡Р°РµС‚СЃСЏ С‡С‚Рѕ РІ РїСЂРѕС‡РёС‚Р°РЅРЅС‹С… РґР°РЅРЅС‹С… РјРѕР¶РµС‚ Р±С‹С‚СЊ Рё Р±РѕР»СЊС€Рµ РѕРґРЅРѕРіРѕ РїР°РєРµС‚Р° !
+    //С‚Р° Р¶Рµ РїСЂРѕР±Р»РµРјР° Рё СЃ СЂРµРєРѕРЅРЅРµРєС‚Р°РјРё ui Рє СЏРґСЂСѓ, РЅР°РІРµСЂРЅРѕРµ: РёРґСѓС‚ СЃСЂР°Р·Сѓ РґРІРµ РєРѕРјРјР°РЅРґС‹
+    //С‚Р°Рє Р¶Рµ РЅР° СЌС‚Сѓ С‚РµРјСѓ РЅР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ РІСЃРµ РїРѕСЂС‚С‹!!!
     QByteArray reply;
     int msglen;
 
@@ -77,7 +78,7 @@ void QAPRSCore::tcpServerRead () {
 
 
         if (uchar(datagram[4])=='R') {
-            //посылаем "версию" ядра AGW
+            //РїРѕСЃС‹Р»Р°РµРј "РІРµСЂСЃРёСЋ" СЏРґСЂР° AGW
             ToLog( "QAPRSCore::AGW send ver num<br>" );
 
             reply = QByteArray::fromHex("000000005200000000000000000000000000000000000000000000000800000000000000d50700007f000000");
@@ -89,7 +90,7 @@ void QAPRSCore::tcpServerRead () {
         else
 
         if (uchar(datagram[4])=='G') {
-            //посылаем информацию о портах
+            //РїРѕСЃС‹Р»Р°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїРѕСЂС‚Р°С…
             ToLog( "QAPRSCore::AGW send port info<br>" );
 
             reply = QByteArray::fromHex("000000004700000000204f6e20434f4d333a00415869503b006261757500000000000000");
@@ -98,7 +99,7 @@ void QAPRSCore::tcpServerRead () {
             int     PortCount=0;
             PortList.clear();
             for(int i=0;i<256;i++)
-              if (Port[i]!=NULL) {
+              if (Port[i]!=nullptr) {
                 PortCount++;
                 PortList.append( "Port => " + QString::number( Port[i]->PortNum ) + " " + Port[i]->PortName + " (" + Port[i]->PortType + ");" );
               }
@@ -172,7 +173,7 @@ void QAPRSCore::tcpServerRead () {
                 SrcSID = ( uchar( mesg.data()[sh+6] ) >> 1 ) & 15;             //SID
                 if ( SrcSID>0 ) SrcCall += "-" + QString::number( SrcSID );
                 if ( ( ( uchar( mesg.data()[sh+6] ) >> 7 ) & 1) == 1) SrcCall += "*";  //H - retranslator bit
-                if ( ( ( uchar( mesg.data()[sh+6] ) ) & 1) == 0) SrcCall += ",";    //HDLC bit (бит расширения адреса)
+                if ( ( ( uchar( mesg.data()[sh+6] ) ) & 1) == 0) SrcCall += ",";    //HDLC bit (Р±РёС‚ СЂР°СЃС€РёСЂРµРЅРёСЏ Р°РґСЂРµСЃР°)
                 sh += 7;
             } while ( ( ( uchar( mesg.data()[sh-1] ) ) & 1 ) !=1 );
 
@@ -190,7 +191,7 @@ void QAPRSCore::tcpServerRead () {
 
             int pnum=0;
             for(int i=0;i<256;i++) {
-                if (Port[i]!=NULL) {
+                if (Port[i]!=nullptr) {
                     pnum++;
                     if (pnum==qpnum) {
                         Port[i]->sendPacket( DestCall, SrcCall, MsgText );
@@ -226,8 +227,7 @@ void QAPRSCore::tcpServerRead () {
 
 /////////////////////
 QAPRSPort *QAPRSCore::createPort( QString PortType ) {
-
-    QAPRSPort *newPort;
+    QAPRSPort *newPort = nullptr;
     if ( PortType=="AXIP" )     newPort = new QAPRSAXIPPORT(this);
     if ( PortType=="APRS Internet Server Connection" ) newPort = new QAPRSINTERNETPORT(this);
     if ( PortType=="AGW CORE" ) newPort = new QAPRSAGWPORT(this);
@@ -236,11 +236,9 @@ QAPRSPort *QAPRSCore::createPort( QString PortType ) {
     //newPort->log = this->log; //!!!! if yo need post to log direct from port
                                 //     use signal ToLog : emit ToLog( QString );
     return newPort;
-
 }
 
 void QAPRSCore::createPorts() {
-
     QSqlQuery query("select p2.port_type_note, p1.* "
                     "from ports p1 left join port_types p2 "
                     "on p1.port_type_id=p2.port_type_id "
@@ -294,25 +292,22 @@ void QAPRSCore::createPorts() {
      }
 
     ToLog( "QAPRSCore::Ready for connection to the AGW Core simulator<br>" );
-    tcpServer->listen( QHostAddress::QHostAddress("127.0.0.1"), 8001);
+    tcpServer->listen( QHostAddress::LocalHost, 8001);
     connect(tcpServer, SIGNAL( newConnection () ), this, SLOT(tcpServerNewConnection () ) );
     //monitoringPackets = false;
-
-
 }
 
-void      QAPRSCore::closeAllPorts() {
-
+void QAPRSCore::closeAllPorts() {
     for(int i=0;i<256;i++) {
-        if (Port[i]!=NULL) {
+        if (Port[i]!=nullptr) {
             Port[i]->closePort();
             Port[i]->disconnect();
             Port[i]->deleteLater();
-            Port[i]=NULL;
+            Port[i]=nullptr;
         }
     }
 
-    if (tcpServerConnection!=NULL) {
+    if (tcpServerConnection!=nullptr) {
         tcpServerConnection->close();
         tcpServerConnection->disconnect();
         //tcpServerConnection->deleteLater();
@@ -320,11 +315,9 @@ void      QAPRSCore::closeAllPorts() {
 
     tcpServer->close();
     tcpServer->disconnect();
-
 }
 
 void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText) {
-
     //log->insertHtml( "(" + QString::number( PortNum ) + ":" + QString::number( Port[PortNum]->agwPortNum ) + ")" + Port[PortNum]->PortType + "::<font color='#008800'>RX Packet</font> "
     // "To: " + To + " "
     // "From: " + From + " "
@@ -447,11 +440,9 @@ void QAPRSCore::RXPacket (int PortNum, QString To, QString From, QString MsgText
 
 
     emit TRXPacket();
-
 }
 
 void QAPRSCore::TXPacket (int PortNum, QString To, QString From, QString MsgText) {
-
     //log->insertHtml( "(" + QString::number( PortNum ) + ")" + Port[PortNum]->PortType + "::<font color='#880000'>TX Packet</font> "
     // "To: " + To + " "
     // "From: " + From + " "

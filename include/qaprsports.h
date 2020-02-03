@@ -14,26 +14,26 @@
 #endif
 
 #ifdef Q_OS_UNIX
-#include <stdio.h>   /* Стандартные объявления ввода/вывода */
-#include <string.h>  /* Объявления строковых функций */
-#include <unistd.h>  /* Объявления стандартных функций UNIX */
-#include <fcntl.h>   /* Объявления управления файлами */
-#include <errno.h>   /* Объявления кодов ошибок */
-#include <termios.h> /* Объявления управления POSIX-терминалом */
+#include <stdio.h>   /* п║я┌п╟п╫п╢п╟я─я┌п╫я▀п╣ п╬п╠я┼я▐п╡п╩п╣п╫п╦я▐ п╡п╡п╬п╢п╟/п╡я▀п╡п╬п╢п╟ */
+#include <string.h>  /* п·п╠я┼я▐п╡п╩п╣п╫п╦я▐ я│я┌я─п╬п╨п╬п╡я▀я┘ я└я┐п╫п╨я├п╦п╧ */
+#include <unistd.h>  /* п·п╠я┼я▐п╡п╩п╣п╫п╦я▐ я│я┌п╟п╫п╢п╟я─я┌п╫я▀я┘ я└я┐п╫п╨я├п╦п╧ UNIX */
+#include <fcntl.h>   /* п·п╠я┼я▐п╡п╩п╣п╫п╦я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я└п╟п╧п╩п╟п╪п╦ */
+#include <errno.h>   /* п·п╠я┼я▐п╡п╩п╣п╫п╦я▐ п╨п╬п╢п╬п╡ п╬я┬п╦п╠п╬п╨ */
+#include <termios.h> /* п·п╠я┼я▐п╡п╩п╣п╫п╦я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ POSIX-я┌п╣я─п╪п╦п╫п╟п╩п╬п╪ */
 #endif
 
 class QAPRSPort: public QObject
 {
     Q_OBJECT
     public:
-       QAPRSPort( QObject *parent = 0 );
+       QAPRSPort( QObject *parent = nullptr );
 
 
     virtual void    openPort();
     virtual void    closePort();
     virtual void    sendPacket( QString To, QString From, QString MsgText );
     virtual void    setParam( QString ParamName, QString ParamValue );
-    bool    isActive() { return active; };
+    bool    isActive() { return active; }
     void    setReadOnly(bool RO);
     bool    isReadOnly();
     void    setCall(QString Text);
@@ -68,7 +68,7 @@ signals:
 class QAPRSAXIPPORT: public QAPRSPort  {
     Q_OBJECT
     public:
-        QAPRSAXIPPORT( QObject * parent = 0 );
+        QAPRSAXIPPORT( QObject * parent = nullptr );
 
     void    openPort();
     void    closePort();
@@ -87,8 +87,8 @@ class QAPRSAXIPPORT: public QAPRSPort  {
     //================================
     QUdpSocket *udpSocket;
     QTimer     *beacontimer;
-    int     RXPort;
-    int     TXPort;
+    quint16     RXPort;
+    quint16     TXPort;
     QHostAddress *TXAddress;
 
 
@@ -102,7 +102,7 @@ private slots:
 class QAPRSINTERNETPORT: public QAPRSPort  {
     Q_OBJECT
     public:
-        QAPRSINTERNETPORT( QObject * parent = 0 );
+        QAPRSINTERNETPORT( QObject * parent = nullptr );
 
     void    openPort();
     void    closePort();
@@ -144,7 +144,7 @@ private slots:
 class QAPRSAGWPORT: public QAPRSPort  {
     Q_OBJECT
     public:
-        QAPRSAGWPORT( QObject * parent = 0 );
+        QAPRSAGWPORT( QObject * parent = nullptr );
 
     void    openPort();
     void    closePort();
@@ -184,7 +184,7 @@ private slots:
      Q_OBJECT
 
  public:
-     ComReadThread(QObject *parent = 0);
+     ComReadThread(QObject *parent = nullptr);
      ~ComReadThread();
 #ifdef Q_OS_WIN
      HANDLE m_Handle;
@@ -200,7 +200,7 @@ signals:
 class QAPRSKISSPORT: public QAPRSPort  {
     Q_OBJECT
     public:
-        QAPRSKISSPORT( QObject * parent = 0 );
+        QAPRSKISSPORT( QObject * parent = nullptr );
 
     void    openPort();
     void    closePort();
@@ -242,7 +242,7 @@ class QAPRSKISSPORT: public QAPRSPort  {
 #endif
 
 #ifdef Q_OS_UNIX
- 	int fd; /* Файловый дескриптор для порта */
+ 	int fd; /* п╓п╟п╧п╩п╬п╡я▀п╧ п╢п╣я│п╨я─п╦п©я┌п╬я─ п╢п╩я▐ п©п╬я─я┌п╟ */
 #endif
 
 #endif // QAPRSPORTS_H

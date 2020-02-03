@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>824</width>
+    <width>968</width>
     <height>447</height>
    </rect>
   </property>
@@ -49,9 +49,23 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <widget class="QComboBox" name="dbTypeComboBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <item>
              <property name="text">
               <string>SQLite</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>CORE</string>
              </property>
             </item>
            </widget>

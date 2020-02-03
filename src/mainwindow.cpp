@@ -1,12 +1,16 @@
-#include "include/mainwindowimpl.h"
+#include "include/mainwindow.h"
+#include "ui_mainwindow.h"
 #include "include/portoption.h"
 
 
-//
-MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
-	: QMainWindow(parent, f)
+////
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
-    setupUi( this );
+//    setupUi( this );
+    ui->setupUi(this);
+
     qApp->setStyle( "plastique" );
     QApplication::setPalette( QApplication::style()->standardPalette() );
 
@@ -19,63 +23,65 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f)
     //sig
 
     //newBaseButton
-    connect( newBaseButton,     SIGNAL( clicked() ),
+    connect( ui->newBaseButton,     SIGNAL( clicked() ),
              this,              SLOT( newBaseButtonClick() ) );
 
-    connect( cancelButton,      SIGNAL( clicked() ),
+    connect( ui->cancelButton,      SIGNAL( clicked() ),
              this,              SLOT( cancelButtonClick() ) );
 
-    connect( saveButton,        SIGNAL( clicked() ),
+    connect( ui->saveButton,        SIGNAL( clicked() ),
              this,              SLOT( saveButtonClick() ) );
 
-    connect( connectButton,     SIGNAL( clicked() ),
+    connect( ui->connectButton,     SIGNAL( clicked() ),
              this,              SLOT( connectButtonClick() ) );
 
-    connect( disconnectButton,  SIGNAL( clicked() ),
+    connect( ui->disconnectButton,  SIGNAL( clicked() ),
              this,              SLOT( disconnectButtonClick() ) );
 
-    connect( dbTypeComboBox,    SIGNAL( currentIndexChanged( int ) ),
+    connect( ui->dbTypeComboBox,    SIGNAL( currentIndexChanged( int ) ),
              this,              SLOT( currentIndexChanged ( int ) ) );
 
-    connect( addPortButton,     SIGNAL( clicked() ),
+    connect( ui->addPortButton,     SIGNAL( clicked() ),
              this,              SLOT( addPortButtonClick() ) );
 
-    connect( deletePortButton,  SIGNAL( clicked() ),
+    connect( ui->deletePortButton,  SIGNAL( clicked() ),
              this,              SLOT( deletePortButtonClick() ) );
 
-    connect( editPortButton,    SIGNAL( clicked() ),
+    connect( ui->editPortButton,    SIGNAL( clicked() ),
              this,              SLOT( editPortButtonClick() ) );
 
-    connect( portsTableView,    SIGNAL( doubleClicked ( const QModelIndex & ) ),
+    connect( ui->portsTableView,    SIGNAL( doubleClicked ( const QModelIndex & ) ),
              this,              SLOT( editPortButtonClick() ) );
 
-    connect( upPortsButton,     SIGNAL( clicked() ),
+    connect( ui->upPortsButton,     SIGNAL( clicked() ),
              this,              SLOT( upAllPorts() ) );
 
-    connect( downPortsButton,   SIGNAL( clicked() ),
+    connect( ui->downPortsButton,   SIGNAL( clicked() ),
              this,              SLOT( downAllPorts() ) );
 
 
     APRSCore = new QAPRSCore(this);
-    APRSCore->log = logEdit;
+    APRSCore->log = ui->logEdit;
     APRSCore->db = db;
 
-    connect( APRSCore,   SIGNAL( TRXPacket() ),
-             this,              SLOT( TRXPacket() ) );
+//    connect( APRSCore,   SIGNAL( TRXPacket() ),
+//             this,              SLOT( TRXPacket() ) );
 
 
 }
 
+MainWindow::~MainWindow()
+{
+//    delete ui;
+}
 
-void MainWindowImpl::newBaseButtonClick() {
+void MainWindow::newBaseButtonClick() {
 
-    //logEdit->insertHtml( "QAPRSCore::Recreate system database<br>" );
-    //logEdit->insertHtml( "QAPRSCore::Create test ports<br>" );
     APRSCore->ToLog( "QAPRSCore::Recreate system database<br>" );
     APRSCore->ToLog( "QAPRSCore::Create test ports<br>" );
 
-    if (connectButton->isEnabled()) {
-        DBName = baseNameEdit->text(); 
+    if (ui->connectButton->isEnabled()) {
+        DBName = ui->baseNameEdit->text();
         db->setDatabaseName( DBName );
         db->open();
     }
@@ -225,82 +231,82 @@ void MainWindowImpl::newBaseButtonClick() {
     query.exec( "create table messages (packet_K int, MTo varchar(10),Message varchar(250), Mess_ID varchar(6) )" );
     //query.exec( "insert into  messages (packet_K, MTo, Message, Mess_ID ) values(0, 'UA3MM', 'Test message', '001') " );
 
-    if ( connectButton->isEnabled() ) db->close();
+    if ( ui->connectButton->isEnabled() ) db->close();
 
     plainModel.setQuery( portsQuery );
 
 }
 
-void MainWindowImpl::requeryPorts() {
+void MainWindow::requeryPorts() {
 
     plainModel.setQuery( portsQuery );
-    portsTableView->setModel( &plainModel );
+    ui->portsTableView->setModel( &plainModel );
 
-    portsTableView->selectRow( 0 );
+    ui->portsTableView->selectRow( 0 );
 
-    portsTableView->setColumnWidth(  0,  25 );
-    portsTableView->setColumnWidth(  1,  40 );
-    portsTableView->setColumnWidth(  2, 100 );
-    portsTableView->setColumnWidth(  3, 100 );
-    portsTableView->setColumnWidth(  4,  60 );
-    portsTableView->setColumnWidth(  8,  60 );
-    portsTableView->setColumnWidth(  9,  65 );
-    portsTableView->setColumnWidth( 10,  40 );
+    ui->portsTableView->setColumnWidth(  0,  25 );
+    ui->portsTableView->setColumnWidth(  1,  40 );
+    ui->portsTableView->setColumnWidth(  2, 100 );
+    ui->portsTableView->setColumnWidth(  3, 100 );
+    ui->portsTableView->setColumnWidth(  4,  60 );
+    ui->portsTableView->setColumnWidth(  8,  60 );
+    ui->portsTableView->setColumnWidth(  9,  65 );
+    ui->portsTableView->setColumnWidth( 10,  40 );
 
 }
 
-void MainWindowImpl::requeryPackets() {
+void MainWindow::requeryPackets() {
 
     packetsModel.setQuery( packetsQuery );
-    packetTableView->setModel( &packetsModel );
+    ui->packetTableView->setModel( &packetsModel );
 
-    packetTableView->selectRow( 0 );
+    ui->packetTableView->selectRow( 0 );
 
-    packetTableView->setColumnWidth(  0,  50 );
-    packetTableView->setColumnWidth(  1,  70 );
-    packetTableView->setColumnWidth(  2,  55 );
-    packetTableView->setColumnWidth(  3,  50 );
-    packetTableView->setColumnWidth(  4,  60 );
-    packetTableView->setColumnWidth(  5,  30 );
-    packetTableView->setColumnWidth(  6,  70 );
-    packetTableView->setColumnWidth(  7,  70 );
-    packetTableView->setColumnWidth(  8,  170 );
-    packetTableView->setColumnWidth(  9,  300 );
+    ui->packetTableView->setColumnWidth(  0,  50 );
+    ui->packetTableView->setColumnWidth(  1,  70 );
+    ui->packetTableView->setColumnWidth(  2,  55 );
+    ui->packetTableView->setColumnWidth(  3,  50 );
+    ui->packetTableView->setColumnWidth(  4,  60 );
+    ui->packetTableView->setColumnWidth(  5,  30 );
+    ui->packetTableView->setColumnWidth(  6,  70 );
+    ui->packetTableView->setColumnWidth(  7,  70 );
+    ui->packetTableView->setColumnWidth(  8,  170 );
+    ui->packetTableView->setColumnWidth(  9,  300 );
 
 }
 
-void MainWindowImpl::requeryMessages() {
+void MainWindow::requeryMessages() {
 
     messagesModel.setQuery( messagesQuery );
-    messageTableView->setModel( &messagesModel );
+    ui->messageTableView->setModel( &messagesModel );
     
-    messageTableView->selectRow( 0 );
+    ui->messageTableView->selectRow( 0 );
     
-    messageTableView->setColumnWidth(  0,  50 );
-    messageTableView->setColumnWidth(  1,  70 );
-    messageTableView->setColumnWidth(  2,  55 );
-    messageTableView->setColumnWidth(  3,  50 );
-    messageTableView->setColumnWidth(  4,  30 );
-    messageTableView->setColumnWidth(  5,  70 );
-    messageTableView->setColumnWidth(  6,  70 );
-    messageTableView->setColumnWidth(  7, 230 );
-    messageTableView->setColumnWidth(  8,  50 );
+    ui->messageTableView->setColumnWidth(  0,  50 );
+    ui->messageTableView->setColumnWidth(  1,  70 );
+    ui->messageTableView->setColumnWidth(  2,  55 );
+    ui->messageTableView->setColumnWidth(  3,  50 );
+    ui->messageTableView->setColumnWidth(  4,  30 );
+    ui->messageTableView->setColumnWidth(  5,  70 );
+    ui->messageTableView->setColumnWidth(  6,  70 );
+    ui->messageTableView->setColumnWidth(  7, 230 );
+    ui->messageTableView->setColumnWidth(  8,  50 );
 
 }
 
-void MainWindowImpl::connectButtonClick() {
+void MainWindow::connectButtonClick() {
 
     APRSCore->ToLog( "QAPRSCore::Connecting to system database<br>" );
 
-    disconnectButton ->setEnabled( TRUE );
-    connectButton    ->setEnabled( FALSE );
-    deletePortButton ->setEnabled( TRUE );
-    addPortButton    ->setEnabled( TRUE );
-    editPortButton   ->setEnabled( TRUE );
-    upPortsButton    ->setEnabled( TRUE );
-    downPortsButton  ->setEnabled( FALSE );
+    ui->disconnectButton ->setEnabled( true );
+    ui->connectButton    ->setEnabled( false );
+    ui->deletePortButton ->setEnabled( true );
+    ui->addPortButton    ->setEnabled( true );
+    ui->editPortButton   ->setEnabled( true );
+    ui->upPortsButton    ->setEnabled( true );
+    ui->downPortsButton  ->setEnabled( false );
 
-    DBName = baseNameEdit->text();
+    DBName = ui->baseNameEdit->text();
     db->setDatabaseName( DBName );
     db->open();
 
@@ -315,7 +321,7 @@ void MainWindowImpl::connectButtonClick() {
                "order by ports.port_num";
 
 
-    portsTableView->setModel( &plainModel );
+    ui->portsTableView->setModel( &plainModel );
     requeryPorts();
 
     packetsQuery = "select p1.K, substr(p1.DT,9,2)||\".\"||substr(p1.DT,6,2)||\".\"||substr(p1.DT,1,4) as DATA, substr(p1.DT,12,8) as TIME, "
@@ -324,7 +330,7 @@ void MainWindowImpl::connectButtonClick() {
                    "left join port_types p3 on p3.port_type_id = p2.port_type_id "
                    "order by K desc";
 
-    packetTableView->setModel( &packetsModel );
+    ui->packetTableView->setModel( &packetsModel );
     requeryPackets();
 
     messagesQuery = "select p1.packet_K as K, substr(p2.DT,9,2)||\".\"||substr(p2.DT,6,2)||\".\"||substr(p2.DT,1,4) as DATA, substr(p2.DT,12,8) as TIME, "
@@ -334,65 +340,65 @@ void MainWindowImpl::connectButtonClick() {
                     "left join port_types p4 on p4.port_type_id = p3.port_type_id "
                     "order by p1.packet_K desc ";
 
-    messageTableView->setModel( &messagesModel );
+    ui->messageTableView->setModel( &messagesModel );
     requeryMessages();
 
 }
 
-void MainWindowImpl::disconnectButtonClick() {
+void MainWindow::disconnectButtonClick() {
 
     APRSCore->ToLog( "QAPRSCore::Disconnectiong from system database<br>" );
-    disconnectButton ->setEnabled( FALSE );
-    connectButton    ->setEnabled( TRUE );
-    deletePortButton ->setEnabled( FALSE );
-    addPortButton    ->setEnabled( FALSE );
-    editPortButton   ->setEnabled( FALSE );
-    upPortsButton    ->setEnabled( FALSE );
-    downPortsButton  ->setEnabled( FALSE );
+    ui->disconnectButton ->setEnabled( false );
+    ui->connectButton    ->setEnabled( true );
+    ui->deletePortButton ->setEnabled( false );
+    ui->addPortButton    ->setEnabled( false );
+    ui->editPortButton   ->setEnabled( false );
+    ui->upPortsButton    ->setEnabled( false );
+    ui->downPortsButton  ->setEnabled( false );
     db->close();
-    plainModel.setQuery( portsQuery ); //ýòî äëÿ òîãî, ÷òîáû îáíóëèòü ãðèä, íî âûëåçåò îøèáêà - íå ïîäñîåäèíåíû ê ÁÄ
-    //down ports
-    logEdit->insertHtml( "QAPRSCore::All port(s) is down<br>" );
-    APRSCore->closeAllPorts();
-}
-
-void MainWindowImpl::upAllPorts() {
-    //up ports
-    APRSCore->ToLog( "QAPRSCore:: Try to up of " + QString::number( plainModel.rowCount() ) + " port(s)<br>" );
-    APRSCore->createPorts();
-    upPortsButton    ->setEnabled( FALSE );
-    downPortsButton  ->setEnabled( TRUE );
-}
-
-void MainWindowImpl::downAllPorts() {
+    plainModel.setQuery( portsQuery ); //ÑÑ‚Ð¾ Ð´Ð»Ñ Ñ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¾Ð±Ð½ÑƒÐ»Ð¸Ñ‚ÑŒ Ð³Ñ€Ð¸Ð´, Ð½Ð¾ Ð²Ñ‹Ð»ÐµÐ·ÐµÑ‚ Ð¾ÑˆÐ¸Ð±ÐºÐ° - Ð½Ðµ Ð¿Ð¾Ð´ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ñ‹ Ðº Ð‘Ð”
     //down ports
     APRSCore->ToLog( "QAPRSCore::All port(s) is down<br>" );
     APRSCore->closeAllPorts();
-    upPortsButton    ->setEnabled( TRUE );
-    downPortsButton  ->setEnabled( FALSE );
+}
+
+void MainWindow::upAllPorts() {
+    //up ports
+    APRSCore->ToLog( "QAPRSCore:: Try to up of " + QString::number( plainModel.rowCount() ) + " port(s)<br>" );
+    APRSCore->createPorts();
+    ui->upPortsButton    ->setEnabled( false );
+    ui->downPortsButton  ->setEnabled( true );
+}
+
+void MainWindow::downAllPorts() {
+    //down ports
+    APRSCore->ToLog( "QAPRSCore::All port(s) is down<br>" );
+    APRSCore->closeAllPorts();
+    ui->upPortsButton    ->setEnabled( true );
+    ui->downPortsButton  ->setEnabled( false );
 
 }
 
 
-void MainWindowImpl::saveButtonClick() {
+void MainWindow::saveButtonClick() {
 
     saveOptionsToFile();
 
 }
 
-void MainWindowImpl::cancelButtonClick() {
+void MainWindow::cancelButtonClick() {
 
     loadOptionsFromFile();
 
 }
 
-void MainWindowImpl::deletePortButtonClick() {
+void MainWindow::deletePortButtonClick() {
 
     QSqlQuery query( *db );
 
-    int port_num;	
+    int port_num;
 
-    port_num = plainModel.record( portsTableView->currentIndex().row() ).value( "PN" ).toInt();
+    port_num = plainModel.record( ui->portsTableView->currentIndex().row() ).value( "PN" ).toInt();
 
     query.exec( "delete from ports where port_num = " + QString::number( port_num ) + " " );
     query.exec( "delete from port_param_values where port_num = " + QString::number( port_num ) + " " );
@@ -400,11 +406,11 @@ void MainWindowImpl::deletePortButtonClick() {
     requeryPorts();
 }
 
-void MainWindowImpl::addPortButtonClick() {
+void MainWindow::addPortButtonClick() {
 
     QSqlQuery query( *db );
 
-    int next_n;	
+    int next_n;
 
     query.prepare( "select max(port_num)+1 from ports" );
     query.exec();
@@ -416,16 +422,32 @@ void MainWindowImpl::addPortButtonClick() {
 
     requeryPorts();
     requeryPorts();
-    portsTableView->selectRow( plainModel.rowCount()-1 );
+    ui->portsTableView->selectRow( plainModel.rowCount()-1 );
     editPortButtonClick();
 
 }
 
-void MainWindowImpl::loadOptionsFromFile() {
+void MainWindow::loadOptionsFromFile() {
 
     QFile file( "./config.ini" );
 
-    file.open( QIODevice::ReadOnly );
+    if(!file.open( QIODevice::ReadOnly )) {
+        ui->baseNameEdit ->setText( "CALL.base" );
+        ui->userEdit     ->setText( "APRS_CALL" );
+        ui->passEdit     ->setText( "APRS_PASS" );
+        ui->hostEdit     ->setText( "APRS_HOST" );
+//        ui->portBox      ->setValue( Port.toInt() );
+        ui->callEdit     ->setText( "CALL" );
+        ui->nameEdit     ->setText( "OP-NAME" );
+        ui->qthnameEdit  ->setText( "QTH-NAME" );
+        ui->latEdit      ->setText( "00.00.00N" );
+        ui->lngEdit      ->setText( "000.00.00E" );
+        ui->unprotoEdit  ->setText( "WIDE1-1,WIDE2-2" );
+        ui->beacontextEdit->setText( "Name, QTH-Name" );
+        ui->symbolEdit   ->setText( "/-" );
+        return;
+    }
+
     QTextStream in( &file );
     
     DBType = in.readLine();
@@ -473,99 +495,99 @@ void MainWindowImpl::loadOptionsFromFile() {
 
     file.close();
 
-    baseNameEdit ->setText( DBName );
-    userEdit     ->setText( UName );
-    passEdit     ->setText( UPass );
-    hostEdit     ->setText( Host );
-    portBox      ->setValue( Port.toInt() );
-    callEdit     ->setText( Call );
-    nameEdit     ->setText( Name );
-    qthnameEdit  ->setText( QTHN );
-    latEdit      ->setText( Lat );
-    lngEdit      ->setText( Lng );
-    unprotoEdit  ->setText( Unproto );
-    beacontextEdit->setText( Beacon );
-    symbolEdit   ->setText( Symbol );
+    ui->baseNameEdit ->setText( DBName );
+    ui->userEdit     ->setText( UName );
+    ui->passEdit     ->setText( UPass );
+    ui->hostEdit     ->setText( Host );
+    ui->portBox      ->setValue( Port.toInt() );
+    ui->callEdit     ->setText( Call );
+    ui->nameEdit     ->setText( Name );
+    ui->qthnameEdit  ->setText( QTHN );
+    ui->latEdit      ->setText( Lat );
+    ui->lngEdit      ->setText( Lng );
+    ui->unprotoEdit  ->setText( Unproto );
+    ui->beacontextEdit->setText( Beacon );
+    ui->symbolEdit   ->setText( Symbol );
 
-    dbTypeComboBox->setCurrentIndex( DBType.toInt() );
+    ui->dbTypeComboBox->setCurrentIndex( DBType.toInt() );
     
-    disconnectButton->setEnabled( FALSE );
-    userEdit->setEnabled( DBType.toInt()!=0 );
-    passEdit->setEnabled( DBType.toInt()!=0 );
-    hostEdit->setEnabled( DBType.toInt()!=0 );
-    portBox ->setEnabled( DBType.toInt()!=0 );
+    ui->disconnectButton->setEnabled( false );
+    ui->userEdit->setEnabled( DBType.toInt()!=0 );
+    ui->passEdit->setEnabled( DBType.toInt()!=0 );
+    ui->hostEdit->setEnabled( DBType.toInt()!=0 );
+    ui->portBox ->setEnabled( DBType.toInt()!=0 );
 
 }
 
-void MainWindowImpl::saveOptionsToFile() {
+void MainWindow::saveOptionsToFile() {
 
     QFile file( "./config.ini" );
 
     file.open( QIODevice::WriteOnly );
     QTextStream out( &file );
     
-    out << "DBType=" << ( QString::number( dbTypeComboBox->currentIndex() ) ) << endl;
+    out << "DBType=" << ( QString::number( ui->dbTypeComboBox->currentIndex() ) ) << endl;
 
-    out << "DBName=" << ( baseNameEdit->text() ) << endl;
+    out << "DBName=" << ( ui->baseNameEdit->text() ) << endl;
 
-    out << "UName="  << ( userEdit->text() ) << endl;
+    out << "UName="  << ( ui->userEdit->text() ) << endl;
 
-    out << "UPass="  << ( passEdit->text() ) << endl;
+    out << "UPass="  << ( ui->passEdit->text() ) << endl;
 
-    out << "Host="   << ( hostEdit->text() ) << endl;
+    out << "Host="   << ( ui->hostEdit->text() ) << endl;
     
-    out << "Port="   << ( QString::number( portBox->value() ) ) << endl;
+    out << "Port="   << ( QString::number( ui->portBox->value() ) ) << endl;
 
-    out << "Call="   << ( callEdit->text() ) << endl;
+    out << "Call="   << ( ui->callEdit->text() ) << endl;
 
-    out << "Name="   << ( nameEdit->text() ) << endl;
+    out << "Name="   << ( ui->nameEdit->text() ) << endl;
 
-    out << "QTHN="   << ( qthnameEdit->text() ) << endl;
+    out << "QTHN="   << ( ui->qthnameEdit->text() ) << endl;
 
-    out << "Lat="    << ( latEdit->text() ) << endl;
+    out << "Lat="    << ( ui->latEdit->text() ) << endl;
 
-    out << "Lng="    << ( lngEdit->text() ) << endl;
+    out << "Lng="    << ( ui->lngEdit->text() ) << endl;
 
-    out << "Unproto="<< ( unprotoEdit->text() ) << endl;
+    out << "Unproto="<< ( ui->unprotoEdit->text() ) << endl;
 
-    out << "Beacon="   << ( beacontextEdit->text() ) << endl;
+    out << "Beacon="   << ( ui->beacontextEdit->text() ) << endl;
 
-    out << "Symbol="   << ( symbolEdit->text() ) << endl;
+    out << "Symbol="   << ( ui->symbolEdit->text() ) << endl;
 
 
     file.close();
 }
 
-void MainWindowImpl::currentIndexChanged ( int index ) {
+void MainWindow::currentIndexChanged ( int index ) {
 
     DBType = QString::number( index );
 
     //if dbtype=SQLITE then disable edits user, pass, host, port
-      userEdit->setEnabled( DBType.toInt()!=0 );
-      passEdit->setEnabled( DBType.toInt()!=0 );
-      hostEdit->setEnabled( DBType.toInt()!=0 );
-      portBox ->setEnabled( DBType.toInt()!=0 );
+      ui->userEdit->setEnabled( DBType.toInt()!=0 );
+      ui->passEdit->setEnabled( DBType.toInt()!=0 );
+      ui->hostEdit->setEnabled( DBType.toInt()!=0 );
+      ui->portBox ->setEnabled( DBType.toInt()!=0 );
  
 }
 
 
-void MainWindowImpl::editPortButtonClick() {
+void MainWindow::editPortButtonClick() {
 
     PortoptionDialog win;
     int Index;
     QSqlQuery query( *db );
 
-    Index = plainModel.record( portsTableView->currentIndex().row() ).value( "PTID" ).toInt();
+    Index = plainModel.record( ui->portsTableView->currentIndex().row() ).value( "PTID" ).toInt();
 
     win.portTypeBox         ->setCurrentIndex ( Index+1 );
-    win.portNumEdit         ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "PN" ).toString() );
-    win.portNameEdit        ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "PNote" ).toString() );
-    win.portCallEdit        ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "PCall" ).toString() );
-    win.portLatEdit         ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "Lat" ).toString() );
-    win.portLngEdit         ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "Lng" ).toString() );
-    win.portUnprotoEdit     ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "Unproto Address" ).toString() );
-    win.portBeaconTextEdit  ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "Bacon Text" ).toString() );
-    win.portBeaconIntervalEdit->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "Beacon Interval" ).toString() );
+    win.portNumEdit         ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "PN" ).toString() );
+    win.portNameEdit        ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "PNote" ).toString() );
+    win.portCallEdit        ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "PCall" ).toString() );
+    win.portLatEdit         ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "Lat" ).toString() );
+    win.portLngEdit         ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "Lng" ).toString() );
+    win.portUnprotoEdit     ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "Unproto Address" ).toString() );
+    win.portBeaconTextEdit  ->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "Bacon Text" ).toString() );
+    win.portBeaconIntervalEdit->setText ( plainModel.record( ui->portsTableView->currentIndex().row()).value( "Beacon Interval" ).toString() );
 
     //currentText
     //win.portSymbolEdit      ->setText ( plainModel.record( portsTableView->currentIndex().row()).value( "PSym" ).toString() );
@@ -573,7 +595,7 @@ void MainWindowImpl::editPortButtonClick() {
         QByteArray Sym;
         int symindex;
         Sym.clear();
-        Sym.append( plainModel.record( portsTableView->currentIndex().row()).value( "PSym" ).toString() );
+        Sym.append( plainModel.record( ui->portsTableView->currentIndex().row()).value( "PSym" ).toString() );
         symindex = (uchar( Sym.data()[1] )-33) << 1;
         if (Sym.data()[0]=='\\') symindex+=1;
         win.portSymbolEdit->setCurrentIndex( symindex );
@@ -582,48 +604,48 @@ void MainWindowImpl::editPortButtonClick() {
 
 
     if (Index==-1) {
-        win.portCallEdit        ->setText ( callEdit->text() );
-        win.portLatEdit         ->setText ( latEdit->text() );
-        win.portLngEdit         ->setText ( lngEdit->text() );
-        win.portUnprotoEdit     ->setText ( unprotoEdit->text() );
+        win.portCallEdit        ->setText ( ui->callEdit->text() );
+        win.portLatEdit         ->setText ( ui->latEdit->text() );
+        win.portLngEdit         ->setText ( ui->lngEdit->text() );
+        win.portUnprotoEdit     ->setText ( ui->unprotoEdit->text() );
         win.portSymbolEdit      ->setCurrentIndex( 25 ); //Home (HF)
-        win.portBeaconTextEdit  ->setText ( beacontextEdit->text() );
+        win.portBeaconTextEdit  ->setText ( ui->beacontextEdit->text() );
         win.portBeaconIntervalEdit->setText( "0" );
     }
 
     query.exec( "select * from port_param_values "
-                "where port_num=" + plainModel.record( portsTableView->currentIndex().row() ).value( "PN" ).toString() );
+                "where port_num=" + plainModel.record( ui->portsTableView->currentIndex().row() ).value( "PN" ).toString() );
 
     while ( query.next() ) {
             if ( Index==0 ) { //APRS INTERNET SERVER
               switch ( query.value( 1 ).toInt() ) {
               case 1 :
                         win.hostNameEdit ->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 2 :
                         win.hostName2Edit->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 3 :
                         win.hostName3Edit->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 4 :
                         win.userEdit     ->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 5 :
                         win.passEdit     ->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 6 :
                         win.APRSFilter   ->setText( query.value( 2 ).toString() );
-			break;
-              };
-	    };
+            break;
+              }
+        }
 
             if ( Index==1 ) { //KISS
                   switch ( query.value( 1 ).toInt() ) {
               case 1 :
                         //win.COMPortNumBox  ->setCurrentIndex( win.COMPortNumBox  ->findText( query.value( 2 ).toString() ) );
                         win.COMPortNumBox->setEditText( query.value( 2 ).toString() );
-			break;
+            break;
               case 2 :
                         win.COMPortSpeedBox->setCurrentIndex( win.COMPortSpeedBox->findText( query.value( 2 ).toString() ) );
                         break;
@@ -657,47 +679,47 @@ void MainWindowImpl::editPortButtonClick() {
               case 12 :
                         win.KISSCommEXITEdit->setText( query.value( 2 ).toString() );
                         break;
-                    };
-            };
+                    }
+            }
 
             if ( Index==2 ) { //AGW
                   switch ( query.value( 1 ).toInt() ) {
               case 1 :
                         win.AGWHostEdit->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 2 :
                         win.AGWPortBox ->setValue( query.value( 2 ).toInt() );
-			break;
-		  };
-	    };
+            break;
+          }
+        }
 
             if ( Index==5 ) { //AXIP
                   switch ( query.value( 1 ).toInt() ) {
               case 1 :
                         win.AXIPRXPortBox ->setValue( query.value( 2 ).toInt() );
-			break;
+            break;
               case 2 :
                         win.AXIPTXHostEdit->setText( query.value( 2 ).toString() );
-			break;
+            break;
               case 3 :
                         win.AXIPTXPortBox ->setValue( query.value( 2 ).toInt() );
-			break;
-		  };
-	    };
+            break;
+          }
+        }
 
-    };
+    }
 
-    Index = portsTableView->currentIndex().row();
-    win.exec(); 
+    Index = ui->portsTableView->currentIndex().row();
+    win.exec();
     requeryPorts();
-    portsTableView->selectRow( Index );
+    ui->portsTableView->selectRow( Index );
 }
 
-void MainWindowImpl::TRXPacket() {
+void MainWindow::TRXPacket() {
 
-    if (!(fromzePacketList->isChecked())) requeryPackets();
+    if (!(ui->fromzePacketList->isChecked())) requeryPackets();
 
     messagesModel.setQuery( messagesQuery );
-    messageTableView->selectRow( 0 );
+    ui->messageTableView->selectRow( 0 );
 
 }

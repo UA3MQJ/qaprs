@@ -1,5 +1,5 @@
-#ifndef __portoption_H__
-#define __portoption_H__
+#ifndef PORTOPTION_H
+#define PORTOPTION_H
 
 #include "ui_portoption.h"
 #include <QSqlQueryModel>
@@ -29,4 +29,4 @@ private slots:
 
 
 
-#endif // __portoption_H__
+#endif // PORTOPTION_H

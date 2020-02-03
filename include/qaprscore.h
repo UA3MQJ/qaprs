@@ -12,21 +12,21 @@ class QAPRSCore : public QObject
 {
     Q_OBJECT
 public:
-    QAPRSCore( QObject *parent = 0 );
-    QAPRSPort *Port[256];
-    QTextEdit *log;
+    QAPRSCore(QObject *parent = nullptr);
+    QAPRSPort    *Port[256];
+    QTextEdit    *log;
     QSqlDatabase *db;
-    QAPRSPort *createPort( QString PortType );
-    void      createPorts();
-    void      closeAllPorts();
+    QAPRSPort    *createPort( QString PortType );
+    void          createPorts();
+    void          closeAllPorts();
     //agw simulator
-    QTcpServer *tcpServer;
-    QTcpSocket *tcpServerConnection;
-    bool    monitoringPackets;
-    QFile       fileLog;
-    QTextStream outLog;
-    QFile       filePacketLog;
-    QTextStream outPacketLog;
+    QTcpServer   *tcpServer;
+    QTcpSocket   *tcpServerConnection;
+    bool          monitoringPackets;
+    QFile         fileLog;
+    QTextStream   outLog;
+    QFile         filePacketLog;
+    QTextStream   outPacketLog;
 
 signals:
     void TRXPacket();
