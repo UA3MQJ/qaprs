@@ -1,5 +1,7 @@
 # Project QAPRS
 
+[Wiki](https://github.com/UA3MQJ/qaprs/wiki)
+
 [EN](README.md)|RU|[DE](README_DE.md)
 
 APRS - Automatic Position (или Packet) Reporting System - это специальный вариант пакетной радиосвязи, протокол которого был зарегистрирован в 1992 году Бобом Брунинга (WB4APR).
