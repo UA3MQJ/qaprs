@@ -37,7 +37,7 @@ void QSysVars::setVal( QString varName, QString varValue ) {
 
     QSysVar *tmp;
 
-    //qDebug() << "QSysDBase::setVal varName=" << varName << " varValue=" << varValue;
+    qDebug() << "QSysDBase::setVal varName=" << varName << " varValue=" << varValue;
 
     //if ( baseType == 0 ) { //значить данные с sql
     //    DatabaseWriteValThread *DBThread;
@@ -58,6 +58,7 @@ void QSysVars::setVal( QString varName, QString varValue ) {
 
             if ( tmp->name == varName ) {
                 if ( tmp->value != varValue ) {
+                    qDebug() << "QSysDBase::setVal tmp->name=" << tmp->name << " tmp->value=" << tmp->value << " tmp->stored = false !!!!";
                     tmp->value = varValue;
                     tmp->stored = false;
                 }

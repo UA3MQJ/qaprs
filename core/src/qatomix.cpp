@@ -334,7 +334,7 @@ void QAtomix::setStorageType( int stp ) {
                                 "from port_param_values "
                                 "where port_num=(:p1)" );
 
-                query2.bindValue( "p1", query.value(0).toInt() );
+                query2.bindValue( ":p1", query.value(0).toInt() );
                 query2.exec();
 
                 while (query2.next()) {
@@ -2716,10 +2716,31 @@ void QAtomix::run() {
     say( "QAtomix::run() start ");
     started = true;
 
-    QSqlDatabase  db;
-    db = QSqlDatabase::addDatabase( "QSQLITE" );
-    db.setDatabaseName( SYSDBName );
-    db.open();
+    QString name = "my_db_" + QString::number((quint64)QThread::currentThread(), 16);
+    QSqlDatabase db;
+    say( "QAtomix::run() name = " + name + " SYSDBName=" + SYSDBName);
+
+
+    if(QSqlDatabase::contains(name))
+        db = QSqlDatabase::database(name);
+    else {
+        db = QSqlDatabase::addDatabase( "QSQLITE", name);
+        db.setDatabaseName( SYSDBName );
+        db.open();
+    }
+
+    qDebug() << ">>>>>>>> RUN - Try load from storage";
+
+    QSqlQuery query(db);
+    query.prepare( "select count(*) as cnt from vars" );
+    query.exec();
+    query.first();
+
+    if ( query.isActive() ) {
+        qDebug() << ">>>>>>>> RUN - Try vars TRUE";
+    } else {
+        qDebug() << ">>>>>>>> RUN - Try vars false ((((";
+    }
 
     if ( iStorageType == 0 ) {
 
@@ -2731,9 +2752,10 @@ void QAtomix::run() {
 
         while ( var_saved == true ) {
 
-            //say( "QAtomix::run() while ( var_saved == true ) ");
+            say( "QAtomix::run() while ( var_saved == true ) ");
 
             var_saved = false; //если ничего не попадется для сохранения, то выйдем
+
 
             //системные переменные если они вообще есть
             if ( SysVars != nullptr ) {
@@ -2745,32 +2767,35 @@ void QAtomix::run() {
 
                     //say( "QAtomix::run() while ( varptr!=nullptr ) ");
 
-                    //say( "QAtomix::run() sysvar " + varptr->name + "=" + varptr->value );
-
                     if ( varptr->stored == false ) {
+                        say( "QAtomix::run() !!stored == false!! sysvar " + varptr->name + "=" + varptr->value );
 
                         var_saved = true;
 
                         varptr->stored = true;
 
-                        QSqlQuery query;
+                        QSqlQuery query(db);
 
-                        qDebug() << "QAtomix::run() save " << varptr->name << "=" << varptr->value;
-                        say( "QAtomix::run() save " + varptr->name + "=" + varptr->value);
+//                        qDebug() << "QAtomix::run() save " << varptr->name << "=" << varptr->value;
+//                        say( "QAtomix::run() save " + varptr->name + "=" + varptr->value);
                         emit storeProgress( "Sysvar save " + varptr->name + "=" + varptr->value );
 
 
-                        query.prepare( "update vars set varval = (:p1) where varname = (:p2)" );
-                        query.bindValue( "p1", varptr->value );
-                        query.bindValue( "p2", varptr->name );
-                        query.exec();
+                        query.prepare( "update vars set varval = :p1 where varname = :p2" );
+                        query.bindValue( ":p1", varptr->value );
+                        query.bindValue( ":p2", varptr->name );
+                        if(!query.exec()) {
+                            qDebug() << "QAtomix::run() exec error " << query.lastError() << query.numRowsAffected() ;
+                        } else {
+                            qDebug() << "QAtomix::run() exec OK " << query.numRowsAffected() ;
+                        }
 
                         if ( query.numRowsAffected() == 0 ) {
-                            QSqlQuery query2;
+                            QSqlQuery query2(db);
                             query2.prepare( "insert into vars(varval, varname) "
-                                            "values((:p1),(:p2)) " );
-                            query2.bindValue( "p1", varptr->value );
-                            query2.bindValue( "p2", varptr->name );
+                                            "values(:p1,:p2) " );
+                            query2.bindValue( ":p1", varptr->value );
+                            query2.bindValue( ":p2", varptr->name );
 
                             query2.exec();
                         }
@@ -2796,17 +2821,17 @@ void QAtomix::run() {
 
                         if ( this->SysPorts->port[ i ] == nullptr ) {
 
-                            QSqlQuery query;
+                            QSqlQuery query(db);
 
                             query.prepare( "delete from ports "
                                            "where port_num=(:p1) " );
-                            query.bindValue( "p1", i );
+                            query.bindValue( ":p1", i );
                             query.exec();
                             if ( query.numRowsAffected() > 0 ) {
                                 //а так же параметров ихних
                                 query.prepare( "delete from port_param_values "
                                                "where port_num=(:p1) " );
-                                query.bindValue( "p1", i );
+                                query.bindValue( ":p1", i );
                                 query.exec();
 
                                 say( "delete port " + QString::number( i ) );
@@ -2835,7 +2860,7 @@ void QAtomix::run() {
                         if ( this->SysPorts->port[ i ]->stored == false ) {
 
                             int j;
-                            QSqlQuery query;
+                            QSqlQuery query(db);
 
                             this->SysPorts->port[ i ]->stored = true;
 
@@ -2846,7 +2871,7 @@ void QAtomix::run() {
                                            "from ports "
                                            "where port_num=(:p1) " );
 
-                            query.bindValue( "p1", i );
+                            query.bindValue( ":p1", i );
 
                             query.exec();
                             query.first();
@@ -2858,7 +2883,7 @@ void QAtomix::run() {
                                                "from ports "
                                                "where port_num=(:p1) " );
 
-                                query.bindValue( "p1", i );
+                                query.bindValue( ":p1", i );
 
                                 query.exec();
                                 query.first();
@@ -2870,15 +2895,15 @@ void QAtomix::run() {
                                     query.prepare( "update ports set port_type_id = (:p1) "
                                                    "where port_num=(:p2) " );
 
-                                    query.bindValue( "p1", this->SysPorts->port[ i ]->portTypeID() );
-                                    query.bindValue( "p2", i );
+                                    query.bindValue( ":p1", this->SysPorts->port[ i ]->portTypeID() );
+                                    query.bindValue( ":p2", i );
 
                                     query.exec();
 
                                     //а так же удаляем параметры
                                     query.prepare( "delete from port_param_values "
                                                    "where port_num=(:p1) " );
-                                    query.bindValue( "p1", i );
+                                    query.bindValue( ":p1", i );
                                     query.exec();
 
                                 }
@@ -2890,9 +2915,9 @@ void QAtomix::run() {
                                 query.prepare( "insert into ports(port_num, port_type_id, port_note) "
                                                "values( (:p1), (:p2), (:p3) ) " );
 
-                                query.bindValue( "p1", i );
-                                query.bindValue( "p2", this->SysPorts->port[ i ]->portTypeID() );
-                                query.bindValue( "p3", this->SysPorts->port[ i ]->portName() );
+                                query.bindValue( ":p1", i );
+                                query.bindValue( ":p2", this->SysPorts->port[ i ]->portTypeID() );
+                                query.bindValue( ":p3", this->SysPorts->port[ i ]->portName() );
 
                                 query.exec();
 
@@ -2901,8 +2926,8 @@ void QAtomix::run() {
                             query.prepare( "update ports set port_note = (:p1) "
                                            "where port_num=(:p2) " );
 
-                            query.bindValue( "p1", this->SysPorts->port[ i ]->portName() );
-                            query.bindValue( "p2", i );
+                            query.bindValue( ":p1", this->SysPorts->port[ i ]->portName() );
+                            query.bindValue( ":p2", i );
                             query.exec();
 
 
@@ -2912,9 +2937,9 @@ void QAtomix::run() {
                                 query.prepare( "update port_param_values set par_value = (:p1) "
                                                "where par_code = (:p2) and port_num=(:p3) " );
 
-                                query.bindValue( "p1", this->SysPorts->port[ i ]->getParamValue( j ) );
-                                query.bindValue( "p2", j + 1 );
-                                query.bindValue( "p3", i );
+                                query.bindValue( ":p1", this->SysPorts->port[ i ]->getParamValue( j ) );
+                                query.bindValue( ":p2", j + 1 );
+                                query.bindValue( ":p3", i );
                                 query.exec();
 
 
@@ -2929,9 +2954,9 @@ void QAtomix::run() {
                                     QSqlQuery query2;
                                     query2.prepare( "insert into port_param_values(port_num, par_code, par_value) "
                                                     "values((:p1),(:p2),(:p3)) " );
-                                    query2.bindValue( "p1", i );
-                                    query2.bindValue( "p2", j + 1 );
-                                    query2.bindValue( "p3", this->SysPorts->port[ i ]->getParamValue( j ) );
+                                    query2.bindValue( ":p1", i );
+                                    query2.bindValue( ":p2", j + 1 );
+                                    query2.bindValue( ":p3", this->SysPorts->port[ i ]->getParamValue( j ) );
 
                                     query2.exec();
                                     //say("set port_param_values INSERT");
@@ -2967,7 +2992,7 @@ void QAtomix::run() {
 
                             query.prepare( "delete from beacons "
                                            "where beacon_num=(:p1) " );
-                            query.bindValue( "p1", i );
+                            query.bindValue( ":p1", i );
                             query.exec();
 
                             sysDBNeedDeleteSysBeacons = true;
@@ -3003,7 +3028,7 @@ void QAtomix::run() {
                                            "from beacons "
                                            "where beacon_num=(:p1) " );
 
-                            query.bindValue( "p1", i );
+                            query.bindValue( ":p1", i );
 
                             query.exec();
                             query.first();
@@ -3016,17 +3041,17 @@ void QAtomix::run() {
                                 query.prepare( " insert into beacons( beacon_num, port_num, sym, call, lat, lng, bunproto, btext, binterval, stext, sinterval )"
                                                " values( (:p0), (:p1), (:p2), (:p3), (:p4), (:p5), (:p6), (:p7), (:p8), (:p9), (:p10) ) " );
 
-                                query.bindValue( "p0", i );
-                                query.bindValue( "p1", this->SysBeacons->beacon[ i ]->getParam( "PORT_NUM" ) );
-                                query.bindValue( "p2", this->SysBeacons->beacon[ i ]->getParam( "SYM" ) );
-                                query.bindValue( "p3", this->SysBeacons->beacon[ i ]->getParam( "CALL" ) );
-                                query.bindValue( "p4", this->SysBeacons->beacon[ i ]->getParam( "LAT" ) );
-                                query.bindValue( "p5", this->SysBeacons->beacon[ i ]->getParam( "LNG" ) );
-                                query.bindValue( "p6", this->SysBeacons->beacon[ i ]->getParam( "UNPROTO" ) );
-                                query.bindValue( "p7", this->SysBeacons->beacon[ i ]->getParam( "TEXT" ) );
-                                query.bindValue( "p8", this->SysBeacons->beacon[ i ]->getParam( "INTERVAL" ) );
-                                query.bindValue( "p9", this->SysBeacons->beacon[ i ]->getParam( "STATTEXT" ) );
-                                query.bindValue( "p10", this->SysBeacons->beacon[ i ]->getParam( "STATINTERVAL" ) );
+                                query.bindValue( ":p0", i );
+                                query.bindValue( ":p1", this->SysBeacons->beacon[ i ]->getParam( "PORT_NUM" ) );
+                                query.bindValue( ":p2", this->SysBeacons->beacon[ i ]->getParam( "SYM" ) );
+                                query.bindValue( ":p3", this->SysBeacons->beacon[ i ]->getParam( "CALL" ) );
+                                query.bindValue( ":p4", this->SysBeacons->beacon[ i ]->getParam( "LAT" ) );
+                                query.bindValue( ":p5", this->SysBeacons->beacon[ i ]->getParam( "LNG" ) );
+                                query.bindValue( ":p6", this->SysBeacons->beacon[ i ]->getParam( "UNPROTO" ) );
+                                query.bindValue( ":p7", this->SysBeacons->beacon[ i ]->getParam( "TEXT" ) );
+                                query.bindValue( ":p8", this->SysBeacons->beacon[ i ]->getParam( "INTERVAL" ) );
+                                query.bindValue( ":p9", this->SysBeacons->beacon[ i ]->getParam( "STATTEXT" ) );
+                                query.bindValue( ":p10", this->SysBeacons->beacon[ i ]->getParam( "STATINTERVAL" ) );
 
                                 query.exec();
 
@@ -3048,17 +3073,17 @@ void QAtomix::run() {
                                                "where beacon_num=(:p11) " );
 
 
-                                query.bindValue( "p1", this->SysBeacons->beacon[ i ]->getParam( "PORT_NUM" ) );
-                                query.bindValue( "p2", this->SysBeacons->beacon[ i ]->getParam( "SYM" ) );
-                                query.bindValue( "p3", this->SysBeacons->beacon[ i ]->getParam( "CALL" ) );
-                                query.bindValue( "p4", this->SysBeacons->beacon[ i ]->getParam( "LAT" ) );
-                                query.bindValue( "p5", this->SysBeacons->beacon[ i ]->getParam( "LNG" ) );
-                                query.bindValue( "p6", this->SysBeacons->beacon[ i ]->getParam( "UNPROTO" ) );
-                                query.bindValue( "p7", this->SysBeacons->beacon[ i ]->getParam( "TEXT" ) );
-                                query.bindValue( "p8", this->SysBeacons->beacon[ i ]->getParam( "INTERVAL" ) );
-                                query.bindValue( "p9", this->SysBeacons->beacon[ i ]->getParam( "STATTEXT" ) );
-                                query.bindValue( "p10", this->SysBeacons->beacon[ i ]->getParam( "STATINTERVAL" ) );
-                                query.bindValue( "p11", i );
+                                query.bindValue( ":p1", this->SysBeacons->beacon[ i ]->getParam( "PORT_NUM" ) );
+                                query.bindValue( ":p2", this->SysBeacons->beacon[ i ]->getParam( "SYM" ) );
+                                query.bindValue( ":p3", this->SysBeacons->beacon[ i ]->getParam( "CALL" ) );
+                                query.bindValue( ":p4", this->SysBeacons->beacon[ i ]->getParam( "LAT" ) );
+                                query.bindValue( ":p5", this->SysBeacons->beacon[ i ]->getParam( "LNG" ) );
+                                query.bindValue( ":p6", this->SysBeacons->beacon[ i ]->getParam( "UNPROTO" ) );
+                                query.bindValue( ":p7", this->SysBeacons->beacon[ i ]->getParam( "TEXT" ) );
+                                query.bindValue( ":p8", this->SysBeacons->beacon[ i ]->getParam( "INTERVAL" ) );
+                                query.bindValue( ":p9", this->SysBeacons->beacon[ i ]->getParam( "STATTEXT" ) );
+                                query.bindValue( ":p10", this->SysBeacons->beacon[ i ]->getParam( "STATINTERVAL" ) );
+                                query.bindValue( ":p11", i );
 
                                 query.exec();
 
@@ -3097,14 +3122,14 @@ void QAtomix::run() {
                         query.prepare( "insert into packets( k, DT, port_num, trx, PTo, PFrom, PVia, Message ) "
                                        "values( (:p1),(:p2),(:p3),(:p4),(:p5),(:p6),(:p7),(:p8) ) " );
 
-                        query.bindValue( "p1", packetptr->K );
-                        query.bindValue( "p2", packetptr->DT );
-                        query.bindValue( "p3", packetptr->Port_Num );
-                        query.bindValue( "p4", packetptr->TRX );
-                        query.bindValue( "p5", packetptr->PTo );
-                        query.bindValue( "p6", packetptr->PFrom );
-                        query.bindValue( "p7", packetptr->PVia );
-                        query.bindValue( "p8", packetptr->Message );
+                        query.bindValue( ":p1", packetptr->K );
+                        query.bindValue( ":p2", packetptr->DT );
+                        query.bindValue( ":p3", packetptr->Port_Num );
+                        query.bindValue( ":p4", packetptr->TRX );
+                        query.bindValue( ":p5", packetptr->PTo );
+                        query.bindValue( ":p6", packetptr->PFrom );
+                        query.bindValue( ":p7", packetptr->PVia );
+                        query.bindValue( ":p8", packetptr->Message );
 
                         query.exec();
 

@@ -40,7 +40,6 @@ void QAPRSCore::Start() {
     atomCORE->beServer( workPort );
 
     SYSDBName = "etc/APRS001.base"; //имя системной БД по умолчанию
-    atomCORE->SYSDBName = SYSDBName;
 
     sysDecoder = QTextCodec::codecForName("UTF-8");
 
@@ -58,6 +57,7 @@ void QAPRSCore::Start() {
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     db.setDatabaseName( SYSDBName );
     db.open();
+    atomCORE->SYSDBName = "etc/APRS001.base";
 
     //atomCORE->setStorageType( 0 ); //SQLite
     atomCORE->addAbStorage();

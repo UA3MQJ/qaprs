@@ -111,9 +111,8 @@ public:
     //станции
     QAPRSstationList *SysStations;
 
-    //системная БД
-    QSqlDatabase  db;
     QString       SYSDBName;
+
 private:
 
     QString vatomName;

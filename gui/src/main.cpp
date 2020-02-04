@@ -7,9 +7,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-
-    QTime midnight( 0, 0, 0 );
-    qsrand( QTime( 0, 0, 0 ).secsTo( QTime::currentTime() ) );
+    // Initialize sequence
+    qsrand(static_cast<uint>(QDateTime::currentMSecsSinceEpoch() / 1000));
 
     QTranslator translator;
     if (translator.load("lng_ru", ".")==true) {

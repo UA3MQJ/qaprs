@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql xml network
+QT       += core widgets gui sql xml network
 
 QT       -= gui
 
