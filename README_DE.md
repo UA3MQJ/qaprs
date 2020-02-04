@@ -1,5 +1,7 @@
 # Project QAPRS
 
+[Wiki](https://github.com/UA3MQJ/qaprs/wiki)
+
 [EN](README.md)|[RU](README_RU.md)|DE
 
 APRS - Automatic Paket Reporting System. Ein Entwicklung von WB4APR (Bob Bruninga) um via Packet Radio Positionsdaten zu versenden.
