@@ -11,3 +11,5 @@ Das Funktionieren des APRS-Systems kann ohne Anwendung der zusätzlichen Geräte
 Die Realisierung des Projektes wird besser erlauben, und das APRS-Protokoll zu erkennen, die Fertigkeiten der Arbeit mit den Netzwerkprotokollen tatsächlich zu festigen, die Entwicklung der Bausteine für die Arbeit mit den Hardware-Einrichtungen (Soundkarte, Serielle Schnittstelle). In letzter Zeit ist eine Menge der neuen Services für die APRS-Netze erschienen, die die Funktionalität der Anwendung ergänzen und lassen zu, die gegebene Anwendung mit ihnen zu integrieren. Es vergrössert das Interesse für das vorliegende System und lässt zu, die neuen Benutzer heranzuziehen.
 
 Alex UA3MQJ. 73!
+
+![normal_qaprs](normal_qaprs.png.jpg?raw=true)
