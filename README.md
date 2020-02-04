@@ -1,5 +1,7 @@
 # Project QAPRS
 
+[Wiki](https://github.com/UA3MQJ/qaprs/wiki)
+
 EN|[RU](README_RU.md)|[DE](README_DE.md)
 
 APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
