@@ -1,5 +1,7 @@
 # Project QAPRS
 
+[EN](README.md)|[RU](README_RU.md)|DE
+
 APRS - Automatic Paket Reporting System. Ein Entwicklung von WB4APR (Bob Bruninga) um via Packet Radio Positionsdaten zu versenden.
 
 Das Projekt wird zwecks des weiteren Studiums auf dem Programmieren Bereich die Protokolle bei Packet Radio, der Festigung der Fertigkeiten der Softwareprodukte einer Cross-Platform auf der Basis С++ und Qt entwickelt. Das Projekt wird wie das funktionale Analog des Softwareproduktes UI-View entwickelt und ergänzt seine Funktionalität mit Hilfe verschiedener Plugins.
