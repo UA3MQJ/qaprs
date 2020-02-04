@@ -1,5 +1,7 @@
 # Project QAPRS
 
+EN|[RU](README_RU.md)|[DE](README_DE.md)
+
 APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
 
 From usual packed radio APRS differs in two principle positions. Firsly, it is a display of maps and other data and, secondly, it uses the report which updates data in real time. Any object simply sends the information, and reception stations register it. In batch communication the great bulk of users use a point-to-point connection which usually has incidental character. It does not allow to supervise event in real time where a life term of the information is very short. Today APRS is the biggest system in the world of a real time scale by means of which it is possible to watch, both any special event, and critical situations.
