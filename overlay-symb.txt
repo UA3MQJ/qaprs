@@ -1,0 +1,16 @@
+символы из альтернативной таблицы с поддержкой оверлеев
+
+\# ODz 03 Digi (green star) [with overlay]      звезда, и символ в ней alt/02.png  	<symbol code="\#" name="No. Digi" img="alternate/02.png" /> 
+\& OGz 06 HF Gateway (diamond) [w/ overlay]     ромб, и символ alt/05.png 		<symbol code="\&" name="No. Diam'd" img="alternate/05.png" /> 
+\> NVz 30 Car [with overlay]                    машина с номером alt/1D.png		<symbol code="\>" name="No. Car" img="alternate/1D.png" />
+\A AAz 33 Box [with overlay]			голубой пр€моугольник alt/20.png	<symbol code="\A" name="No. Box" img="alternate/20.png" />
+\W AWz 55 NWS Site [with overlay]		кружок с цифрой alt/36.png		<symbol code="\W" name="No. WXS" img="alternate/36.png" />
+\^ DVz 62 Aircraft [with overlay]		самолет с цифрой alt/3D.png		<symbol code="\^" name="No. Plane" img="alternate/3D.png" />
+\_ DWz 63 WX Stn with digi (green) [w/ ovТlay]  синий круг alt/3E.png			<symbol code="\_" name="No. WX Stn" img="alternate/3E.png" />
+\a SAz 65 (A=ARRL, R=RACES etc) [w/ ovТlay  	значек alt/40.png			<symbol code="\a" name="RSGB,ARRL" img="alternate/40.png" />
+\c SCz 67 Civil Defense (RACES) [w/ overlay]	треугольник в кружке alt/42.png		<symbol code="\c" name="No. CivDef" img="alternate/42.png" />
+\i SIz 73 Indoor short range digi [w/ overlay]  ui выдает nosymbol и номер поверх него	<symbol code="\i" name="No Symbol" img="alternate/48.png" />
+\n SNz 78 Triangle [with overlay]		голубой треугольник alt/4D.png		<symbol code="\n" name="No. Triang" img="alternate/4D.png" />
+\s SSz 83 Ship/Boat (top view) [with overlay]	зеленый кораблик alt/52.png		<symbol code="\s" name="No. Boat" img="alternate/52.png" />
+\u SUz 85 Truck [with overlay]			грузовик alt/54.png			<symbol code="\u" name="No. Truck" img="alternate/54.png" />
+\v SVz 86 Van [with overlay]			машина alt/55.png			<symbol code="\v" name="No. Van" img="alternate/55.png" />
