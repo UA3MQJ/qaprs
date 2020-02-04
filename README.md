@@ -1,5 +1,7 @@
 # Project QAPRS
 
+[Wiki](https://github.com/UA3MQJ/qaprs/wiki)
+
 EN|[RU](README_RU.md)|[DE](README_DE.md)
 
 APRS - Automatic Position (or Packet) Reporting System is a special variant of a packet radio communication which report has been registered in 1992 by Bob Bruninga (WB4APR).
@@ -15,3 +17,5 @@ The work of APRS system can also be provided without application of the addition
 Realization of the project will allow to learn APRS protokol, to fix skills of work with network protocol practically, to master development of modules for work with hardware devices (sound cards, serial ports). Recently a set of novelties in the field of network services has appeared with which it is possible to integrate to APRS, to add functionalities of application of a network, it helps to develop opportunities and a scope of the report, to involve additional users.
 
 Sincerely, Alex UA3MQJ. 73!
+
+![normal_qaprs](normal_qaprs.png.jpg?raw=true)
