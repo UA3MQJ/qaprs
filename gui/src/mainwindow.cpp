@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //QApplication::setStyle( "plastique" ); //установить пластиковый стиль
     //QApplication::setPalette( QApplication::style()->standardPalette() ); //со стандартной палитрой
-    QApplication::setWindowIcon( QIcon( ":images/config.png" ) );
+    QApplication::setWindowIcon( QIcon( ":images/logo.png" ) );
+    this->setWindowIcon( QIcon( ":images/config.png" ) );
 
     PacketsWindow.setWindowIcon( QIcon( ":images/packet.png" ) );
     MessagesWindow.setWindowIcon( QIcon( ":images/kontact_mail.png" ) );
@@ -317,7 +318,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene( scene );
     scene->addItem( map );
 
-    map->setPixmap( QPixmap( "etc/misa.jpg" ) );
+    map->setPixmap( QPixmap( "./etc/misa.jpg" ) );
     map->setTransformationMode ( Qt::SmoothTransformation );
 
     map->setScale( map->scale() * 0.6 );

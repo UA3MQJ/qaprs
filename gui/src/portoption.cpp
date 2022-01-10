@@ -18,7 +18,7 @@ PortoptionDialog::PortoptionDialog()
 
     //загрузка списка серверов APRS
     QDomDocument doc("qAPRS_APRS_INTERNET_SERVER_LIST");
-    QFile fileConfig("etc/aprs_servers.xml");
+    QFile fileConfig("./etc/aprs_servers.xml");
     if (!fileConfig.open(QIODevice::ReadOnly))
         return;
     if (!doc.setContent(&fileConfig)) {

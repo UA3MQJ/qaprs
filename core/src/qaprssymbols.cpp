@@ -64,7 +64,7 @@ QAPRSSymbols::QAPRSSymbols(){
 
     //грузим символы в массивы
     QDomDocument doc("symbols");
-    QFile fileConfig("etc/symbols.xml");
+    QFile fileConfig("./etc/symbols.xml");
     if (!fileConfig.open(QIODevice::ReadOnly)) {
         //return 1;
         qDebug() << "symbols.xml open error";

@@ -10,6 +10,8 @@ MapsWindowImpl::MapsWindowImpl( QWidget * parent)
 
     setupUi(this);
 
+    qDebug() << ">>>>>>>> MapsWindowImpl";
+
     SysStations = nullptr;
     SysSymbols  = nullptr;
 

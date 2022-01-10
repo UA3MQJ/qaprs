@@ -57,16 +57,20 @@ void QAtomix::addAbStorage() {
 
 //добавление атому способности иметь список своих переменных
 void QAtomix::addAbSysVars() {
-
     say( "addAbSysVars" );
     SysVars = new QSysVars();
     this->weSysvarReq();
+}
 
-
+//добавление атому способности иметь список своих портов
+void QAtomix::addAbPorts() {
+    say( "addAbPorts" );
+    SysPorts = new QSysPorts();
+    this->weSysportReqPorts();
 }
 
 void QAtomix::startSaveToStorage() {
-
+    say("startSaveToStorage - 1");
     if ( iStorageType == 0 ) {
 
         if ( started==false ) {
@@ -77,7 +81,7 @@ void QAtomix::startSaveToStorage() {
         }
 
     } else {
-        //say("startSaveToStorage - ignore (i'm not storage)");
+        say("startSaveToStorage - ignore (i'm not storage)");
     }
 
 }
@@ -891,6 +895,7 @@ void QAtomix::weThink( QString ID_DEST, QString ID_SRC, QString thought ) {
 
             //SYSPORTS
             if ( SysObject.left( 8 ) == "SYSPORT_" ) {
+                say( "weThink SYSPORT_!" );
 
                 int pnum=-1;
                 bool allports = ( SysObject.mid( SysObject.indexOf( "_" ) + 1 ) == "ALL" );
@@ -2191,7 +2196,11 @@ void QAtomix::DOweSysportReqPorts() {
 
 void QAtomix::DOweSysportSetParam( int PortNum, QString ParName, QString ParVal ) {
 
-    //say( "DOweSysportSetParam PortNum="+QString::number( PortNum )+" "+ParName+"="+ParVal );
+    say( "DOweSysportSetParam PortNum="+QString::number( PortNum )+" "+ParName+"="+ParVal );
+
+    if ( SysPorts == nullptr ) {
+        say( "DOweSysportSetParam SysPorts == nullptr " );
+    }
 
     emit SIGweSysportSetParam( PortNum, ParName, ParVal );
 
