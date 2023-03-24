@@ -19,3 +19,22 @@ Realization of the project will allow to learn APRS protokol, to fix skills of w
 Sincerely, Alex UA3MQJ. 73!
 
 ![normal_qaprs](normal_qaprs.png.jpg?raw=true)
+
+стартует startwindow
+в зависимости от подключения к отдельному ядру или запуск ядра внутри gui
+1 запуск ядра внутри gui
+
+// создаем ядро
+QAPRSCore  *Core;
+
+// устанавливаем у него порт и стартуем
+Core = new QAPRSCore();
+Core->setWorkPort(portBox->text().toInt());
+Core->Start();
+
+//ссылку на объект ядра кладем в MainWin
+MainWin = new MainWindow();
+MainWin->Core = Core;
+
+//а MainWin становится клиентом
+MainWin->atomGUI->beClient("127.0.0.1", portBox->text().toInt());

@@ -51,6 +51,17 @@ StartWindowImpl::StartWindowImpl(QWidget * parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
     timer->start(1000);
+
+//    pubsub = new QPubsub();
+//    pubsub->setName("GUI");
+    QPubsub *p1;
+    QPubsub *p2;
+    p1 = new QPubsub();
+    p2 = new QPubsub();
+    p1->setName("Server");
+    p2->setName("Client");
+    p1->beServer(8899);
+    p2->beClient("127.0.0.1", 8899);
 }
 
 StartWindowImpl::~StartWindowImpl() {

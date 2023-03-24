@@ -21,6 +21,7 @@ SOURCES  += \
     ../core/src/qaprspacket.cpp \
     ../core/src/qaprsbeacon.cpp \
     ../core/src/qatomix.cpp \
+    ../core/src/qpubsub.cpp \
     ../core/src/qaprscore.cpp \
     ../core/src/qsysbeacons.cpp \
     ../core/src/qaprssymbols.cpp \
@@ -50,6 +51,7 @@ HEADERS  += \
     ../core/include/qsysports.h \
     ../core/include/qaprspacket.h \
     ../core/include/qaprsbeacon.h \
+    ../core/include/qpubsub.h \
     ../core/include/qatomix.h \
     ../core/include/qaprscore.h \
     ../core/include/qsysbeacons.h \

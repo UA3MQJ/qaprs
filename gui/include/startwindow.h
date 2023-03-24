@@ -6,6 +6,7 @@
 #include <QDebug>
 #include "ui_start.h"
 #include "include/mainwindow.h"
+#include "../../core/include/qpubsub.h"
 
 
 //
@@ -19,6 +20,7 @@ public:
         MainWindow *MainWin;
         QTimer *timer;
         int myTimeout;
+        QPubsub *pubsub;
 
 signals:
 
@@ -31,7 +33,6 @@ public slots:
         void socketError();
         void timeout();
         void updateGoButton();
-
 
 private:
         void closeEvent( QCloseEvent *event );
