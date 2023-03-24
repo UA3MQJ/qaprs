@@ -7,6 +7,8 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QInputDialog>
+#include <QPixmap>
+#include <QGraphicsPixmapItem>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -57,6 +59,18 @@ MainWindow::MainWindow(QWidget *parent) :
     //квери
     ui->qryAddCallButton->setIcon( QIcon( ":images/plus.png" ) );
     ui->qryDeleteCallButton->setIcon( QIcon( ":images/minus.png" ) );
+
+    //logo about
+//    ui->graphicsView
+
+    QPixmap pixmap(":/images/death-note-misa-poster.jpg");
+    if (! ui->graphicsView->scene()) {
+        qDebug() << "No Scene!";
+
+        QGraphicsScene *scene = new QGraphicsScene(this);
+        ui->graphicsView->setScene(scene);
+    }
+    ui->graphicsView->scene()->addPixmap(pixmap);
 
 
     createActions();

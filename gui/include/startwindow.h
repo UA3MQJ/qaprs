@@ -30,6 +30,7 @@ public slots:
         void readMsg( QString msg );
         void socketError();
         void timeout();
+        void updateGoButton();
 
 
 private:
