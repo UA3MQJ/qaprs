@@ -60,19 +60,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->qryAddCallButton->setIcon( QIcon( ":images/plus.png" ) );
     ui->qryDeleteCallButton->setIcon( QIcon( ":images/minus.png" ) );
 
-    //logo about
-//    ui->graphicsView
-
-    QPixmap pixmap(":/images/death-note-misa-poster.jpg");
-    if (! ui->graphicsView->scene()) {
-        qDebug() << "No Scene!";
-
-        QGraphicsScene *scene = new QGraphicsScene(this);
-        ui->graphicsView->setScene(scene);
-    }
-    ui->graphicsView->scene()->addPixmap(pixmap);
-
-
     createActions();
     createTrayIcon();
 
@@ -317,27 +304,17 @@ MainWindow::MainWindow(QWidget *parent) :
              this,       SLOT(      allLoaded( ) ) );
 
 
-
-
-    //atomGUI->beClient( "127.0.0.1", 6000 );
-
-
-
     ui->portsTableView->selectRow( 0 );
     this->updPortsButtonState ( );
 
+    // mida logo
     scene = new QGraphicsScene();
     map   = new QGraphicsPixmapItem();
-
     ui->graphicsView->setScene( scene );
     scene->addItem( map );
-
-    map->setPixmap( QPixmap( "./etc/misa.jpg" ) );
-    map->setTransformationMode ( Qt::SmoothTransformation );
-
-    map->setScale( map->scale() * 0.6 );
-
-
+    map->setPixmap(QPixmap(":/images/death-note-misa-poster.jpg"));
+    map->setTransformationMode(Qt::SmoothTransformation);
+    map->setScale(map->scale() * 0.6);
 
     qDebug() << "MainWindow::MainWindow()";
 }
