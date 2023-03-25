@@ -72,6 +72,7 @@ public:
 private:
 
     QString name;
+    QMap<int,QTcpSocket *> SClients;
 
 signals:
     void    SIGSocketError( ); //Ошибка соединения

@@ -56,12 +56,16 @@ StartWindowImpl::StartWindowImpl(QWidget * parent)
 //    pubsub->setName("GUI");
     QPubsub *p1;
     QPubsub *p2;
+    QPubsub *p3;
     p1 = new QPubsub();
     p2 = new QPubsub();
+    p3 = new QPubsub();
     p1->setName("Server");
-    p2->setName("Client");
+    p2->setName("Client1");
+    p3->setName("Client2");
     p1->beServer(8899);
     p2->beClient("127.0.0.1", 8899);
+    p3->beClient("127.0.0.1", 8899);
 }
 
 StartWindowImpl::~StartWindowImpl() {

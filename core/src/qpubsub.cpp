@@ -52,21 +52,29 @@ void QPubsub::beClient( QString address, int port ) {
 
 void QPubsub::tcpServerNewConnection () {
 //подсоединение
-    debug("tcpServerNewConnection");
 
-    tcpServerConnection = tcpServer->nextPendingConnection();
 
-    connect(tcpServerConnection, SIGNAL(readyRead()), this, SLOT(tcpServerRead()));
-    connect(tcpServerConnection, SIGNAL(disconnected()), this, SLOT(tcpServerDisconnect()));
+//    tcpServerConnection = tcpServer->nextPendingConnection();
+    QTcpSocket* clientSocket=tcpServer->nextPendingConnection();
+    int idusersocs=clientSocket->socketDescriptor();
+    SClients[idusersocs]=clientSocket;
+    debug("tcpServerNewConnection(" + QString::number(idusersocs)+")");
 
-    tcpServer->close(); //!!!! поддерживаем только двойную связь
+//    connect(tcpServerConnection, SIGNAL(readyRead()), this, SLOT(tcpServerRead()));
+//    connect(tcpServerConnection, SIGNAL(disconnected()), this, SLOT(tcpServerDisconnect()));
+//    tcpServer->close(); //!!!! поддерживаем только двойную связь
+    connect(SClients[idusersocs],SIGNAL(readyRead()), this, SLOT(tcpServerRead()));
+    // TODO see https://github.com/valualit/QTcpServer01/blob/master/mainwindow.cpp
 }
 
 void QPubsub::tcpServerRead (){
 //чтение сообщения
-    debug("tcpServerRead");
+    QTcpSocket* clientSocket = (QTcpSocket*)sender();
+    int idusersocs=clientSocket->socketDescriptor();
+
     QByteArray datagram;
-    datagram = tcpServerConnection->readAll();
+//    datagram = tcpServerConnection->readAll();
+    datagram = clientSocket->readAll();
     inData.append(datagram);
 
     //пока есть симолы перевода строки
@@ -74,8 +82,12 @@ void QPubsub::tcpServerRead (){
         while (inData.indexOf("\n") > -1) {
             QString tStr;
             tStr = sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) ;
+            debug("tcpServerRead Receive(" + QString::number(idusersocs) + "): " + tStr);
 
-            debug("tcpServerRead Receive" + tStr);
+            foreach (QTcpSocket *socket, SClients.values()) {
+//                QTcpSocket *socket = SClients.value(key);
+                socket->write(sysDecoder->fromUnicode(tStr) + (QByteArray)("\r\n") );
+            }
 
             inData = inData.mid( inData.indexOf("\n") + 1 ); //отрезать
         }
@@ -94,11 +106,15 @@ void QPubsub::tcpServerDisconnect () {
 void QPubsub::tcpClientconnected() {
     debug("tcpClientconnected");
     connected = true;
+
+    QTcpSocket* clientSocket = (QTcpSocket*)sender();
+
+    clientSocket->write( sysDecoder->fromUnicode(tr("Hello! im %1").arg(getName()) ) + (QByteArray)("\r\n") );
 }
 
 void QPubsub::tcpClientread(){
     //чтение сообщения
-    debug("tcpClientread");
+//    debug("tcpClientread");
     QByteArray datagram;
     datagram = tcpClient->readAll();
     inData.append( datagram );
@@ -109,7 +125,7 @@ void QPubsub::tcpClientread(){
             //берем о посылаем на обработку
             QString tStr;
             tStr = sysDecoder->toUnicode( inData.left( inData.indexOf("\n") - 1 ) ) ;
-            debug("tcpClientread Receive" + tStr);
+            debug("tcpClientread(" + getName() + ") Receive: " + tStr);
 
             inData = inData.mid( inData.indexOf("\n") + 1 ); //отрезать
         }
