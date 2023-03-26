@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef OPTIONSWINDOW_H
+#define OPTIONSWINDOW_H
 
 #include <QMainWindow>
 #include <QtGui>
@@ -19,16 +19,16 @@
 #include "./include/messengerwindow.h"
 
 namespace Ui {
-    class MainWindow;
+    class OptionsWindow;
 }
 
-class MainWindow : public QMainWindow
+class OptionsWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit OptionsWindow(QWidget *parent = 0);
+    ~OptionsWindow();
 
     QAtomix   *atomGUI;
     QAPRSCore *Core; //ядро
@@ -57,7 +57,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
 
 private:
-    Ui::MainWindow *ui;
+    Ui::OptionsWindow *ui;
 
     void createActions();
     void createTrayIcon();
@@ -168,4 +168,4 @@ private slots:
 
 };
 
-#endif // MAINWINDOW_H
+#endif // OPTIONSWINDOW_H

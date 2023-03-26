@@ -13,7 +13,7 @@ TRANSLATIONS    = lng_ru.ts
 
 SOURCES  += \
     ./src/main.cpp \
-    ./src/mainwindow.cpp \
+    ./src/optionswindow.cpp \
     ../core/src/aprs.cpp \
     ../core/src/qsysvars.cpp \
     ../core/src/qaprsports.cpp \
@@ -44,7 +44,7 @@ SOURCES  += \
 
 
 HEADERS  += \
-    ./include/mainwindow.h \
+    ./include/optionswindow.h \
     ../core/include/aprs.h \
     ../core/include/qsysvars.h \
     ../core/include/qaprsports.h \
@@ -76,7 +76,7 @@ HEADERS  += \
 
 
 FORMS    += \
-    ./ui/mainwindow.ui \
+    ./ui/optionswindow.ui \
     ui/storageprogress.ui \
     ui/portoption.ui \
     ui/beaconoption.ui \

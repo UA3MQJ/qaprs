@@ -2,6 +2,7 @@
 #define PORTOPTION_H
 
 #include "ui_portoption.h"
+#include <QMainWindow>
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlRecord>

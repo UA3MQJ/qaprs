@@ -1,9 +1,9 @@
-#include "./include/mainwindow.h"
+#include "./include/optionswindow.h"
 #include "include/storageprogress.h"
 #include "include/portoption.h"
 #include "include/beaconoption.h"
 #include "../../core/include/qaprssymbols.h"
-#include "ui_mainwindow.h"
+#include "ui_optionswindow.h"
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QInputDialog>
@@ -11,9 +11,9 @@
 #include <QGraphicsPixmapItem>
 
 
-MainWindow::MainWindow(QWidget *parent) :
+OptionsWindow::OptionsWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::OptionsWindow)
 {
 
     ui->setupUi(this);
@@ -316,15 +316,15 @@ MainWindow::MainWindow(QWidget *parent) :
     map->setTransformationMode(Qt::SmoothTransformation);
     map->setScale(map->scale() * 0.6);
 
-    qDebug() << "MainWindow::MainWindow()";
+    qDebug() << "OptionsWindow::OptionsWindow()";
 }
 
-MainWindow::~MainWindow()
+OptionsWindow::~OptionsWindow()
 {
     delete ui;
 }
 
-void MainWindow::createActions() {
+void OptionsWindow::createActions() {
 
     showGenOptionAction = new QAction(tr("&Options"), this);
     connect(showGenOptionAction, SIGNAL(triggered()), this, SLOT(showNormal()));
@@ -424,7 +424,7 @@ void MainWindow::createActions() {
 
 }
 
-void MainWindow::createTrayIcon() {
+void OptionsWindow::createTrayIcon() {
 
     trayIconMenu = new QMenu(this);
     trayIconMenu->addAction(showPacketsAction);
@@ -448,7 +448,7 @@ void MainWindow::createTrayIcon() {
 
 }
 
-void MainWindow::changeEvent(QEvent *e)
+void OptionsWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
     switch (e->type()) {
@@ -460,43 +460,43 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::showEvent( QShowEvent *event ) {
+void OptionsWindow::showEvent( QShowEvent *event ) {
 
     int i;
 
     //восстановление размеров и положения окна
-    QSettings settings( versionName, "MainWindow" );
+    QSettings settings( versionName, "OptionsWindow" );
     restoreGeometry( settings.value("geometry").toByteArray() );
     restoreState( settings.value("windowState").toByteArray() );
 
     //восстановление ширины столбцов
     for(i=0;i<=2;i++)
-        if ( !settings.value("MainWindowPortsColumn" + QString::number( i ) + "Width").isNull() )
-            ui->portsTableView->setColumnWidth( i, settings.value("MainWindowPortsColumn" + QString::number( i ) + "Width").toInt() );
+        if ( !settings.value("OptionsWindowPortsColumn" + QString::number( i ) + "Width").isNull() )
+            ui->portsTableView->setColumnWidth( i, settings.value("OptionsWindowPortsColumn" + QString::number( i ) + "Width").toInt() );
 
     for(i=0;i<=12;i++)
-        if ( !settings.value("MainWindowBeaconsColumn" + QString::number( i ) + "Width").isNull() )
-            ui->beaconsTableView->setColumnWidth( i, settings.value("MainWindowBeaconsColumn" + QString::number( i ) + "Width").toInt() );
+        if ( !settings.value("OptionsWindowBeaconsColumn" + QString::number( i ) + "Width").isNull() )
+            ui->beaconsTableView->setColumnWidth( i, settings.value("OptionsWindowBeaconsColumn" + QString::number( i ) + "Width").toInt() );
 
 
 }
 
 
-void MainWindow::closeEvent(QCloseEvent *event) {
+void OptionsWindow::closeEvent(QCloseEvent *event) {
 
     int i;
 
     //сохранение размеров и положения окна
-    QSettings settings( versionName, "MainWindow");
+    QSettings settings( versionName, "OptionsWindow");
     settings.setValue( "geometry", saveGeometry() );
     settings.setValue( "windowState", saveState() );
 
     //сохранение ширины столбцов
     for(i=0;i<=2;i++)
-        settings.setValue( "MainWindowPortsColumn" + QString::number( i ) + "Width", ui->portsTableView->columnWidth( i ) );
+        settings.setValue( "OptionsWindowPortsColumn" + QString::number( i ) + "Width", ui->portsTableView->columnWidth( i ) );
 
     for(i=0;i<=12;i++)
-        settings.setValue( "MainWindowBeaconsColumn" + QString::number( i ) + "Width", ui->beaconsTableView->columnWidth( i ) );
+        settings.setValue( "OptionsWindowBeaconsColumn" + QString::number( i ) + "Width", ui->beaconsTableView->columnWidth( i ) );
 
 
 
@@ -505,11 +505,11 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 }
 
-void MainWindow::hideEvent ( QHideEvent * event ) {
+void OptionsWindow::hideEvent ( QHideEvent * event ) {
 
 }
 
-void MainWindow::contextMenuEvent(QContextMenuEvent *event) {
+void OptionsWindow::contextMenuEvent(QContextMenuEvent *event) {
 
     if ( ui->tabWidget->currentIndex() == 1 ) {
 
@@ -572,7 +572,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event) {
 
 }
 
-void MainWindow::saveButtonClick() {
+void OptionsWindow::saveButtonClick() {
 //сохранение параметров
     int i;
 
@@ -596,7 +596,7 @@ void MainWindow::saveButtonClick() {
 
 }
 
-void MainWindow::cancelButtonClick() {
+void OptionsWindow::cancelButtonClick() {
 //отменить изменения параметров
 
    //this->atomGUI->loadingMode = true;
@@ -605,30 +605,30 @@ void MainWindow::cancelButtonClick() {
 
 }
 
-void MainWindow::closeButtonClick() {
+void OptionsWindow::closeButtonClick() {
 //скрытие клиентской части
 
     this->close();
 
 }
 
-void MainWindow::showPackets() {
+void OptionsWindow::showPackets() {
 //показываем окно пакетов
     PacketsWindow.enableSort = true;
     PacketsWindow.show();
 }
 
-void MainWindow::showMessages() {
+void OptionsWindow::showMessages() {
 //показываем окно сообщений
     MessagesWindow.show();
 }
 
-void MainWindow::showStations() {
+void OptionsWindow::showStations() {
 //показываем окно станций
     StationsWindow.show();
 }
 
-void MainWindow::showMaps() {
+void OptionsWindow::showMaps() {
 //создаем и показываем окно карт
 
     MapsWindowImpl *win;
@@ -676,7 +676,7 @@ void MainWindow::showMaps() {
 
 }
 
-void MainWindow::showMessenger() {
+void OptionsWindow::showMessenger() {
 //показываем окно почтовика
 
     /*
@@ -713,7 +713,7 @@ void MainWindow::showMessenger() {
 
 }
 
-void MainWindow::closeApp() {
+void OptionsWindow::closeApp() {
 //закрытие клиентской части
 /*
     this->Core->atomCORE->weSysbeaconCloseAll();
@@ -746,41 +746,41 @@ void MainWindow::closeApp() {
 
 }
 
-void MainWindow::systrayclick ( ) {
+void OptionsWindow::systrayclick ( ) {
 //клик по иконке в трее
 
 }
 
 //на закладке ports
-void MainWindow::openPortsButtonClick() {
+void OptionsWindow::openPortsButtonClick() {
 //открыть все порты
 
     atomGUI->weSysportOpenAll();
 
 }
 
-void MainWindow::closePortsButtonClick() {
+void OptionsWindow::closePortsButtonClick() {
 //закрыть все порты
 
     atomGUI->weSysportCloseAll();
 
 }
 
-void MainWindow::openPortButtonClick() {
+void OptionsWindow::openPortButtonClick() {
 //открыть определенный порт
 
     atomGUI->weSysportOpen( ui->portsTableView->currentIndex().row() );
 
 }
 
-void MainWindow::closePortButtonClick() {
+void OptionsWindow::closePortButtonClick() {
 //закрыть определенный порт
 
     atomGUI->weSysportClose( ui->portsTableView->currentIndex().row() );
 
 }
 
-void MainWindow::deletePortButtonClick() {
+void OptionsWindow::deletePortButtonClick() {
 //удалить определенный порт
     QByteArray cmd;
 
@@ -798,7 +798,7 @@ void MainWindow::deletePortButtonClick() {
 
 }
 
-void MainWindow::editPortButtonClick() {
+void OptionsWindow::editPortButtonClick() {
 //редактировать параметры определенного порта
 
     PortoptionDialog *win;
@@ -833,7 +833,7 @@ void MainWindow::editPortButtonClick() {
 
 }
 
-void MainWindow::createPortButtonClick() {
+void OptionsWindow::createPortButtonClick() {
 //добавить порт
 //то же самое, только параметры не запрашиваем
     PortoptionDialog *win;
@@ -865,7 +865,7 @@ void MainWindow::createPortButtonClick() {
 
 }
 
-void MainWindow::onPortDoubleClicked( const QModelIndex & index ) {
+void OptionsWindow::onPortDoubleClicked( const QModelIndex & index ) {
 //при двойном щелчке по порту - открываем его параметры
 
     if ( ui->editPortButton->isEnabled() == true ) {
@@ -874,13 +874,13 @@ void MainWindow::onPortDoubleClicked( const QModelIndex & index ) {
 
 }
 
-void MainWindow::portsCurrentChanged( const QModelIndex & current, const QModelIndex & previous ) {
+void OptionsWindow::portsCurrentChanged( const QModelIndex & current, const QModelIndex & previous ) {
 
     this->updPortsButtonState ( );
 
 }
 
-void MainWindow::updatePortFFrm( int pNum ) {
+void OptionsWindow::updatePortFFrm( int pNum ) {
 //сюда принимается сигнал о необходимости обновить параметры определенного порта
 
     this->atomGUI->weSysportUpdate( pNum );
@@ -888,7 +888,7 @@ void MainWindow::updatePortFFrm( int pNum ) {
 
 }
 
-void MainWindow::updPortsButtonState ( ) {
+void OptionsWindow::updPortsButtonState ( ) {
 
     if ( pModel->data( pModel->index( ui->portsTableView->currentIndex().row(), 2, QModelIndex()), Qt::DisplayRole ).toString() == "" ) {
 
@@ -912,7 +912,7 @@ void MainWindow::updPortsButtonState ( ) {
 
 }
 
-void MainWindow::onTimer() {
+void OptionsWindow::onTimer() {
 //гасим зажженные лампочки
     int i;
     //Если лампочки горят, то выключаем их
@@ -950,7 +950,7 @@ void MainWindow::onTimer() {
 }
 
 //закладк beacons
-void MainWindow::createBeaconButtonClick() {
+void OptionsWindow::createBeaconButtonClick() {
 //создать маяк
     BeaconoptionDialog *win;
     QString portSym;
@@ -1048,7 +1048,7 @@ void MainWindow::createBeaconButtonClick() {
 
 }
 
-void MainWindow::editBeaconButtonClick() {
+void OptionsWindow::editBeaconButtonClick() {
 //редактировать параметры определенного маяка
 
     BeaconoptionDialog *win;
@@ -1135,7 +1135,7 @@ void MainWindow::editBeaconButtonClick() {
 
 }
 
-void MainWindow::deleteBeaconButtonClick() {
+void OptionsWindow::deleteBeaconButtonClick() {
 //удалить определенный маяк
 
         int ret = QMessageBox::warning(this, tr("CORE Message - Remove Beacon?"),
@@ -1152,55 +1152,55 @@ void MainWindow::deleteBeaconButtonClick() {
 
 }
 
-void MainWindow::openBeaconButtonClick() {
+void OptionsWindow::openBeaconButtonClick() {
 //открыть определенный маяк
 
     atomGUI->weSysbeaconOpen( ui->beaconsTableView->currentIndex().row() );
 
 }
 
-void MainWindow::closeBeaconButtonClick() {
+void OptionsWindow::closeBeaconButtonClick() {
 //закрыть определенный маяк
 
     atomGUI->weSysbeaconClose( ui->beaconsTableView->currentIndex().row() );
 
 }
 
-void MainWindow::sendBeaconButtonClick() {
+void OptionsWindow::sendBeaconButtonClick() {
 //послать маяк
 
     atomGUI->weSysbeaconSend( ui->beaconsTableView->currentIndex().row() );
 
 }
 
-void MainWindow::sendStatusButtonClick() {
+void OptionsWindow::sendStatusButtonClick() {
 //послать статус
 
     atomGUI->weSysbeaconStatusSend( ui->beaconsTableView->currentIndex().row() );
 
 }
 
-void MainWindow::openBeaconsButtonClick() {
+void OptionsWindow::openBeaconsButtonClick() {
 //открыть все маяки
 
     atomGUI->weSysbeaconOpenAll();
 
 }
 
-void MainWindow::closeBeaconsButtonClick() {
+void OptionsWindow::closeBeaconsButtonClick() {
 //закрыть все маяки
 
     atomGUI->weSysbeaconCloseAll();
 
 }
 
-void MainWindow::beaconsCurrentChanged ( const QModelIndex & current, const QModelIndex & previous ) {
+void OptionsWindow::beaconsCurrentChanged ( const QModelIndex & current, const QModelIndex & previous ) {
 
     this->updBeaconsButtonState();
 
 }
 
-void MainWindow::updBeaconsButtonState() {
+void OptionsWindow::updBeaconsButtonState() {
 
     if ( bModel->data( bModel->index( ui->beaconsTableView->currentIndex().row(), 0, QModelIndex()), Qt::DisplayRole ).toString() == "" ) {
 
@@ -1229,7 +1229,7 @@ void MainWindow::updBeaconsButtonState() {
 
 }
 
-void MainWindow::storeProgress( QString msg) {
+void OptionsWindow::storeProgress( QString msg) {
 
     /*
     Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
@@ -1243,7 +1243,7 @@ void MainWindow::storeProgress( QString msg) {
 
 }
 
-void MainWindow::allLoaded( ) {
+void OptionsWindow::allLoaded( ) {
 
     qDebug() << "allLoaded";
 
@@ -1289,18 +1289,18 @@ void MainWindow::allLoaded( ) {
 
 }
 
-void MainWindow::updateBeaconFFrm( int bNum ) {
+void OptionsWindow::updateBeaconFFrm( int bNum ) {
 //сюда принимается сигнал о необходимости обновить параметры определенного маяка
     this->atomGUI->weSysbeaconUpdate( bNum );
 }
 
-void MainWindow::setBeaconParamFFrm( int bNum, QString pName, QString pVal  ) {
+void OptionsWindow::setBeaconParamFFrm( int bNum, QString pName, QString pVal  ) {
 //сюда принимаются параметры от форм редактирования параметров маяков
     this->atomGUI->weSysbeaconSetParam( bNum, pName, pVal );
 }
 
 //закладка Query
-void MainWindow::qrySaveButtonClick() {
+void OptionsWindow::qrySaveButtonClick() {
 //сохранение параметров
     int i;
 
@@ -1322,7 +1322,7 @@ void MainWindow::qrySaveButtonClick() {
 
 }
 
-void MainWindow::qryCancelButtonClick() {
+void OptionsWindow::qryCancelButtonClick() {
 //отменить изменения параметров
 
     //atomGUI->doThink( "", a, "SYSVAR SET" );
@@ -1330,14 +1330,14 @@ void MainWindow::qryCancelButtonClick() {
 
 }
 
-void MainWindow::qryCloseButtonClick() {
+void OptionsWindow::qryCloseButtonClick() {
 //скрытие клиентской части
 
     this->close();
 
 }
 
-void MainWindow::qryAddCallButtonClick() {
+void OptionsWindow::qryAddCallButtonClick() {
 //добавить позывной в список
 
     bool ok;
@@ -1367,7 +1367,7 @@ void MainWindow::qryAddCallButtonClick() {
 
 }
 
-void MainWindow::qryDeleteCallButton() {
+void OptionsWindow::qryDeleteCallButton() {
 //удалить позывной из списка
 
     int ret = QMessageBox::warning(this, tr("CORE Message - Remove Callsign?"),
@@ -1410,9 +1410,9 @@ void MainWindow::qryDeleteCallButton() {
 
 }
 
-void MainWindow::weSysvarSet( QString VarName, QString VarVal ) {
+void OptionsWindow::weSysvarSet( QString VarName, QString VarVal ) {
 
-    //qDebug() << "MainWindow::weSysvarSet VarName=" << VarName << " VarVal=" << VarVal;
+    //qDebug() << "OptionsWindow::weSysvarSet VarName=" << VarName << " VarVal=" << VarVal;
     //LineEdit's
     QList<QLineEdit *> widgets = this->findChildren<QLineEdit *>( "sysvar_" + VarName );
     if ( widgets.count() == 1 ) widgets.at( 0 )->setText( VarVal );
@@ -1470,9 +1470,9 @@ void MainWindow::weSysvarSet( QString VarName, QString VarVal ) {
 
 }
 
-void MainWindow::weSysportSetParam( int PortNum, QString ParName, QString ParVal ) {
+void OptionsWindow::weSysportSetParam( int PortNum, QString ParName, QString ParVal ) {
 
-    //qDebug() << "MainWindow::weSysportSetParam ParName=" << ParName << " ParVal=" << ParVal;
+    //qDebug() << "OptionsWindow::weSysportSetParam ParName=" << ParName << " ParVal=" << ParVal;
 
     if ( ParName == "PORT_TYPE" ) {
 
@@ -1535,9 +1535,9 @@ void MainWindow::weSysportSetParam( int PortNum, QString ParName, QString ParVal
 
 }
 
-void MainWindow::weSysportChangeState( int PortNum, QString PortState ) {
+void OptionsWindow::weSysportChangeState( int PortNum, QString PortState ) {
 
-    qDebug() << "MainWindow::weSysportChangeState PortNum=" << PortNum << " PortState=" << PortState;
+    qDebug() << "OptionsWindow::weSysportChangeState PortNum=" << PortNum << " PortState=" << PortState;
 
 
     if ( PortState == "DELETED" ) {
@@ -1560,9 +1560,9 @@ void MainWindow::weSysportChangeState( int PortNum, QString PortState ) {
 
 }
 
-void MainWindow::weSysbeaconSetParam( int BcknNum, QString ParName, QString ParVal ) {
+void OptionsWindow::weSysbeaconSetParam( int BcknNum, QString ParName, QString ParVal ) {
 
-    //qDebug() << "MainWindow::weSysbeaconSetParam BcknNum=" << BcknNum << " ParName=" << ParName << " ParVal=" << ParVal;
+    //qDebug() << "OptionsWindow::weSysbeaconSetParam BcknNum=" << BcknNum << " ParName=" << ParName << " ParVal=" << ParVal;
 
     if ( ( ParName == "PORT_NUM" ) && ( ParVal != "" ) ) {
         bModel->setData( bModel->index( BcknNum, 1, QModelIndex()), QString::number( ParVal.toInt() + 1 ) );
@@ -1591,7 +1591,7 @@ void MainWindow::weSysbeaconSetParam( int BcknNum, QString ParName, QString ParV
 
 }
 
-void MainWindow::weSysbeaconChangeState( int BcknNum, QString BcknState ) {
+void OptionsWindow::weSysbeaconChangeState( int BcknNum, QString BcknState ) {
 
     if ( BcknState == "DELETED" ) {
         bModel->setData( bModel->index( BcknNum, 0, QModelIndex()), "" );
@@ -1612,9 +1612,9 @@ void MainWindow::weSysbeaconChangeState( int BcknNum, QString BcknState ) {
 
 }
 
-void MainWindow::weportRXPacket( int pNum, bool isRX ) {
+void OptionsWindow::weportRXPacket( int pNum, bool isRX ) {
 
-    //qDebug() << "MainWindow::weportRXPacket";
+    //qDebug() << "OptionsWindow::weportRXPacket";
     if ( isRX == true ) {
         pModel->setData( pModel->index( pNum, 2, QModelIndex()), "RX" );
         ui->portsTableView->repaint();
@@ -1624,9 +1624,9 @@ void MainWindow::weportRXPacket( int pNum, bool isRX ) {
 
 }
 
-void MainWindow::weportTXPacket( int pNum, bool isTX ) {
+void OptionsWindow::weportTXPacket( int pNum, bool isTX ) {
 
-    //qDebug() << "MainWindow::weportTXPacket";
+    //qDebug() << "OptionsWindow::weportTXPacket";
     if ( isTX == true ) {
         pModel->setData( pModel->index( pNum, 2, QModelIndex()), "TX" );
         ui->portsTableView->repaint();
@@ -1636,7 +1636,7 @@ void MainWindow::weportTXPacket( int pNum, bool isTX ) {
 
 }
 
-void MainWindow::setPortParamFFrm( int pNum, QString pName, QString pVal  ) {
+void OptionsWindow::setPortParamFFrm( int pNum, QString pName, QString pVal  ) {
 //сюда принимаются параметры от форм редактирования параметров портов
 
     this->atomGUI->weSysportSetParam( pNum, pName, pVal );

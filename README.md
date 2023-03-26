@@ -38,3 +38,24 @@ MainWin->Core = Core;
 
 //а MainWin становится клиентом
 MainWin->atomGUI->beClient("127.0.0.1", portBox->text().toInt());
+
+переделываем atomix на то, чем он является - QPubsub
+
+Логические единицы системы и их обмен между собой данными
+
+1. ядро
+1.1 options
+1.2 ports
+
+2. gui
+2.1 optionswindow - главное окошко системы
+2.1.1 general core options
+2.1.2 ports
+2.1.3 beacons
+2.1.4 query options
+2.2 packets
+2.3 messages
+2.4 stations
+2.5 maps
+2.6 messenger
+

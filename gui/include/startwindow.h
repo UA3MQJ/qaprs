@@ -5,7 +5,7 @@
 #include <QPaintEvent>
 #include <QDebug>
 #include "ui_start.h"
-#include "include/mainwindow.h"
+#include "include/optionswindow.h"
 #include "../../core/include/qpubsub.h"
 
 
@@ -17,7 +17,7 @@ public:
         StartWindowImpl( QWidget * parent = nullptr );
         ~StartWindowImpl();
 
-        MainWindow *MainWin;
+        OptionsWindow *optionsWindow;
         QTimer *timer;
         int myTimeout;
         QPubsub *pubsub;

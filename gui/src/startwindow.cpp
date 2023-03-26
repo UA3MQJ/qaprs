@@ -13,7 +13,7 @@ StartWindowImpl::StartWindowImpl(QWidget * parent)
     QApplication::setPalette(QApplication::style()->standardPalette()); //со стандартной палитрой
     this->setWindowIcon(QIcon(":/images/logo.png") );
 
-    MainWin = nullptr;
+    optionsWindow = nullptr;
 
     setupUi(this);
     statusBar()->clearMessage();
@@ -80,7 +80,7 @@ void StartWindowImpl::showEvent (QShowEvent *event) {
 }
 
 void StartWindowImpl::closeEvent(QCloseEvent *event) {
-    if (MainWin != nullptr) {
+    if (optionsWindow != nullptr) {
         hide();
         event->ignore();
     }
@@ -132,18 +132,18 @@ void StartWindowImpl::goClick() {
         Core->setWorkPort(portBox->text().toInt());
         Core->Start();
 
-        MainWin = new MainWindow();
-        MainWin->Core = Core;
-        MainWin->atomGUI->beClient("127.0.0.1", portBox->text().toInt());
+        optionsWindow = new OptionsWindow();
+        optionsWindow->Core = Core;
+        optionsWindow->atomGUI->beClient("127.0.0.1", portBox->text().toInt());
 
 
-        connect(MainWin->atomGUI,  SIGNAL(SIGallLoaded()),
+        connect(optionsWindow->atomGUI,  SIGNAL(SIGallLoaded()),
                 this,              SLOT(allLoad()));
 
-        connect(MainWin->atomGUI,  SIGNAL(storeProgress(QString)),
+        connect(optionsWindow->atomGUI,  SIGNAL(storeProgress(QString)),
                 this,              SLOT(readMsg(QString)));
 
-        connect(MainWin->atomGUI , SIGNAL(SIGSocketError()),
+        connect(optionsWindow->atomGUI , SIGNAL(SIGSocketError()),
                 this,              SLOT(socketError()));
     }
 
@@ -155,17 +155,17 @@ void StartWindowImpl::goClick() {
         this->goButton->repaint();
         QApplication::setOverrideCursor(Qt::WaitCursor);
 
-        MainWin = new MainWindow();
-        MainWin->atomGUI->beClient(hostEdit->text(), portBox->text().toInt());
+        optionsWindow = new OptionsWindow();
+        optionsWindow->atomGUI->beClient(hostEdit->text(), portBox->text().toInt());
 
 
-        connect(MainWin->atomGUI, SIGNAL(SIGallLoaded()),
+        connect(optionsWindow->atomGUI, SIGNAL(SIGallLoaded()),
                 this,             SLOT(allLoad()));
 
-        connect(MainWin->atomGUI, SIGNAL(storeProgress(QString)),
+        connect(optionsWindow->atomGUI, SIGNAL(storeProgress(QString)),
                 this,             SLOT(readMsg(QString)));
 
-        connect(MainWin->atomGUI, SIGNAL(SIGSocketError()),
+        connect(optionsWindow->atomGUI, SIGNAL(SIGSocketError()),
                 this,             SLOT(socketError()));
 
 
@@ -178,7 +178,7 @@ void StartWindowImpl::goClick() {
 void StartWindowImpl::allLoad() {
     qDebug() << "ALL LOADED!!!";
     QApplication::restoreOverrideCursor();
-    MainWin->show();
+    optionsWindow->show();
     this->hide();
 }
 
@@ -196,7 +196,7 @@ void StartWindowImpl::socketError() {
     msgBox.setText("Connection error!");
     msgBox.exec();
 
-    MainWin->closeApp();
+    optionsWindow->closeApp();
     this->close();
 }
 
